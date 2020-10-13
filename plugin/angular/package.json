@@ -1,0 +1,16 @@
+{
+  "name": "@nativescript-community/ui-drawer-angular",
+  "main": "bundles/nativescript-community-ui-drawer-angular.umd.js",
+  "module": "fesm2015/nativescript-community-ui-drawer-angular.js",
+  "es2015": "fesm2015/nativescript-community-ui-drawer-angular.js",
+  "esm2015": "esm2015/nativescript-community-ui-drawer-angular.js",
+  "fesm2015": "fesm2015/nativescript-community-ui-drawer-angular.js",
+  "typings": "nativescript-community-ui-drawer-angular.d.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
+  }
+}

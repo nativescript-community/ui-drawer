@@ -1,0 +1,33 @@
+{
+    "name": "@nativescript-community/ui-drawer",
+    "version": "0.0.0",
+    "description": "Nativescript Image plugin using cache.",
+    "main": "./index",
+    "sideEffects": false,
+    "typings": "./index.d.ts",
+    "nativescript": {
+        "platforms": {
+            "android": "6.0.0",
+            "ios": "6.0.0"
+        }
+    },
+    "keywords": [
+        "NativeScript",
+        "JavaScript",
+        "Android",
+        "iOS"
+    ],
+    "author": {
+        "name": "Martin Guillon",
+        "email": "martin@akylas.fr"
+    },
+    "bugs": {
+        "url": "https://github.com/nativescript-community/ui-drawer/issues"
+    },
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/nativescript-community/ui-drawer",
+    "readmeFilename": "README.md",
+    "dependencies": {
+        "@nativescript-community/gesturehandler": "0.1.22"
+    }
+}

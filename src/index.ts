@@ -67,35 +67,29 @@ export class Drawer extends GridLayout {
         this.addChild(this.backDrop);
         // console.log('Drawer constructor', this.backDrop, this.getChildIndex(this.backDrop));
     }
+    initGestures() {
+        const manager = Manager.getInstance();
+        const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
+            shouldCancelWhenOutside: false,
+            activeOffsetX: SWIPE_DISTANCE_MINIMUM,
+            failOffsetX: -SWIPE_DISTANCE_MINIMUM,
+        });
+        gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
+        gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
+        gestureHandler.attachToView(this);
+        this.panGestureHandler = gestureHandler as any;
+    }
     initNativeView() {
         super.initNativeView();
         if (this.gestureEnabled) {
-            const manager = Manager.getInstance();
-            const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
-                shouldCancelWhenOutside: false,
-                activeOffsetX: SWIPE_DISTANCE_MINIMUM,
-                failOffsetX: -SWIPE_DISTANCE_MINIMUM,
-            });
-            gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
-            gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
-            gestureHandler.attachToView(this);
-            this.panGestureHandler = gestureHandler as any;
+            this.initGestures();
         }
     }
-    [gestureEnabledProperty.setNative](value ) {
+    [gestureEnabledProperty.setNative](value) {
         if (this.panGestureHandler) {
             this.panGestureHandler.enabled = value;
         } else if (value && !this.panGestureHandler) {
-            const manager = Manager.getInstance();
-            const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
-                shouldCancelWhenOutside: false,
-                activeOffsetX: SWIPE_DISTANCE_MINIMUM,
-                failOffsetX: -SWIPE_DISTANCE_MINIMUM,
-            });
-            gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
-            gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
-            gestureHandler.attachToView(this);
-            this.panGestureHandler = gestureHandler as any;
+            this.initGestures();
         }
     }
     disposeNativeView() {

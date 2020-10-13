@@ -70,7 +70,6 @@ Pods
 *.lock
 *.xcworkspace
 plugin/**/*.d.ts
-plugin**/*.json
 /plugin/README.md
 package-lock.json
 /.vscode
