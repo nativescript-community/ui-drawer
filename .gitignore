@@ -1,0 +1,82 @@
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+.idea
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+bin
+obj
+build/
+.vs
+.tscache
+*.user
+*.js
+!demo-vue/app/app.js
+*.map
+!gruntfile.js
+node_modules
+*.tmp.*
+demo*/platforms
+lib
+*.css
+!webpack.*.js
+!build.esm.js
+report
+*.log
+
+*.framework
+*.aar
+
+Pods
+*.lock
+*.xcworkspace
+plugin/**/*.d.ts
+plugin**/*.json
+/plugin/README.md
+package-lock.json
+/.vscode
+/pnpm-lock.yaml
+
+.update_backup
+.migration_backup
+plugin/**/*js.map
+plugin/**/*js

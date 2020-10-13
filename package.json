@@ -1,0 +1,76 @@
+{
+    "name": "@nativescript-community/ui-drawer",
+    "version": "1.0.0",
+    "scripts": {
+        "setup": "ts-patch install",
+        "build.angular": "ng-packagr -p src/angular/package.json -c src/angular/tsconfig.json",
+        "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map plugin/node_modules plugin/package-lock.json plugin/README.md demo/node_modules demo-angular/node_modules",
+        "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
+        "build": "cp README.md ./plugin && rm -f .tsbuildinfo && npm run tsc ",
+        "tslint": "tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\" --exclude '**/platforms/**'",
+        "plugin.tscwatch": "tsc -skipLibCheck -w",
+        "demo.android": "npm run build && cd demo && tns run android --syncAllFiles",
+        "demo.android.watch": "npm run build && npm run plugin.tscwatch && cd demo && tns run android --syncAllFiles",
+        "demo.reset": "cd ../demo && rimraf platforms",
+        "demo.ng.android": "npm run build && cd demo-angular && tns run android --syncAllFiles",
+        "demo.ng.android.watch": "npm run build && npm run plugin.tscwatch && cd demo-angular && tns run android --syncAllFiles",
+        "demo.ng.reset": "cd ../demo-angular && rimraf platforms",
+        "plugin.prepare": "npm run build && cd demo-angular && tns plugin remove @nativescript-community/ui-drawer && tns plugin add ../plugin && cd ../demo && tns plugin remove @nativescript-community/ui-drawer && tns plugin add ../plugin",
+        "publish": "npm run setup && npm run build && npm run build.angular && lerna publish",
+        "commitmsg": "commitlint -e $GIT_PARAMS"
+    },
+    "devDependencies": {
+        "@angular/animations": "~10.1.5",
+        "@angular/common": "~10.1.5",
+        "@angular/compiler": "~10.1.5",
+        "@angular/compiler-cli": "~10.1.5",
+        "@angular/core": "~10.1.5",
+        "@angular/forms": "~10.1.5",
+        "@angular/platform-browser": "~10.1.5",
+        "@angular/platform-browser-dynamic": "~10.1.5",
+        "@angular/router": "~10.1.5",
+        "@commitlint/cli": "^11.0.0",
+        "@commitlint/config-conventional": "^11.0.0",
+        "@nativescript-community/gesturehandler": "0.1.22",
+        "@nativescript-community/ui-drawer": "file:plugin",
+        "@nativescript/angular": "10.1.7",
+        "@nativescript/core": "7.0.11",
+        "@nativescript/types-android": "~7.0.4",
+        "@nativescript/types-ios": "~7.0.4",
+        "@nativescript/webpack": "3.0.7",
+        "@typescript-eslint/eslint-plugin": "4.4.1",
+        "@typescript-eslint/parser": "4.4.1",
+        "@types/node": "14.11.8",
+        "cpy-cli": "^3.1.1",
+        "eslint": "7.11.0",
+        "husky": "^4.3.0",
+        "lerna": "^3.22.1",
+        "ng-packagr": "~10.1.2",
+        "prompt": "^1.0.0",
+        "rimraf": "^3.0.2",
+        "rxjs": "^6.6.3",
+        "svelte-native":"0.9.4",
+        "ts-patch": "^1.3.0",
+        "tslib": "2.0.3",
+        "typescript": "3.9.7",
+        "zone.js": "0.11.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nativescript-community/ui-drawer.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/nativescript-community/ui-drawer/issues"
+    },
+    "homepage": "https://github.com/nativescript-community/ui-drawer#readme",
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "dependencies": {
+        "ts-node": "^8.10.2"
+    }
+}
