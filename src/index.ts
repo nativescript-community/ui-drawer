@@ -11,13 +11,13 @@ import {
 } from '@nativescript-community/gesturehandler';
 import { Animation, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 import { AnimationCurve } from '@nativescript/core/ui/enums';
-installGestures(true);
+installGestures(false);
 const OPEN_DURATION = 200;
 const CLOSE_DURATION = 200;
 export const PAN_GESTURE_TAG = 12431;
 export const NATIVE_GESTURE_TAG = 12421;
-const DEFAULT_TRIGGER_WIDTH = 60;
-const SWIPE_DISTANCE_MINIMUM = 5;
+const DEFAULT_TRIGGER_WIDTH = 20;
+const SWIPE_DISTANCE_MINIMUM = 10;
 
 function transformAnimationValues(values) {
     values.translate = { x: values.translateX || 0, y: values.translateY || 0 };
@@ -265,8 +265,10 @@ export class Drawer extends GridLayout {
             this.panGestureHandler.cancel();
         }
     }
+    needToSetSide: Side;
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
+        // console.log('onGestureState', state, this.showingSide, this.needToSetSide);
         if (state === GestureState.BEGAN) {
             const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
             if (
@@ -282,11 +284,11 @@ export class Drawer extends GridLayout {
             }
         }
         if (state === GestureState.ACTIVE) {
-            // console.log('began gesture', this.showingSide, extraData.x, this.leftSwipeDistance);
-            if (!this.showingSide && extraData.x <= this.leftSwipeDistance) {
-                this.showingSide = 'left';
-            } else if (!this.showingSide && extraData.x >= this.viewWidth['right'] - this.rightSwipeDistance) {
-                this.showingSide = 'right';
+            const width = this.getMeasuredWidth();
+            if (this.leftDrawer && !this.showingSide && extraData.x <= this.leftSwipeDistance) {
+                this.needToSetSide = 'left';
+            } else if (this.rightDrawer && !this.showingSide && extraData.x >= width - this.rightSwipeDistance) {
+                this.needToSetSide = 'right';
             }
             this.backDrop.visibility = 'visible';
         }
@@ -296,6 +298,7 @@ export class Drawer extends GridLayout {
         }
 
         if (prevState === GestureState.ACTIVE) {
+            this.needToSetSide = null;
             if (!this.showingSide) {
                 return;
             }
@@ -338,14 +341,19 @@ export class Drawer extends GridLayout {
     }
     onGestureTouch(args: GestureTouchEventData) {
         const data = args.data;
-        const side = this.showingSide;
+        const side = this.showingSide || this.needToSetSide;
         if (data.state !== GestureState.ACTIVE || !side) {
             return;
         }
         const deltaX = data.extraData.translationX;
-        if (this.isAnimating || !this.isPanning || !this.isPanEnabled) {
+        if (this.isAnimating || !this.isPanning || !this.isPanEnabled || deltaX === 0) {
             this.prevDeltaX = deltaX;
             return;
+        }
+        if (this.needToSetSide) {
+            this.showingSide = this.needToSetSide;
+            this.needToSetSide = null;
+            this.backDrop.visibility= 'visible';
         }
         const width = this.viewWidth[side];
 
