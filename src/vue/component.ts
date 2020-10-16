@@ -1,8 +1,7 @@
 export default {
-  props: {
-  },
+    props: {},
 
-  template: `
+    template: `
     <NativeDrawer
       ref="drawer"
       v-bind="$attrs"
@@ -11,18 +10,18 @@ export default {
     </NativeDrawer>
   `,
 
-  methods: {
-    open (side) {
-      return this.$refs.drawer.nativeView.open(side);
+    methods: {
+        open(side) {
+            return this.$refs.drawer.nativeView.open(side);
+        },
+        close(side) {
+            return this.$refs.drawer.nativeView.close(side);
+        },
+        isOpened(side) {
+            return this.$refs.drawer.nativeView.isOpened(side);
+        },
+        toggle(side) {
+            return this.$refs.drawer.nativeView.toggle(side);
+        },
     },
-    close (side) {
-      return this.$refs.drawer.nativeView.close(side);
-    },
-    isOpened (side) {
-      return this.$refs.drawer.nativeView.isOpened(side);
-    },
-    toggle (side) {
-      return this.$refs.drawer.nativeView.toggle(side);
-    },
-  }
 };

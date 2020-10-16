@@ -1,26 +1,10 @@
-import {
-    Component,
-    Input,
-    ElementRef,
-    Inject,
-    TemplateRef,
-    EmbeddedViewRef,
-    ViewContainerRef,
-    Directive,
-    EventEmitter,
-    Output,
-    NgModule
-} from "@angular/core";
-import {
-    NgView,
-    ViewClassMeta,
-    registerElement,
-} from "@nativescript/angular";
-import { Drawer } from "@nativescript-community/ui-drawer";
+import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Input, NgModule, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
+import { Drawer } from '@nativescript-community/ui-drawer';
 
-const TKLEFTDRAWER: string = "TKLeftDrawer";
-const TKRIGHTDRAWER: string = "TKRightDrawer";
-const TKMAINCONTENT: string = "TKMainContent";
+const TKLEFTDRAWER: string = 'TKLeftDrawer';
+const TKRIGHTDRAWER: string = 'TKRightDrawer';
+const TKMAINCONTENT: string = 'TKMainContent';
 
 export interface ItemEventArgs {
     object: any;
@@ -29,13 +13,13 @@ export interface ItemEventArgs {
 }
 
 /**
-* This is the SideDrawer component. It separates your mobile app's screen
-* into a main part and a menu part whereby the menu part is shown upon a swipe
-* gesture using a transition effect.
-*/
+ * This is the SideDrawer component. It separates your mobile app's screen
+ * into a main part and a menu part whereby the menu part is shown upon a swipe
+ * gesture using a transition effect.
+ */
 @Component({
     selector: 'Drawer',
-    template: "<ng-content></ng-content>"
+    template: '<ng-content></ng-content>',
 })
 export class DrawerComponent {
     public drawer: Drawer;
@@ -49,11 +33,7 @@ export class DrawerComponent {
     // @Output() public drawerClosing: EventEmitter<any> = new EventEmitter();
     // @Output() public drawerClosed: EventEmitter<any> = new EventEmitter();
 
-
-    constructor(
-        @Inject(ElementRef) public elementRef: ElementRef,
-        @Inject(ViewContainerRef) private viewContainer: ViewContainerRef
-    ) {
+    constructor(@Inject(ElementRef) public elementRef: ElementRef, @Inject(ViewContainerRef) private viewContainer: ViewContainerRef) {
         this.drawer = this.elementRef.nativeElement;
     }
 
@@ -66,7 +46,6 @@ export class DrawerComponent {
         this.updateGestureEnabled();
     }
 
-  
     private updateGestureEnabled() {
         this.drawer.gestureEnabled = this._gestureEnabled;
     }
@@ -76,10 +55,10 @@ export class DrawerComponent {
  * Directive identifying the left drawer
  */
 @Directive({
-    selector: "[tkLeftDrawer]"
+    selector: '[tkLeftDrawer]',
 })
 export class TKLeftDrawerDirective {
-    constructor( @Inject(ElementRef) private _elementRef: ElementRef) {
+    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
         this._elementRef.nativeElement.id = TKLEFTDRAWER;
     }
 }
@@ -87,10 +66,10 @@ export class TKLeftDrawerDirective {
  * Directive identifying the right drawer
  */
 @Directive({
-    selector: "[tkLeftDrawer]"
+    selector: '[tkLeftDrawer]',
 })
 export class TKRightDrawerDirective {
-    constructor( @Inject(ElementRef) private _elementRef: ElementRef) {
+    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
         this._elementRef.nativeElement.id = TKRIGHTDRAWER;
     }
 }
@@ -99,18 +78,18 @@ export class TKRightDrawerDirective {
  * Directive identifying the main content.
  */
 @Directive({
-    selector: "[tkMainContent]"
+    selector: '[tkMainContent]',
 })
 export class TKMainContentDirective {
-    constructor( @Inject(ElementRef) private _elementRef: ElementRef) {
+    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
         this._elementRef.nativeElement.id = TKMAINCONTENT;
     }
 }
 
-let sideDrawerMeta: ViewClassMeta = {
+const sideDrawerMeta: ViewClassMeta = {
     insertChild: (parent: NgView, child: NgView) => {
-        const drawer = <Drawer>(<any>parent);
-        const childView = <any>child;
+        const drawer = (parent as any) as Drawer;
+        const childView = child;
 
         if (childView.id === TKMAINCONTENT) {
             drawer.mainContent = childView;
@@ -124,8 +103,8 @@ let sideDrawerMeta: ViewClassMeta = {
         }
     },
     removeChild: (parent: NgView, child: NgView) => {
-        const drawer = <Drawer>(<any>parent);
-        const childView = <any>child;
+        const drawer = (parent as any) as Drawer;
+        const childView = child;
 
         if (childView.id === TKMAINCONTENT) {
             drawer.mainContent = null;
@@ -145,14 +124,13 @@ let sideDrawerMeta: ViewClassMeta = {
  */
 export const SIDEDRAWER_DIRECTIVES = [DrawerComponent, TKLeftDrawerDirective, TKRightDrawerDirective, TKMainContentDirective];
 
-registerElement("RadSideDrawer", () => Drawer, sideDrawerMeta);
+registerElement('RadSideDrawer', () => Drawer, sideDrawerMeta);
 
 /**
  * NgModule containing all of the RadSideDrawer directives.
  */
 @NgModule({
     declarations: [SIDEDRAWER_DIRECTIVES],
-    exports: [SIDEDRAWER_DIRECTIVES]
+    exports: [SIDEDRAWER_DIRECTIVES],
 })
-export class NativeScriptDrawerModule {
-}
+export class NativeScriptDrawerModule {}

@@ -5,16 +5,17 @@ import {
     GestureStateEventData,
     GestureTouchEventData,
     HandlerType,
-    install as installGestures,
     Manager,
     PanGestureHandler,
+    install as installGestures,
 } from '@nativescript-community/gesturehandler';
-import { Animation, booleanConverter, EventData, GridLayout, Property, Utils, View } from '@nativescript/core';
+import { Animation, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 import { AnimationCurve } from '@nativescript/core/ui/enums';
-installGestures();
+installGestures(true);
 const OPEN_DURATION = 200;
 const CLOSE_DURATION = 200;
-export const PAN_GESTURE_TAG = 1;
+export const PAN_GESTURE_TAG = 12431;
+export const NATIVE_GESTURE_TAG = 12421;
 const DEFAULT_TRIGGER_WIDTH = 60;
 const SWIPE_DISTANCE_MINIMUM = 5;
 
@@ -34,6 +35,26 @@ export interface DrawerEventData extends EventData {
     side: Side;
     duration?: number;
 }
+
+export const leftDrawerContentProperty = new Property<Drawer, View>({
+    name: 'leftDrawer',
+    defaultValue: undefined,
+    valueChanged: (target, oldValue, newValue) => {
+        target._onDrawerContentChanged('left', oldValue, newValue);
+    },
+});
+export const rightDrawerContentProperty = new Property<Drawer, View>({
+    name: 'rightDrawer',
+    defaultValue: undefined,
+    valueChanged: (target, oldValue, newValue) => {
+        target._onDrawerContentChanged('right', oldValue, newValue);
+    },
+});
+export const gestureEnabledProperty = new Property<Drawer, boolean>({
+    name: 'gestureEnabled',
+    defaultValue: true,
+    valueConverter: booleanConverter,
+});
 export class Drawer extends GridLayout {
     public leftDrawer: View;
     public rightDrawer: View;
@@ -53,6 +74,7 @@ export class Drawer extends GridLayout {
     translationX: { [k in Side]: number } = { left: 0, right: 0 };
     isPanEnabled: boolean = true;
     panGestureHandler: PanGestureHandler;
+    nativeGestureHandler: PanGestureHandler;
     showingSide: Side = null;
 
     gestureEnabled = true;
@@ -63,6 +85,7 @@ export class Drawer extends GridLayout {
         this.backDrop = new GridLayout();
         this.backDrop.backgroundColor = this.backdropColor;
         this.backDrop.opacity = 0;
+        this.backDrop.visibility = 'hidden';
         this.backDrop.on('tap', () => this.close(), this);
         this.addChild(this.backDrop);
         // console.log('Drawer constructor', this.backDrop, this.getChildIndex(this.backDrop));
@@ -70,14 +93,33 @@ export class Drawer extends GridLayout {
     initGestures() {
         const manager = Manager.getInstance();
         const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
-            shouldCancelWhenOutside: false,
+            // waitFor: [PAN_GESTURE_TAG],
+            // disallowInterruption: true,
+            shouldCancelWhenOutside: true,
             activeOffsetX: SWIPE_DISTANCE_MINIMUM,
+            minDist: SWIPE_DISTANCE_MINIMUM,
             failOffsetX: -SWIPE_DISTANCE_MINIMUM,
         });
         gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
         gestureHandler.attachToView(this);
         this.panGestureHandler = gestureHandler as any;
+        if (this.mainContent) {
+            this.initNativeGestureHandler(this.mainContent);
+        }
+    }
+    initNativeGestureHandler(newValue: View) {
+        if (!this.nativeGestureHandler) {
+            const manager = Manager.getInstance();
+            const gestureHandler = manager.createGestureHandler(HandlerType.NATIVE_VIEW, NATIVE_GESTURE_TAG, {
+                waitFor: [PAN_GESTURE_TAG]
+            });
+            gestureHandler.on(GestureHandlerStateEvent, this.onNativeGestureState, this);
+            this.nativeGestureHandler = gestureHandler as any;
+        }
+        if (this.nativeGestureHandler.getView() !== newValue) {
+            this.nativeGestureHandler.attachToView(newValue);
+        }
     }
     initNativeView() {
         super.initNativeView();
@@ -104,12 +146,16 @@ export class Drawer extends GridLayout {
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
         if (oldValue) {
+            if (this.nativeGestureHandler) {
+                this.nativeGestureHandler.detachFromView(oldValue);
+            }
             this.removeChild(oldValue);
         }
 
         if (newValue) {
             const indexBack = this.getChildIndex(this.backDrop);
             const index = this.getChildIndex(newValue);
+            this.initNativeGestureHandler(newValue);
             // console.log('_onMainContentChanged', newValue, indexBack, index);
             if (index !== indexBack - 1) {
                 this.removeChild(newValue);
@@ -197,7 +243,7 @@ export class Drawer extends GridLayout {
     }
     onLayoutChange(side: Side, event: EventData) {
         const contentView = event.object as GridLayout;
-        let width = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()));
+        const width = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()));
         // console.log('onLayoutChange', side, width);
         if (this.translationX[side] === 0) {
             this.viewWidth[side] = width;
@@ -213,28 +259,36 @@ export class Drawer extends GridLayout {
         }
     }
 
+    onNativeGestureState(args: GestureStateEventData) {
+        const { state } = args.data;
+        if (state === GestureState.ACTIVE) {
+            this.panGestureHandler.cancel();
+        }
+    }
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
         if (state === GestureState.BEGAN) {
             const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
-            // console.log('onGestureState began', extraData.x, this.rightSwipeDistance, width);
             if (
-                !this.isPanEnabled ||
-                (!this.leftDrawer && !this.rightDrawer) ||
-                (this.leftDrawer && extraData.x > this.leftSwipeDistance && (!this.rightDrawer || extraData.x < width - this.rightSwipeDistance)) ||
-                (this.rightDrawer && extraData.x < width - this.rightSwipeDistance && (!this.leftDrawer || extraData.x > this.leftSwipeDistance))
+                !this.showingSide &&
+                (!this.isPanEnabled ||
+                    (!this.leftDrawer && !this.rightDrawer) ||
+                    (this.leftDrawer && extraData.x > this.leftSwipeDistance && (!this.rightDrawer || extraData.x < width - this.rightSwipeDistance)) ||
+                    (this.rightDrawer && extraData.x < width - this.rightSwipeDistance && (!this.leftDrawer || extraData.x > this.leftSwipeDistance)))
             ) {
                 // console.log('cancelling gesture');
                 args.object.cancel();
                 return;
             }
-
+        }
+        if (state === GestureState.ACTIVE) {
             // console.log('began gesture', this.showingSide, extraData.x, this.leftSwipeDistance);
             if (!this.showingSide && extraData.x <= this.leftSwipeDistance) {
                 this.showingSide = 'left';
             } else if (!this.showingSide && extraData.x >= this.viewWidth['right'] - this.rightSwipeDistance) {
                 this.showingSide = 'right';
             }
+            this.backDrop.visibility = 'visible';
         }
         this.updateIsPanning(state);
         if (!this.isPanEnabled) {
@@ -249,7 +303,7 @@ export class Drawer extends GridLayout {
             const viewX = this.translationX[this.showingSide] - this.viewWidth[this.showingSide];
 
             const dragToss = 0.05;
-            let x = translationX - this.prevDeltaX;
+            const x = translationX - this.prevDeltaX;
             const totalDelta = x + dragToss * velocityX;
 
             let destSnapPoint = 0;
@@ -301,7 +355,7 @@ export class Drawer extends GridLayout {
         if (this.showingSide === 'left') {
             x = -x;
         }
-        let trX = this.constrainX(this.showingSide, viewX + x);
+        const trX = this.constrainX(this.showingSide, viewX + x);
         // console.log('onGestureTouch', x, side, deltaX, viewX + x, trX);
 
         this.translationX[side] = width + trX;
@@ -312,7 +366,11 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side) {
-        Object.keys(trData).forEach((k) => Object.assign(this[k], trData[k]));
+        Object.keys(trData).forEach((k) => {
+            if (this[k]) {
+                Object.assign(this[k], trData[k]);
+            }
+        });
     }
 
     constrainX(side, x) {
@@ -335,6 +393,7 @@ export class Drawer extends GridLayout {
         this.translationX[side] = width - position;
         if (position !== 0) {
             this.showingSide = side;
+            this.backDrop.visibility = 'visible';
             this.notify({ eventName: 'open', side, duration } as DrawerEventData);
         } else {
             this.showingSide = null;
@@ -352,6 +411,10 @@ export class Drawer extends GridLayout {
                 )
             )
         ).play();
+        if (position !== 0) {
+        } else {
+            this.backDrop.visibility = 'hidden';
+        }
     }
     isSideOpened() {
         return !!this.showingSide;
@@ -364,6 +427,7 @@ export class Drawer extends GridLayout {
         return !!this.showingSide;
     }
     async toggle(side?: Side) {
+        console.log('toggle', side, this.showingSide);
         if (!side) {
             if (this.leftDrawer) {
                 side = 'left';
@@ -418,25 +482,6 @@ export const mainContentProperty = new Property<Drawer, View>({
     },
 });
 
-export const leftDrawerContentProperty = new Property<Drawer, View>({
-    name: 'leftDrawer',
-    defaultValue: undefined,
-    valueChanged: (target, oldValue, newValue) => {
-        target._onDrawerContentChanged('left', oldValue, newValue);
-    },
-});
-export const rightDrawerContentProperty = new Property<Drawer, View>({
-    name: 'rightDrawer',
-    defaultValue: undefined,
-    valueChanged: (target, oldValue, newValue) => {
-        target._onDrawerContentChanged('right', oldValue, newValue);
-    },
-});
-export const gestureEnabledProperty = new Property<Drawer, boolean>({
-    name: 'gestureEnabled',
-    defaultValue: true,
-    valueConverter: booleanConverter,
-});
 mainContentProperty.register(Drawer);
 leftDrawerContentProperty.register(Drawer);
 rightDrawerContentProperty.register(Drawer);
