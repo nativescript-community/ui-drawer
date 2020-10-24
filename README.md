@@ -16,6 +16,23 @@ tns plugin add @nativescript-community/ui-drawer
 
 ## usage
 
+### Options
+
+```ts
+leftDrawerMode : 'under' | 'slide'
+leftDrawerMode : 'under' | 'slide'
+gestureEnabled : boolean
+backdropColor : Color
+
+// custom translation function to create your own Animation
+translationFunction : (
+        side: Side,
+        width: number,
+        delta: number,
+        progress: number
+    ) => { leftDrawer?: AnimationDefinition; rightDrawer?: AnimationDefinition; backDrop?: AnimationDefinition; mainContent?: AnimationDefinition };
+```
+
 ### Core
 
 ```xml
@@ -35,12 +52,13 @@ tns plugin add @nativescript-community/ui-drawer
 ```
 
 ### Vue
+
 register with
 
 ```typescript
 import DrawerPlugin from '~/components/drawer/vue';
 Vue.use(DrawerPlugin);
-````
+```
 
 then use:
 
@@ -53,6 +71,7 @@ then use:
 ```
 
 ### Angular
+
 register with
 
 ```typescript
@@ -66,7 +85,7 @@ import { DrawerModule } from "@nativescript-community/ui-drawer/angular";
     ]
 })
 export class AppModule { }
-````
+```
 
 then use:
 

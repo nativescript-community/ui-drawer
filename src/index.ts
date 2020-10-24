@@ -9,7 +9,7 @@ import {
     PanGestureHandler,
     install as installGestures,
 } from '@nativescript-community/gesturehandler';
-import { Animation, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
+import { Animation, AnimationDefinition, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 import { AnimationCurve } from '@nativescript/core/ui/enums';
 installGestures(false);
 const OPEN_DURATION = 200;
@@ -55,6 +55,19 @@ export const gestureEnabledProperty = new Property<Drawer, boolean>({
     defaultValue: true,
     valueConverter: booleanConverter,
 });
+export const backdropColorProperty = new Property<Drawer, Color>({
+    name: 'backdropColor',
+    valueConverter: (c) => (c ? new Color(c) : null),
+});
+export const leftDrawerModeProperty = new Property<Drawer, Mode>({
+    name: 'leftDrawerMode',
+});
+export const rightDrawerModeProperty = new Property<Drawer, Mode>({
+    name: 'rightDrawerMode',
+});
+export const translationFunctionProperty = new Property<Drawer, Function>({
+    name: 'translationFunction',
+});
 export class Drawer extends GridLayout {
     public leftDrawer: View;
     public rightDrawer: View;
@@ -66,7 +79,7 @@ export class Drawer extends GridLayout {
     rightSwipeDistance = 30;
     hasRightMenu = false;
     openingProgress = 0;
-    backdropColor = 'rgba(0, 0, 0, 0.7)';
+    backdropColor = new Color('rgba(0, 0, 0, 0.7)');
 
     isAnimating = false;
     prevDeltaX = 0;
@@ -76,9 +89,16 @@ export class Drawer extends GridLayout {
     panGestureHandler: PanGestureHandler;
     nativeGestureHandler: PanGestureHandler;
     showingSide: Side = null;
+    needToSetSide: Side;
 
     gestureEnabled = true;
     modes: { [k in Side]: Mode } = { left: 'under', right: 'slide' };
+    translationFunction?: (
+        side: Side,
+        width: number,
+        delta: number,
+        progress: number
+    ) => { leftDrawer?: AnimationDefinition; rightDrawer?: AnimationDefinition; backDrop?: AnimationDefinition; mainContent?: AnimationDefinition };
 
     constructor() {
         super();
@@ -112,7 +132,7 @@ export class Drawer extends GridLayout {
         if (!this.nativeGestureHandler) {
             const manager = Manager.getInstance();
             const gestureHandler = manager.createGestureHandler(HandlerType.NATIVE_VIEW, NATIVE_GESTURE_TAG, {
-                waitFor: [PAN_GESTURE_TAG]
+                waitFor: [PAN_GESTURE_TAG],
             });
             gestureHandler.on(GestureHandlerStateEvent, this.onNativeGestureState, this);
             this.nativeGestureHandler = gestureHandler as any;
@@ -133,6 +153,19 @@ export class Drawer extends GridLayout {
         } else if (value && !this.panGestureHandler) {
             this.initGestures();
         }
+    }
+    [backdropColorProperty.setNative](value: Color) {
+        this.backDrop.backgroundColor = value;
+    }
+    [leftDrawerModeProperty.setNative](value: Mode) {
+        const oldValue = this.modes['left'];
+        this.modes['left'] = value;
+        this.onSideModeChanged('left', value, oldValue);
+    }
+    [rightDrawerModeProperty.setNative](value: Mode) {
+        const oldValue = this.modes['right'];
+        this.modes['right'] = value;
+        this.onSideModeChanged('right', value, oldValue);
     }
     disposeNativeView() {
         super.disposeNativeView();
@@ -191,39 +224,49 @@ export class Drawer extends GridLayout {
                 newValue.on('layoutChanged', this.onLeftLayoutChanged, this);
             }
             const mode = this.modes[side];
-            if (mode === 'under') {
-                const indexBack = this.getChildIndex(this.backDrop);
-                const index = this.getChildIndex(newValue);
-                // console.log('_onDrawerContentChanged', side, newValue, newValue.parent, indexBack, index);
-                if (index > indexBack - 1) {
-                    this.removeChild(newValue);
-                    this.insertChild(newValue, Math.max(indexBack - 1, 0));
-                }
-            } else {
-                const indexBack = this.getChildIndex(this.backDrop);
-                const index = this.getChildIndex(newValue);
-                if (index <= indexBack) {
-                    this.removeChild(newValue);
-                    this.insertChild(newValue, indexBack + 1);
-                }
-            }
+            this.onSideModeChanged(side, mode, undefined);
         }
     }
 
+    onSideModeChanged(side: Side, mode: Mode, oldMode: Mode) {
+        if ((oldMode && oldMode === mode) || (oldMode !== 'under' && mode !== 'under')) {
+            return;
+        }
+        const drawer = side === 'left' ? this.leftDrawer : this.rightDrawer;
+        if (mode === 'under') {
+            const indexBack = this.getChildIndex(this.backDrop);
+            const index = this.getChildIndex(drawer);
+            if (index > indexBack - 1) {
+                this.removeChild(drawer);
+                this.insertChild(drawer, Math.max(indexBack - 1, 0));
+            }
+        } else {
+            const indexBack = this.getChildIndex(this.backDrop);
+            const index = this.getChildIndex(drawer);
+            if (index <= indexBack) {
+                this.removeChild(drawer);
+                this.insertChild(drawer, indexBack + 1);
+            }
+        }
+    }
     computeTranslationData(side, value) {
         const width = this.viewWidth[side];
         const delta = Math.max(width - value, 0);
+        const progress = delta / width;
+        if (this.translationFunction) {
+            return this.translationFunction(side, width, delta, progress);
+        }
         if (this.modes[side] === 'under') {
             return {
                 mainContent: {
-                    translateX: width - value,
+                    translateX: delta,
                 },
                 [side + 'Drawer']: {
                     translateX: 0,
                 },
                 backDrop: {
-                    translateX: width - value,
-                    opacity: delta / width,
+                    translateX: delta,
+                    opacity: progress,
                 },
             };
         } else {
@@ -236,7 +279,7 @@ export class Drawer extends GridLayout {
                 },
                 backDrop: {
                     translateX: 0,
-                    opacity: delta / width,
+                    opacity: progress,
                 },
             };
         }
@@ -265,7 +308,6 @@ export class Drawer extends GridLayout {
             this.panGestureHandler.cancel();
         }
     }
-    needToSetSide: Side;
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
         // console.log('onGestureState', state, this.showingSide, this.needToSetSide);
@@ -353,7 +395,7 @@ export class Drawer extends GridLayout {
         if (this.needToSetSide) {
             this.showingSide = this.needToSetSide;
             this.needToSetSide = null;
-            this.backDrop.visibility= 'visible';
+            this.backDrop.visibility = 'visible';
         }
         const width = this.viewWidth[side];
 
@@ -435,7 +477,6 @@ export class Drawer extends GridLayout {
         return !!this.showingSide;
     }
     async toggle(side?: Side) {
-        console.log('toggle', side, this.showingSide);
         if (!side) {
             if (this.leftDrawer) {
                 side = 'left';
@@ -491,6 +532,10 @@ export const mainContentProperty = new Property<Drawer, View>({
 });
 
 mainContentProperty.register(Drawer);
+backdropColorProperty.register(Drawer);
 leftDrawerContentProperty.register(Drawer);
 rightDrawerContentProperty.register(Drawer);
 gestureEnabledProperty.register(Drawer);
+leftDrawerModeProperty.register(Drawer);
+rightDrawerModeProperty.register(Drawer);
+translationFunctionProperty.register(Drawer);
