@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/nativescript-community/ui-drawer/compare/v0.0.6...v0.0.7) (2020-10-25)
+
+
+### Bug Fixes
+
+* drawer flashing on start ([5e85353](https://github.com/nativescript-community/ui-drawer/commit/5e8535360ce7e07445a5ed1b74ecd20812c40af6))
+
+
+
+
+
 ## [0.0.6](https://github.com/nativescript-community/ui-drawer/compare/v0.0.5...v0.0.6) (2020-10-24)
 
 **Note:** Version bump only for package @nativescript-community/ui-drawer
