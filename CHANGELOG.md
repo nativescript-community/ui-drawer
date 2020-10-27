@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/nativescript-community/ui-drawer/compare/v0.0.7...v0.0.8) (2020-10-27)
+
+
+### Bug Fixes
+
+* default to slide and other fixes ([9b51544](https://github.com/nativescript-community/ui-drawer/commit/9b515449f7e16ad8c7c2cb2d5ddcf74bb2005ce7))
+* readme update ([415363a](https://github.com/nativescript-community/ui-drawer/commit/415363aeb9a9f3bb6e39660c1ec426867ed12923))
+
+
+
+
+
 ## [0.0.7](https://github.com/nativescript-community/ui-drawer/compare/v0.0.6...v0.0.7) (2020-10-25)
 
 
