@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-drawer",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Nativescript Image plugin using cache.",
     "main": "./index",
     "sideEffects": false,
