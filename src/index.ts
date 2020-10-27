@@ -312,13 +312,15 @@ export class Drawer extends GridLayout {
             this.viewWidth[side] = width;
             const data = this.computeTranslationData(side, width);
             this.translationX[side] = width;
-            this.applyTrData(data, side);
+            // delay applyTrData or it will create a layout issue on iOS
+            setTimeout(() => this.applyTrData(data, side), 0);
         } else {
             const shown = this.viewWidth[side] - this.translationX[side];
             this.viewWidth[side] = width;
             const data = this.computeTranslationData(side, width - shown);
             this.translationX[side] = width - shown;
-            this.applyTrData(data, side);
+            // delay applyTrData or it will create a layout issue on iOS
+            setTimeout(() => this.applyTrData(data, side), 0);
         }
     }
 
