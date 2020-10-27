@@ -14,7 +14,14 @@
 tns plugin add @nativescript-community/ui-drawer
 ```
 
-## usage
+## Usage
+
+For gestures to work, make sure to add the following code block inside main application file (e.g. app.ts):
+
+```typescript
+import { install } from '@nativescript-community/ui-drawer';
+install();
+```
 
 ### Options
 
