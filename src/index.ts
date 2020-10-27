@@ -92,7 +92,7 @@ export class Drawer extends GridLayout {
     needToSetSide: Side;
 
     gestureEnabled = true;
-    modes: { [k in Side]: Mode } = { left: 'under', right: 'slide' };
+    modes: { [k in Side]: Mode } = { left: 'slide', right: 'slide' };
     translationFunction?: (
         side: Side,
         width: number,
@@ -178,6 +178,7 @@ export class Drawer extends GridLayout {
         }
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
+        // console.log('_onMainContentChanged', oldValue, newValue);
         if (oldValue) {
             if (this.nativeGestureHandler) {
                 this.nativeGestureHandler.detachFromView(oldValue);
@@ -214,6 +215,7 @@ export class Drawer extends GridLayout {
         // super.addChild(child);
     }
     public _onDrawerContentChanged(side: Side, oldValue: View, newValue: View) {
+        // console.log('_onDrawerContentChanged', side, oldValue, newValue);
         if (oldValue) {
             if (side === 'right') {
                 newValue.off('layoutChanged', this.onRightLayoutChanged, this);
@@ -238,10 +240,11 @@ export class Drawer extends GridLayout {
         }
     }
     onSideModeChanged(side: Side, mode: Mode, oldMode: Mode) {
-        if ((oldMode && oldMode === mode) || (oldMode !== 'under' && mode !== 'under')) {
+        if ((oldMode && oldMode === mode) || (oldMode && oldMode !== 'under' && mode !== 'under')) {
             return;
         }
         const drawer = side === 'left' ? this.leftDrawer : this.rightDrawer;
+        // console.log('onSideModeChanged', side, drawer);
         if (mode === 'under') {
             const indexBack = this.getChildIndex(this.backDrop);
             const index = this.getChildIndex(drawer);
@@ -327,7 +330,7 @@ export class Drawer extends GridLayout {
     }
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
-        // console.log('onGestureState', state, this.showingSide, this.needToSetSide);
+        // console.log('onGestureState', prevState, state, this.showingSide, this.needToSetSide);
         if (state === GestureState.BEGAN) {
             const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
             if (
@@ -436,6 +439,7 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side) {
+        // console.log('applyTrData', trData);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
                 Object.assign(this[k], trData[k]);
@@ -459,7 +463,6 @@ export class Drawer extends GridLayout {
         }
         const width = this.viewWidth[side];
         const trData = this.computeTranslationData(side, width - position);
-        // console.log('animateToPosition', side, width, trData);
         this.translationX[side] = width - position;
         if (position !== 0) {
             this.showingSide = side;
@@ -470,18 +473,26 @@ export class Drawer extends GridLayout {
             this.showingSide = null;
             this.notify({ eventName: 'close', side, duration } as DrawerEventData);
         }
-        await new Animation(
-            Object.keys(trData).map((k) =>
-                Object.assign(
-                    {
-                        target: this[k],
-                        curve: AnimationCurve.easeInOut,
-                        duration,
-                    },
-                    transformAnimationValues(trData[k])
-                )
+        const params = Object.keys(trData)
+            .map(
+                (k) =>
+                    this[k] &&
+                    Object.assign(
+                        {
+                            target: this[k],
+                            curve: AnimationCurve.easeInOut,
+                            duration,
+                        },
+                        transformAnimationValues(trData[k])
+                    )
             )
-        ).play();
+            .filter((a) => !!a);
+        // console.log('animateToPosition', side, width, trData, duration);
+        try {
+            await new Animation(params).play();
+        } catch (err) {
+            console.error(err);
+        }
         if (position !== 0) {
         } else {
             this.backDrop.visibility = 'hidden';
@@ -560,3 +571,7 @@ gestureEnabledProperty.register(Drawer);
 leftDrawerModeProperty.register(Drawer);
 rightDrawerModeProperty.register(Drawer);
 translationFunctionProperty.register(Drawer);
+
+export function install() {
+    installGestures();
+}
