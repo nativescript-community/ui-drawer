@@ -8,7 +8,7 @@
       "umdModuleIds": {
         "@nativescript/core": "ns-core",
         "@nativescript/angular": "ns-angular",
-        "@nativescript-community/ui-drawer": "ns-image"
+        "@nativescript-community/ui-drawer": "ns-drawer"
       }
     },
     "whitelistedNonPeerDependencies": [
