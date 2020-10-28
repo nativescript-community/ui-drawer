@@ -1,7 +1,7 @@
 {
     "name": "@nativescript-community/ui-drawer",
     "version": "0.0.9",
-    "description": "Nativescript Image plugin using cache.",
+    "description": "NativeScript plugin that allows you to easily add a side drawer (side menu) to your projects.",
     "main": "./index",
     "sideEffects": false,
     "typings": "./index.d.ts",
@@ -15,7 +15,17 @@
         "NativeScript",
         "JavaScript",
         "Android",
-        "iOS"
+        "iOS",
+        "SideDrawer",
+        "RadSideDrawer",
+        "NativeScript UI",
+        "side drawer",
+        "side menu",
+        "menu",
+        "nativescript-community",
+        "Angular",
+        "Vue.js",
+        "Svelte"
     ],
     "author": {
         "name": "Martin Guillon",

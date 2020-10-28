@@ -2,9 +2,9 @@ import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject
 import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
 import { Drawer } from '@nativescript-community/ui-drawer';
 
-const TKLEFTDRAWER: string = 'TKLeftDrawer';
-const TKRIGHTDRAWER: string = 'TKRightDrawer';
-const TKMAINCONTENT: string = 'TKMainContent';
+const LEFTDRAWER: string = 'LeftDrawer';
+const RIGHTDRAWER: string = 'RightDrawer';
+const MAINCONTENT: string = 'MainContent';
 
 export interface ItemEventArgs {
     object: any;
@@ -28,11 +28,6 @@ export class DrawerComponent {
 
     private _gestureEnabled: boolean;
 
-    // @Output() public drawerOpening: EventEmitter<any> = new EventEmitter();
-    // @Output() public drawerOpen: EventEmitter<any> = new EventEmitter();
-    // @Output() public drawerClosing: EventEmitter<any> = new EventEmitter();
-    // @Output() public drawerClosed: EventEmitter<any> = new EventEmitter();
-
     constructor(@Inject(ElementRef) public elementRef: ElementRef, @Inject(ViewContainerRef) private viewContainer: ViewContainerRef) {
         this.drawer = this.elementRef.nativeElement;
     }
@@ -55,22 +50,22 @@ export class DrawerComponent {
  * Directive identifying the left drawer
  */
 @Directive({
-    selector: '[tkLeftDrawer]',
+    selector: '[leftDrawer]',
 })
-export class TKLeftDrawerDirective {
+export class LeftDrawerDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = TKLEFTDRAWER;
+        this._elementRef.nativeElement.id = LEFTDRAWER;
     }
 }
 /**
  * Directive identifying the right drawer
  */
 @Directive({
-    selector: '[tkLeftDrawer]',
+    selector: '[rightDrawer]',
 })
-export class TKRightDrawerDirective {
+export class RightDrawerDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = TKRIGHTDRAWER;
+        this._elementRef.nativeElement.id = RIGHTDRAWER;
     }
 }
 
@@ -78,11 +73,11 @@ export class TKRightDrawerDirective {
  * Directive identifying the main content.
  */
 @Directive({
-    selector: '[tkMainContent]',
+    selector: '[mainContent]',
 })
-export class TKMainContentDirective {
+export class MainContentDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = TKMAINCONTENT;
+        this._elementRef.nativeElement.id = MAINCONTENT;
     }
 }
 
@@ -91,14 +86,14 @@ const sideDrawerMeta: ViewClassMeta = {
         const drawer = (parent as any) as Drawer;
         const childView = child;
 
-        if (childView.id === TKMAINCONTENT) {
+        if (childView.id === MAINCONTENT) {
             drawer.mainContent = childView;
         }
 
-        if (childView.id === TKLEFTDRAWER) {
+        if (childView.id === LEFTDRAWER) {
             drawer.leftDrawer = childView;
         }
-        if (childView.id === TKRIGHTDRAWER) {
+        if (childView.id === RIGHTDRAWER) {
             drawer.rightDrawer = childView;
         }
     },
@@ -106,31 +101,31 @@ const sideDrawerMeta: ViewClassMeta = {
         const drawer = (parent as any) as Drawer;
         const childView = child;
 
-        if (childView.id === TKMAINCONTENT) {
+        if (childView.id === MAINCONTENT) {
             drawer.mainContent = null;
         }
 
-        if (childView.id === TKLEFTDRAWER) {
+        if (childView.id === LEFTDRAWER) {
             drawer.leftDrawer = null;
         }
-        if (childView.id === TKRIGHTDRAWER) {
+        if (childView.id === RIGHTDRAWER) {
             drawer.rightDrawer = null;
         }
     },
 };
 
 /**
- * Directives identifying the RadSideDrawer.
+ * Directives identifying the Drawer.
  */
-export const SIDEDRAWER_DIRECTIVES = [DrawerComponent, TKLeftDrawerDirective, TKRightDrawerDirective, TKMainContentDirective];
+export const SIDEDRAWER_DIRECTIVES = [LeftDrawerDirective, RightDrawerDirective, MainContentDirective];
 
-registerElement('RadSideDrawer', () => Drawer, sideDrawerMeta);
+registerElement('Drawer', () => Drawer, sideDrawerMeta);
 
 /**
  * NgModule containing all of the RadSideDrawer directives.
  */
 @NgModule({
-    declarations: [SIDEDRAWER_DIRECTIVES],
-    exports: [SIDEDRAWER_DIRECTIVES],
+    declarations: [DrawerComponent, SIDEDRAWER_DIRECTIVES],
+    exports: [DrawerComponent, SIDEDRAWER_DIRECTIVES],
 })
-export class NativeScriptDrawerModule {}
+export class DrawerModule {}
