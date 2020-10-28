@@ -1,18 +1,27 @@
-import { Component, OnInit } from "@angular/core";
-
-import { Item } from "./item";
-import { ItemService } from "./item.service";
-
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Drawer } from "@nativescript-community/ui-drawer";
 @Component({
     selector: "ns-items",
-    templateUrl: "./items.component.html"
+    templateUrl: "./items.component.html",
+    styleUrls: ["./items.component.css"]
 })
 export class ItemsComponent implements OnInit {
-    items: Array<Item>;
+    drawer: Drawer;
 
-    constructor(private itemService: ItemService) { }
+    @ViewChild("drawer", { static: true }) drawerElementRef: ElementRef;
+
+    constructor() { 
+    }
 
     ngOnInit(): void {
-        this.items = this.itemService.getItems();
+        this.drawer = this.drawerElementRef.nativeElement;
+    }
+
+    onOpenDrawer() {
+        this.drawer.open();
+    }
+
+    onCloseDrawer() {
+        this.drawer.close();
     }
 }

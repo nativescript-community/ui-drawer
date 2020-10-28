@@ -1,23 +1,37 @@
 <template>
     <Page >
-        <Drawer ref="drawer" leftDrawerMode="slide">
-            <ActionBar>
-                <Label text="Vue.js Demo"/>
-            </ActionBar>
+        <ActionBar>
+            <Label text="Vue.js Demo"/>
+        </ActionBar>
 
-            <StackLayout ~leftDrawer width="300" backgroundColor="blue">
-                <StackLayout backgroundColor="green" margin="25" height="100">
-                    <Label text="StackLayout (iOS left margin doesn't work)" />
+        <Drawer ref="drawer">
+            <GridLayout ~leftDrawer class="drawer" width="300" backgroundColor="white" rows="auto, *">
+                <StackLayout row="0">
+                    <StackLayout backgroundColor="#eeeeee" padding="25">
+                        <GridLayout columns="80, *" height="100">
+                            <StackLayout col="0" class="avatar">
+                                <Label text="JS" />
+                            </StackLayout>
+                        </GridLayout>
+                        <StackLayout>
+                            <Label text="John Smith" fontWeight="bold" />
+                            <Label text="john.smith@example.com" />
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout>
+                        <Button text="My Profile" @tap="onCloseDrawer" />
+                        <Button text="Settings" @tap="onCloseDrawer" />
+                        <Button text="Rate Us" @tap="onCloseDrawer" />
+                        <Button text="Support" @tap="onCloseDrawer" />
+                        <Button text="Contact" @tap="onCloseDrawer" />
+                    </StackLayout>
                 </StackLayout>
-                <GridLayout backgroundColor="orange" margin="25" height="100">
-                    <Label text="GridLayout (iOS left margin doesn't work)" />
-                </GridLayout>
-                <Label backgroundColor="red" margin="25" height="100" text="Just a Label (iOS left margin works!)" />
-            </StackLayout>
+            </GridLayout>
+        
             <StackLayout ~mainContent backgroundColor="white">
-                <Label text="Main Content" />    
+                <Button @tap="onOpenDrawer" text="Open Drawer" width="250" marginTop="25" />
             </StackLayout>
-        </Drawer> 
+        </Drawer>
     </Page>
 </template>
 
@@ -40,16 +54,49 @@
 </script>
 
 <style scoped lang="scss">
-    @import '~@nativescript/theme/scss/variables/blue';
-
     ActionBar {
         background-color: #42b883;
+        color: white;
     }
 
-    .button {
-        background-color: transparent;
-        border-color: transparent;
-        z-index:0;
-        border-width: 1;
+    Button {
+        background-color: #42b883;
+        color: white;
     }
+
+    .avatar {
+        background-color:#42b883;
+        border-radius: 40;
+        height: 80;
+        vertical-align: middle;
+
+        Label {
+            vertical-align: middle;
+            horizontal-align: center;
+            font-size: 30;
+            color: white;
+        }
+    }
+
+    .drawer {
+        Button {
+            background-color: transparent;
+            margin:0;
+            padding: 0;
+            border-color: #ccc;
+            z-index:0;
+            border-width: 0 0 0.5 0;
+            color: #222222;
+            text-align: left;
+            padding-left: 25;
+            height:50;
+            font-size: 14;
+        }
+
+        Button:highlighted { 
+            background-color: #eeeeee; 
+            color: #222222; 
+        }
+    }
+
 </style>

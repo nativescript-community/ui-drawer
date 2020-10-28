@@ -4,9 +4,8 @@ import { NativeScriptModule } from "@nativescript/angular";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
 
-import { NativeScriptDrawerModule } from "@nativescript-community/ui-drawer/angular";
+import { DrawerModule } from "@nativescript-community/ui-drawer/angular";
 
 @NgModule({
     bootstrap: [
@@ -15,12 +14,11 @@ import { NativeScriptDrawerModule } from "@nativescript-community/ui-drawer/angu
     imports: [
         NativeScriptModule,
         AppRoutingModule,
-        NativeScriptDrawerModule
+        DrawerModule
     ],
     declarations: [
         AppComponent,
-        ItemsComponent,
-        ItemDetailComponent
+        ItemsComponent
     ],
     providers: [],
     schemas: [
