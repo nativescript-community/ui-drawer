@@ -1,16 +1,5 @@
 <page>
     <actionBar title="Svelte Demo" />
-    <!-- <drawer bind:this="{drawer}">
-        <stacklayout prop:leftDrawer width="300" backgroundColor="red">
-            <label text="bla bla bla" />
-        </stacklayout>
-    
-        <stacklayout prop:mainContent>
-            <label text="hello world" />
-            <button on:tap="{onButtonTap}" text="tap me" />
-        </stacklayout>
-    </drawer> -->
-
     <drawer bind:this="{drawer}" class="drawer">
         <gridlayout prop:leftDrawer width="300" backgroundColor="white" rows="auto, *">
             <stacklayout row="0">
