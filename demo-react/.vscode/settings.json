@@ -1,0 +1,17 @@
+{
+    "NativescriptExtend.fileAssociations": [
+        {
+            "systemId": "/Users/karlschmaltz/Desktop/Projects/ui-drawer/demo-react/schema/tns.xsd",
+            "pattern": "**/**/*.xml"
+        },
+        {
+            "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
+            "pattern": "/Users/karlschmaltz/Desktop/Projects/ui-drawer/demo-react/schema/tns.xsd"
+        }
+    ],
+    "files.exclude": {
+        "schema": true
+    },
+    "NativescriptExtend.format.enabled": true,
+    "NativescriptExtend.validation.enabled": true
+}
