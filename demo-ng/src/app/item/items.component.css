@@ -1,0 +1,42 @@
+ActionBar {
+    background-color: #ed3e04;
+    color: white;
+}
+
+.avatar {
+    background-color:#ed3e04;
+    border-radius: 40;
+    height: 80;
+    vertical-align: middle;
+}
+
+.avatar Label {
+    vertical-align: middle;
+    horizontal-align: center;
+    font-size: 30;
+    color: white;
+}
+
+.drawer .button {
+    background-color: transparent;
+    margin:0;
+    padding: 0;
+    border-color: #ccc;
+    z-index:0;
+    border-width: 0 0 0.5 0;
+    color: #222222;
+    text-align: left;
+    padding-left: 25;
+    height:50;
+    font-size: 14;
+}
+
+.drawer .button:highlighted { 
+    background-color: #eeeeee; 
+    color: #222222; 
+}
+
+Button {
+    background-color: #ed3e04;
+    color: white;
+}

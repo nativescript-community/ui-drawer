@@ -18,7 +18,8 @@ NativeScript plugin that allows you to easily add a side drawer (side menu) to y
 4. [Usage in Angular](#usage-in-angular)
 5. [Usage in Vue](#usage-in-vue)
 6. [Usage in Svelte](#usage-in-svelte)
-7. [Demos](#demos)
+7. [Usage in React](#usage-in-react)
+8. [Demos](#demos)
 
 ## Installation
 
@@ -140,6 +141,30 @@ Then in your component, add the following:
 ```
 For a more complete example, look in the `demo-svelte` directory.
 
+## Usage in React
+
+Register the plugin in your `app.ts`.
+
+```typescript
+import DrawerElement from '@nativescript-community/ui-drawer/react';
+DrawerElement.register();
+```
+
+Then in your component, add the following:
+
+```xml
+<Drawer>
+  <gridLayout nodeRole="leftDrawer" backgroundColor="white" width="300">
+    <label text="This is the side drawer content" />
+  </gridLayout>
+
+  <stackLayout nodeRole="mainContent" backgroundColor="white">
+    <label text="This is the main content" />
+  </stackLayout>
+</Drawer>
+```
+For a more complete example, look in the `demo-react` directory.
+
 ## Demos
 This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
 ```shell
@@ -147,6 +172,6 @@ $ git clone https://github.com/@nativescript-community/ui-drawer
 $ cd ui-drawer
 $ npm run setup
 $ npm run build && npm run build.angular
-$ cd demo-ng # or demo-vue or demo-svelte
+$ cd demo-ng # or demo-vue or demo-svelte or demo-react
 $ ns run ios|android
 ```

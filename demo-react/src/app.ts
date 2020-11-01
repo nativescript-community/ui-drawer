@@ -9,12 +9,15 @@ You can use this file to perform app-level initialization, but the primary
 purpose of the file is to pass control to the app’s first module.
 */
 
+import { install } from '@nativescript-community/ui-drawer';
+install();
+
 import * as ReactNativeScript from "react-nativescript";
-import { registerElement } from "react-nativescript";
 import { mainStackNavigator as AppContainer } from "./components/Navigator";
 
-// import { Drawer } from "@nativescript-community/ui-drawer/react";
-// registerElement('drawer', () => Drawer);
+import { registerDrawer } from "@nativescript-community/ui-drawer/react";
+registerDrawer();
+
 
 ReactNativeScript.start(React.createElement(AppContainer, {}, null));
 

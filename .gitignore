@@ -57,7 +57,6 @@ node_modules
 *.tmp.*
 demo*/platforms
 lib
-*.css
 !webpack.*.js
 !build.esm.js
 report
