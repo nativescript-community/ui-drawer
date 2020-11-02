@@ -151,6 +151,9 @@ DrawerElement.register();
 ```
 
 Then in your component, add the following:
+```ts
+import { Drawer } from "@nativescript-community/ui-drawer/react"
+```
 
 ```xml
 <Drawer>
