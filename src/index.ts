@@ -356,7 +356,8 @@ export class Drawer extends GridLayout {
                 this.needToSetSide = 'right';
                 this.rightDrawer.visibility = 'visible';
             }
-            this.backDrop.visibility = 'visible';
+            // console.log('show backDrop');
+            // this.backDrop.visibility = 'visible';
         }
         this.updateIsPanning(state);
         if (!this.isPanEnabled) {
@@ -408,6 +409,7 @@ export class Drawer extends GridLayout {
     onGestureTouch(args: GestureTouchEventData) {
         const data = args.data;
         const side = this.showingSide || this.needToSetSide;
+        // console.log('onGestureTouch', data.state, side);
         if (data.state !== GestureState.ACTIVE || !side) {
             return;
         }
@@ -420,6 +422,7 @@ export class Drawer extends GridLayout {
             this.showingSide = this.needToSetSide;
             this.needToSetSide = null;
             // (side === 'left' ? this.leftDrawer : this.rightDrawer).visibility = 'visible';
+            // console.log('show backDrop');
             this.backDrop.visibility = 'visible';
         }
         const width = this.viewWidth[side];
@@ -469,6 +472,7 @@ export class Drawer extends GridLayout {
         if (position !== 0) {
             this.showingSide = side;
             (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
+            // console.log('show backDrop');
             this.backDrop.visibility = 'visible';
             this.notify({ eventName: 'open', side, duration } as DrawerEventData);
         } else {
@@ -497,6 +501,7 @@ export class Drawer extends GridLayout {
         }
         if (position !== 0) {
         } else {
+            // console.log('hide backDrop');
             this.backDrop.visibility = 'hidden';
         }
     }
