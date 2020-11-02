@@ -170,6 +170,7 @@ This repository includes Angular, Vue.js, and Svelte demos. In order to run thes
 ```shell
 $ git clone https://github.com/@nativescript-community/ui-drawer
 $ cd ui-drawer
+$ npm run i
 $ npm run setup
 $ npm run build && npm run build.angular
 $ cd demo-ng # or demo-vue or demo-svelte or demo-react

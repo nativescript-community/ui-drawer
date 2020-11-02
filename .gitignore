@@ -49,7 +49,6 @@ build/
 .vs
 .tscache
 *.user
-*.js
 !demo-vue/app/app.js
 *.map
 !gruntfile.js
