@@ -77,3 +77,4 @@ package-lock.json
 .migration_backup
 plugin/**/*js.map
 plugin/**/*js
+pnpm-lock.yaml
