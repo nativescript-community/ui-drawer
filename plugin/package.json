@@ -38,6 +38,6 @@
     "homepage": "https://github.com/nativescript-community/ui-drawer",
     "readmeFilename": "README.md",
     "dependencies": {
-        "@nativescript-community/gesturehandler": "^0.1.26"
+        "@nativescript-community/gesturehandler": "^0.1.27"
     }
 }

@@ -22,7 +22,7 @@
         "@angular/router": "~10.1.5",
         "@commitlint/cli": "^11.0.0",
         "@commitlint/config-conventional": "^11.0.0",
-        "@nativescript-community/gesturehandler": "^0.1.26",
+        "@nativescript-community/gesturehandler": "^0.1.27",
         "@nativescript-community/ui-drawer": "file:plugin",
         "@nativescript/angular": "10.1.7",
         "@nativescript/core": "7.0.13",
