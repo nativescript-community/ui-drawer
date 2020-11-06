@@ -68,6 +68,8 @@ export const rightDrawerModeProperty = new Property<Drawer, Mode>({
 export const translationFunctionProperty = new Property<Drawer, Function>({
     name: 'translationFunction',
 });
+
+@CSSType('Drawer')
 export class Drawer extends GridLayout {
     public leftDrawer: View;
     public rightDrawer: View;
