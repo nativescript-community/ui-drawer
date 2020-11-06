@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/nativescript-community/ui-drawer/compare/v0.0.10...v0.0.11) (2020-11-06)
+
+
+### Bug Fixes
+
+* gesture fix with main content like maps ([07fa597](https://github.com/nativescript-community/ui-drawer/commit/07fa5971bdee1f30505b65854c9c877d79ddfab2))
+
+
+### Features
+
+* allow css “drawer” ([a051e79](https://github.com/nativescript-community/ui-drawer/commit/a051e7921602d0b66c3a3a20ce429e1d0856df87))
+
+
+
+
+
 ## [0.0.10](https://github.com/nativescript-community/ui-drawer/compare/v0.0.9...v0.0.10) (2020-11-02)
 
 
