@@ -29,6 +29,8 @@
   ],
   "dependencies": {
     "@nativescript-community/ui-drawer": "../plugin",
+    "@nativescript-community/ui-collectionview": "4.0.9",
+    "@nativescript-community/gesturehandler": "0.1.29",
     "@nativescript/core": "~7.0.13",
     "@nativescript/theme": "~3.0.0",
     "nativescript-vue": "~2.8.1"

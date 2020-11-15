@@ -6,6 +6,8 @@ install();
 
 import DrawerPlugin from '@nativescript-community/ui-drawer/vue';
 Vue.use(DrawerPlugin);
+import CollectionViewPlugin from '@nativescript-community/ui-collectionview/vue';
+Vue.use(CollectionViewPlugin);
 
 Vue.config.silent = true;
 // Vue.config.silent = (TNS_ENV === 'production')
