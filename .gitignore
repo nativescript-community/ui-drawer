@@ -78,3 +78,4 @@ package-lock.json
 plugin/**/*js.map
 plugin/**/*js
 pnpm-lock.yaml
+hooks
