@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/nativescript-community/ui-drawer/compare/v0.0.11...v0.0.12) (2020-11-15)
+
+
+### Bug Fixes
+
+* fixed wrong tap behavior on menu. Those taps would close the menu when we dont want to ([85cd160](https://github.com/nativescript-community/ui-drawer/commit/85cd16041bcd0fd280c2aab4adf419d284bb6e1d))
+
+
+
+
+
 ## [0.0.11](https://github.com/nativescript-community/ui-drawer/compare/v0.0.10...v0.0.11) (2020-11-06)
 
 
