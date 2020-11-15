@@ -7,6 +7,7 @@ import {
     HandlerType,
     Manager,
     PanGestureHandler,
+    TapGestureHandler,
     install as installGestures,
 } from '@nativescript-community/gesturehandler';
 import { Animation, AnimationDefinition, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
@@ -15,7 +16,7 @@ installGestures(false);
 const OPEN_DURATION = 200;
 const CLOSE_DURATION = 200;
 export const PAN_GESTURE_TAG = 12431;
-export const NATIVE_GESTURE_TAG = 12421;
+export const TAP_GESTURE_TAG = 12421;
 const DEFAULT_TRIGGER_WIDTH = 20;
 const SWIPE_DISTANCE_MINIMUM = 10;
 
@@ -83,12 +84,15 @@ export class Drawer extends GridLayout {
     openingProgress = 0;
     backdropColor = new Color('rgba(0, 0, 0, 0.7)');
 
+    measureWidth: number;
     isAnimating = false;
     prevDeltaX = 0;
     viewWidth: { [k in Side]: number } = { left: 0, right: 0 };
     translationX: { [k in Side]: number } = { left: 0, right: 0 };
-    isPanEnabled: boolean = true;
+    leftOpenedDrawerAllowDraging = true;
+    rightOpenedDrawerAllowDraging = true;
     panGestureHandler: PanGestureHandler;
+    tapGestureHandler: TapGestureHandler;
     // nativeGestureHandler: PanGestureHandler;
     showingSide: Side = null;
     needToSetSide: Side;
@@ -109,7 +113,7 @@ export class Drawer extends GridLayout {
         this.backDrop.backgroundColor = this.backdropColor;
         this.backDrop.opacity = 0;
         this.backDrop.visibility = 'hidden';
-        this.backDrop.on('tap', () => this.close(), this);
+        
         this.insertChild(this.backDrop, 0);
         // console.log('Drawer constructor', this.backDrop, this.getChildIndex(this.backDrop));
     }
@@ -129,37 +133,26 @@ export class Drawer extends GridLayout {
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
         gestureHandler.attachToView(this);
         this.panGestureHandler = gestureHandler as any;
+
+        this.tapGestureHandler = manager.createGestureHandler(HandlerType.TAP, TAP_GESTURE_TAG, {});
+        this.tapGestureHandler.on(GestureHandlerStateEvent, this.onTapGestureState, this);
+        this.tapGestureHandler.attachToView(this.backDrop);
         // if (this.mainContent) {
         //     this.initNativeGestureHandler(this.mainContent);
         // }
     }
     shouldStartGesture(data) {
         const width = this.measureWidth;
-        if (
-            !this.showingSide &&
-            (!this.isPanEnabled ||
-                (!this.leftDrawer && !this.rightDrawer) ||
-                (this.leftDrawer && data.x > this.leftSwipeDistance && (!this.rightDrawer || data.x < width - this.rightSwipeDistance)) ||
-                (this.rightDrawer && data.x < width - this.rightSwipeDistance && (!this.leftDrawer || data.x > this.leftSwipeDistance)))
+        if (this.showingSide) {
+            return this[this.showingSide + 'OpenedDrawerAllowDraging'];
+        } else if (
+            (!this.leftDrawer && !this.rightDrawer) ||
+            (this.leftDrawer && data.x > this.leftSwipeDistance && (!this.rightDrawer || data.x < width - this.rightSwipeDistance)) ||
+            (this.rightDrawer && data.x < width - this.rightSwipeDistance && (!this.leftDrawer || data.x > this.leftSwipeDistance))
         ) {
             return false;
         }
         return true;
-    }
-    initNativeGestureHandler(newValue: View) {
-        // console.log('initNativeGestureHandler', newValue);
-        // if (!this.nativeGestureHandler) {
-        //     const manager = Manager.getInstance();
-        //     const gestureHandler = manager.createGestureHandler(HandlerType.NATIVE_VIEW, NATIVE_GESTURE_TAG, {
-        //         // simultaneousHandlers: [PAN_GESTURE_TAG],
-        //         waitFor: [PAN_GESTURE_TAG],
-        //     });
-        //     gestureHandler.on(GestureHandlerStateEvent, this.onNativeGestureState, this);
-        //     this.nativeGestureHandler = gestureHandler as any;
-        // }
-        // if (this.nativeGestureHandler.getView() !== newValue) {
-        //     this.nativeGestureHandler.attachToView(newValue);
-        // }
     }
     initNativeView() {
         super.initNativeView();
@@ -195,12 +188,11 @@ export class Drawer extends GridLayout {
             this.panGestureHandler.detachFromView();
             this.panGestureHandler = null;
         }
-        // if (this.nativeGestureHandler) {
-        //     this.nativeGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
-        //     this.nativeGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
-        //     this.nativeGestureHandler.detachFromView();
-        //     this.nativeGestureHandler = null;
-        // }
+        if (this.tapGestureHandler) {
+            this.tapGestureHandler.off(GestureHandlerStateEvent, this.onTapGestureState, this);
+            this.tapGestureHandler.detachFromView();
+            this.tapGestureHandler = null;
+        }
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
         // console.log('_onMainContentChanged', oldValue, newValue);
@@ -214,7 +206,6 @@ export class Drawer extends GridLayout {
         if (newValue) {
             const indexBack = this.getChildIndex(this.backDrop);
             const index = this.getChildIndex(newValue);
-            this.initNativeGestureHandler(newValue);
             // console.log('_onMainContentChanged', newValue, indexBack, index);
             if (index !== indexBack - 1 && newValue.parent === this) {
                 this.removeChild(newValue);
@@ -243,9 +234,9 @@ export class Drawer extends GridLayout {
         // console.log('_onDrawerContentChanged', side, oldValue, newValue);
         if (oldValue) {
             if (side === 'right') {
-                newValue.off('layoutChanged', this.onRightLayoutChanged, this);
+                oldValue.off('layoutChanged', this.onRightLayoutChanged, this);
             } else {
-                newValue.off('layoutChanged', this.onLeftLayoutChanged, this);
+                oldValue.off('layoutChanged', this.onLeftLayoutChanged, this);
             }
             this.removeChild(oldValue);
         }
@@ -329,7 +320,6 @@ export class Drawer extends GridLayout {
             };
         }
     }
-    measureWidth: number;
     onLayoutChange(side: Side, event: EventData) {
         const contentView = event.object as GridLayout;
         const width = (this.measureWidth = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth())));
@@ -349,14 +339,13 @@ export class Drawer extends GridLayout {
             setTimeout(() => this.applyTrData(data, side), 0);
         }
     }
-
-    // onNativeGestureState(args: GestureStateEventData) {
-    //     const { state } = args.data;
-    //     console.log('onNativeGestureState', state, this.showingSide, this.needToSetSide);
-    //     if (state === GestureState.ACTIVE) {
-    //         this.panGestureHandler.cancel();
-    //     }
-    // }
+    onTapGestureState(args: GestureStateEventData) {
+        const { state } = args.data;
+        // console.log('onTapGestureState', state, this.showingSide, this.needToSetSide);
+        if (state === GestureState.BEGAN) {
+            this.close();
+        }
+    }
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
         // console.log('onGestureState', prevState, state, this.showingSide, this.needToSetSide);
@@ -364,8 +353,7 @@ export class Drawer extends GridLayout {
             const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
             if (
                 !this.showingSide &&
-                (!this.isPanEnabled ||
-                    (!this.leftDrawer && !this.rightDrawer) ||
+                ((!this.leftDrawer && !this.rightDrawer) ||
                     (this.leftDrawer && extraData.x > this.leftSwipeDistance && (!this.rightDrawer || extraData.x < width - this.rightSwipeDistance)) ||
                     (this.rightDrawer && extraData.x < width - this.rightSwipeDistance && (!this.leftDrawer || extraData.x > this.leftSwipeDistance)))
             ) {
@@ -386,9 +374,6 @@ export class Drawer extends GridLayout {
             // this.backDrop.visibility = 'visible';
         }
         this.updateIsPanning(state);
-        if (!this.isPanEnabled) {
-            return;
-        }
 
         if (prevState === GestureState.ACTIVE) {
             this.needToSetSide = null;
@@ -440,7 +425,7 @@ export class Drawer extends GridLayout {
             return;
         }
         const deltaX = data.extraData.translationX;
-        if (this.isAnimating || !this.isPanning || !this.isPanEnabled || deltaX === 0) {
+        if (this.isAnimating || !this.isPanning || deltaX === 0) {
             this.prevDeltaX = deltaX;
             return;
         }
