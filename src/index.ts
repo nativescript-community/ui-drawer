@@ -483,7 +483,6 @@ export class Drawer extends GridLayout {
         if (position !== 0) {
             this.showingSide = side;
             (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
-            // console.log('show backDrop');
             this.backDrop.visibility = 'visible';
             this.notify({ eventName: 'open', side, duration } as DrawerEventData);
         } else {
@@ -504,9 +503,10 @@ export class Drawer extends GridLayout {
                     )
             )
             .filter((a) => !!a);
-        // console.log('animateToPosition', side, width, trData, duration);
         try {
             await new Animation(params).play();
+            // apply tr data to prevent hickups on iOS
+            this.applyTrData(trData, side);
         } catch (err) {
             console.error(err);
         }
