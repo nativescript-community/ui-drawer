@@ -1,7 +1,7 @@
 {
     "name": "@nativescript-community/ui-drawer",
     "version": "0.0.14",
-    "description": "NativeScript plugin that allows you to easily add a side drawer (side menu) to your projects.",
+    "description": "Easily add a side drawer (side menu) to your projects.",
     "main": "./index",
     "sideEffects": false,
     "typings": "./index.d.ts",
@@ -24,8 +24,11 @@
         "menu",
         "nativescript-community",
         "Angular",
-        "Vue.js",
-        "Svelte"
+        "Vue",
+        "Svelte",
+        "React",
+        "preview|https://raw.githubusercontent.com/nativescript-community/ui-drawer/master/images/demo-ios.gif|iOS Demo",
+        "preview|https://raw.githubusercontent.com/nativescript-community/ui-drawer/master/images/demo-android.gif|Android Demo"
     ],
     "author": {
         "name": "Martin Guillon",
@@ -34,8 +37,11 @@
     "bugs": {
         "url": "https://github.com/nativescript-community/ui-drawer/issues"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nativescript-community/ui-drawer"
+    },
     "license": "Apache-2.0",
-    "homepage": "https://github.com/nativescript-community/ui-drawer",
     "readmeFilename": "README.md",
     "dependencies": {
         "@nativescript-community/gesturehandler": "^0.1.29"
