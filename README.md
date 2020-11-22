@@ -6,7 +6,7 @@ NativeScript plugin that allows you to easily add a side drawer (side menu) to y
 [![npm downloads](https://img.shields.io/npm/dm/@nativescript-community/ui-drawer.svg)](https://www.npmjs.com/package/@nativescript-community/ui-drawer)
 [![npm downloads](https://img.shields.io/npm/dt/@nativescript-community/ui-drawer.svg)](https://www.npmjs.com/package/@nativescript-community/ui-drawer)
 
-| <img src="https://i.imgur.com/3MCog2g.gif" height="500" /> | <img src="https://i.imgur.com/t3v8tQP.gif" height="500" /> |
+| <img src="images/demo-ios.gif" height="500" /> | <img src="images/demo-android.gif" height="500" /> |
 | --- | ----------- |
 | iOS Demo | Android Demo |
 
