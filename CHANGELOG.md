@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/nativescript-community/ui-drawer/compare/v0.0.16...v0.0.17) (2020-11-23)
+
+
+### Bug Fixes
+
+* allow crazier configs ([6aea34b](https://github.com/nativescript-community/ui-drawer/commit/6aea34ba7624450d1a42cced7cf8033b3d12b87e))
+
+
+
+
+
 ## [0.0.16](https://github.com/nativescript-community/ui-drawer/compare/v0.0.15...v0.0.16) (2020-11-23)
 
 **Note:** Version bump only for package @nativescript-community/ui-drawer
