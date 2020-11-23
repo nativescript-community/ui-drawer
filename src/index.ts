@@ -102,20 +102,20 @@ export class Drawer extends GridLayout {
     translationFunction?: (
         side: Side,
         width: number,
+        value: number,
         delta: number,
         progress: number
     ) => { leftDrawer?: AnimationDefinition; rightDrawer?: AnimationDefinition; backDrop?: AnimationDefinition; mainContent?: AnimationDefinition };
 
     constructor() {
         super();
-        // this.isPassThroughParentEnabled = true;
+        this.isPassThroughParentEnabled = true;
         this.backDrop = new GridLayout();
         this.backDrop.backgroundColor = this.backdropColor;
         this.backDrop.opacity = 0;
         this.backDrop.visibility = 'hidden';
-        
+
         this.insertChild(this.backDrop, 0);
-        // console.log('Drawer constructor', this.backDrop, this.getChildIndex(this.backDrop));
     }
     initGestures() {
         const manager = Manager.getInstance();
@@ -290,7 +290,7 @@ export class Drawer extends GridLayout {
         const delta = Math.max(width - value, 0);
         const progress = delta / width;
         if (this.translationFunction) {
-            return this.translationFunction(side, width, delta, progress);
+            return this.translationFunction(side, width, value, delta, progress);
         }
         if (this.modes[side] === 'under') {
             return {
@@ -370,8 +370,6 @@ export class Drawer extends GridLayout {
                 this.needToSetSide = 'right';
                 this.rightDrawer.visibility = 'visible';
             }
-            // console.log('show backDrop');
-            // this.backDrop.visibility = 'visible';
         }
         this.updateIsPanning(state);
 
@@ -434,7 +432,7 @@ export class Drawer extends GridLayout {
             this.needToSetSide = null;
             // (side === 'left' ? this.leftDrawer : this.rightDrawer).visibility = 'visible';
             // console.log('show backDrop');
-            this.backDrop.visibility = 'visible';
+            // this.backDrop.visibility = 'visible';
         }
         const width = this.viewWidth[side];
 
@@ -449,6 +447,7 @@ export class Drawer extends GridLayout {
 
         this.translationX[side] = width + trX;
         const trData = this.computeTranslationData(side, width + trX);
+        this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
         this.applyTrData(trData, side);
         this.updateIsPanning(data.state);
         this.prevDeltaX = deltaX;
@@ -483,7 +482,10 @@ export class Drawer extends GridLayout {
         if (position !== 0) {
             this.showingSide = side;
             (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
-            this.backDrop.visibility = 'visible';
+            if (trData.backDrop && trData.backDrop.opacity > 0) {
+                this.backDrop.opacity = 0;
+                this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            }
             this.notify({ eventName: 'open', side, duration } as DrawerEventData);
         } else {
             this.showingSide = null;
@@ -512,8 +514,9 @@ export class Drawer extends GridLayout {
         }
         if (position !== 0) {
         } else {
-            // console.log('hide backDrop');
-            this.backDrop.visibility = 'hidden';
+            if (trData.backDrop) {
+                this.backDrop.visibility = 'hidden';
+            }
         }
     }
     isSideOpened() {
