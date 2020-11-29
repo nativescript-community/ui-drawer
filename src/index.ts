@@ -6,6 +6,7 @@ import {
     GestureTouchEventData,
     HandlerType,
     Manager,
+    NativeViewGestureHandler,
     PanGestureHandler,
     TapGestureHandler,
     install as installGestures,
@@ -16,7 +17,6 @@ installGestures(false);
 const OPEN_DURATION = 200;
 const CLOSE_DURATION = 200;
 export const PAN_GESTURE_TAG = 12431;
-export const TAP_GESTURE_TAG = 12421;
 const DEFAULT_TRIGGER_WIDTH = 20;
 const SWIPE_DISTANCE_MINIMUM = 10;
 
@@ -92,8 +92,6 @@ export class Drawer extends GridLayout {
     leftOpenedDrawerAllowDraging = true;
     rightOpenedDrawerAllowDraging = true;
     panGestureHandler: PanGestureHandler;
-    tapGestureHandler: TapGestureHandler;
-    // nativeGestureHandler: PanGestureHandler;
     showingSide: Side = null;
     needToSetSide: Side;
 
@@ -117,29 +115,20 @@ export class Drawer extends GridLayout {
 
         this.insertChild(this.backDrop, 0);
     }
+    onBackdropTap() {
+        this.close();
+    }
     initGestures() {
         const manager = Manager.getInstance();
         const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
             shouldStartGesture: this.shouldStartGesture.bind(this),
-            // waitFor: [NATIVE_GESTURE_TAG],
-            // disallowInterruption: true,
-            // simultaneousHandlers: [NATIVE_GESTURE_TAG],
-            // shouldCancelWhenOutside: true,
-            // activeOffsetX: this.leftSwipeDistance,
             minDist: SWIPE_DISTANCE_MINIMUM,
-            // failOffsetX: SWIPE_DISTANCE_MINIMUM,
         });
         gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
         gestureHandler.attachToView(this);
         this.panGestureHandler = gestureHandler as any;
 
-        this.tapGestureHandler = manager.createGestureHandler(HandlerType.TAP, TAP_GESTURE_TAG, {});
-        this.tapGestureHandler.on(GestureHandlerStateEvent, this.onTapGestureState, this);
-        this.tapGestureHandler.attachToView(this.backDrop);
-        // if (this.mainContent) {
-        //     this.initNativeGestureHandler(this.mainContent);
-        // }
     }
     shouldStartGesture(data) {
         const width = this.measureWidth;
@@ -156,8 +145,19 @@ export class Drawer extends GridLayout {
     }
     initNativeView() {
         super.initNativeView();
+        this.backDrop.on('tap', this.onBackdropTap, this);
         if (this.gestureEnabled) {
             this.initGestures();
+        }
+    }
+    disposeNativeView() {
+        super.disposeNativeView();
+        this.backDrop.off('tap', this.onBackdropTap, this);
+        if (this.panGestureHandler) {
+            this.panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
+            this.panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
+            this.panGestureHandler.detachFromView();
+            this.panGestureHandler = null;
         }
     }
     [gestureEnabledProperty.setNative](value) {
@@ -180,26 +180,9 @@ export class Drawer extends GridLayout {
         this.modes['right'] = value;
         this.onSideModeChanged('right', value, oldValue);
     }
-    disposeNativeView() {
-        super.disposeNativeView();
-        if (this.panGestureHandler) {
-            this.panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
-            this.panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
-            this.panGestureHandler.detachFromView();
-            this.panGestureHandler = null;
-        }
-        if (this.tapGestureHandler) {
-            this.tapGestureHandler.off(GestureHandlerStateEvent, this.onTapGestureState, this);
-            this.tapGestureHandler.detachFromView();
-            this.tapGestureHandler = null;
-        }
-    }
     public _onMainContentChanged(oldValue: View, newValue: View) {
         // console.log('_onMainContentChanged', oldValue, newValue);
         if (oldValue) {
-            // if (this.nativeGestureHandler) {
-            //     this.nativeGestureHandler.detachFromView(oldValue);
-            // }
             this.removeChild(oldValue);
         }
 
@@ -360,6 +343,7 @@ export class Drawer extends GridLayout {
                 args.object.cancel();
                 return;
             }
+            // this.nativeGestureHandler.cancel();
         }
         if (state === GestureState.ACTIVE) {
             const width = this.getMeasuredWidth();
@@ -482,9 +466,9 @@ export class Drawer extends GridLayout {
         if (position !== 0) {
             this.showingSide = side;
             (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
-            if (trData.backDrop && trData.backDrop.opacity > 0) {
+            if (trData.backDrop && trData.backDrop.opacity > 0 &&  this.backDrop.visibility !== 'visible') {
                 this.backDrop.opacity = 0;
-                this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+                this.backDrop.visibility ='visible';
             }
             this.notify({ eventName: 'open', side, duration } as DrawerEventData);
         } else {
