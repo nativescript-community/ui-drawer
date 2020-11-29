@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/nativescript-community/ui-drawer/compare/v0.0.17...v0.0.18) (2020-11-29)
+
+
+### Bug Fixes
+
+* gestures dep update ([9b68e0a](https://github.com/nativescript-community/ui-drawer/commit/9b68e0a1d49a5e9bbabafa1ad800f3619b39f54e))
+* use normal tap for the backdrop ([b2ec035](https://github.com/nativescript-community/ui-drawer/commit/b2ec035cf21ae8555656a622e3ea87e5fb1b5b03))
+
+
+
+
+
 ## [0.0.17](https://github.com/nativescript-community/ui-drawer/compare/v0.0.16...v0.0.17) (2020-11-23)
 
 
