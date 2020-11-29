@@ -44,6 +44,6 @@
     "license": "Apache-2.0",
     "readmeFilename": "README.md",
     "dependencies": {
-        "@nativescript-community/gesturehandler": "^0.1.29"
+        "@nativescript-community/gesturehandler": "^0.1.35"
     }
 }
