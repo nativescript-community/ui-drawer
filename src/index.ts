@@ -128,7 +128,6 @@ export class Drawer extends GridLayout {
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
         gestureHandler.attachToView(this);
         this.panGestureHandler = gestureHandler as any;
-
     }
     shouldStartGesture(data) {
         const width = this.measureWidth;
@@ -438,7 +437,7 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side) {
-        // console.log('applyTrData', trData);
+        // console.log('applyTrData', trData, side);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
                 Object.assign(this[k], trData[k]);
@@ -466,9 +465,9 @@ export class Drawer extends GridLayout {
         if (position !== 0) {
             this.showingSide = side;
             (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
-            if (trData.backDrop && trData.backDrop.opacity > 0 &&  this.backDrop.visibility !== 'visible') {
+            if (trData.backDrop && trData.backDrop.opacity > 0 && this.backDrop.visibility !== 'visible') {
                 this.backDrop.opacity = 0;
-                this.backDrop.visibility ='visible';
+                this.backDrop.visibility = 'visible';
             }
             this.notify({ eventName: 'open', side, duration } as DrawerEventData);
         } else {
@@ -491,15 +490,17 @@ export class Drawer extends GridLayout {
             .filter((a) => !!a);
         try {
             await new Animation(params).play();
-            // apply tr data to prevent hickups on iOS
-            this.applyTrData(trData, side);
         } catch (err) {
-            console.error(err);
-        }
-        if (position !== 0) {
-        } else {
-            if (trData.backDrop) {
-                this.backDrop.visibility = 'hidden';
+            console.error('animateToPosition', err);
+        } finally {
+            // apply tr data to prevent hickups on iOS
+            // and handle animation cancelled errors
+            this.applyTrData(trData, side);
+            if (position !== 0) {
+            } else {
+                if (trData.backDrop) {
+                    this.backDrop.visibility = 'hidden';
+                }
             }
         }
     }
