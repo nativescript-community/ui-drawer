@@ -18,6 +18,7 @@ const OPEN_DURATION = 200;
 const CLOSE_DURATION = 200;
 export const PAN_GESTURE_TAG = 12431;
 const DEFAULT_TRIGGER_WIDTH = 20;
+const DEFAULT_TRIGGER_HEIGHT = 20;
 const SWIPE_DISTANCE_MINIMUM = 10;
 
 function transformAnimationValues(values) {
@@ -31,6 +32,7 @@ function transformAnimationValues(values) {
 }
 
 export type Side = 'left' | 'right';
+export type VerticalSide = 'bottom' | 'top';
 export type Mode = 'under' | 'slide';
 export interface DrawerEventData extends EventData {
     side: Side;
@@ -51,6 +53,20 @@ export const rightDrawerContentProperty = new Property<Drawer, View>({
         target._onDrawerContentChanged('right', oldValue, newValue);
     },
 });
+export const topDrawerContentProperty = new Property<Drawer, View>({
+    name: 'topDrawer',
+    defaultValue: undefined,
+    valueChanged: (target, oldValue, newValue) => {
+        target._onDrawerContentChanged('top', oldValue, newValue);
+    },
+});
+export const bottomDrawerContentProperty = new Property<Drawer, View>({
+    name: 'bottomDrawer',
+    defaultValue: undefined,
+    valueChanged: (target, oldValue, newValue) => {
+        target._onDrawerContentChanged('bottom', oldValue, newValue);
+    },
+});
 export const gestureEnabledProperty = new Property<Drawer, boolean>({
     name: 'gestureEnabled',
     defaultValue: true,
@@ -66,44 +82,66 @@ export const leftDrawerModeProperty = new Property<Drawer, Mode>({
 export const rightDrawerModeProperty = new Property<Drawer, Mode>({
     name: 'rightDrawerMode',
 });
+export const topDrawerModeProperty = new Property<Drawer, Mode>({
+    name: 'topDrawerMode',
+});
+export const bottomDrawerModeProperty = new Property<Drawer, Mode>({
+    name: 'bottomDrawerMode',
+});
 export const translationFunctionProperty = new Property<Drawer, Function>({
     name: 'translationFunction',
 });
 
 @CSSType('Drawer')
 export class Drawer extends GridLayout {
-    public leftDrawer: View;
-    public rightDrawer: View;
+    public leftDrawer?: View;
+    public rightDrawer?: View;
+    public bottomDrawer?: View;
+    public topDrawer?: View;
     public mainContent: View;
     public backDrop: View;
 
     isPanning = false;
     leftSwipeDistance = 30;
     rightSwipeDistance = 30;
+    bottomSwipeDistance = 30;
+    topSwipeDistance = 30;
     hasRightMenu = false;
     openingProgress = 0;
     backdropColor = new Color('rgba(0, 0, 0, 0.7)');
 
     measureWidth: number;
+    measureHeight: number;
     isAnimating = false;
     prevDeltaX = 0;
+    prevDeltaY = 0;
     viewWidth: { [k in Side]: number } = { left: 0, right: 0 };
+    viewHeight: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
     translationX: { [k in Side]: number } = { left: 0, right: 0 };
+    translationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
     leftOpenedDrawerAllowDraging = true;
     rightOpenedDrawerAllowDraging = true;
+    bottomOpenedDrawerAllowDraging = true;
     panGestureHandler: PanGestureHandler;
-    showingSide: Side = null;
-    needToSetSide: Side;
+    showingSide: Side | VerticalSide = null;
+    needToSetSide: Side | VerticalSide;
 
     gestureEnabled = true;
-    modes: { [k in Side]: Mode } = { left: 'slide', right: 'slide' };
+    modes: { [k in Side | VerticalSide]: Mode } = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
     translationFunction?: (
-        side: Side,
+        side: Side | VerticalSide,
         width: number,
         value: number,
         delta: number,
         progress: number
-    ) => { leftDrawer?: AnimationDefinition; rightDrawer?: AnimationDefinition; backDrop?: AnimationDefinition; mainContent?: AnimationDefinition };
+    ) => {
+        leftDrawer?: AnimationDefinition;
+        rightDrawer?: AnimationDefinition;
+        bottomDrawer?: AnimationDefinition;
+        topDrawer?: AnimationDefinition;
+        backDrop?: AnimationDefinition;
+        mainContent?: AnimationDefinition;
+    };
 
     constructor() {
         super();
@@ -130,17 +168,20 @@ export class Drawer extends GridLayout {
         this.panGestureHandler = gestureHandler as any;
     }
     shouldStartGesture(data) {
-        const width = this.measureWidth;
+        const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
+        const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
+        // console.log('shouldStartGesture', data.x, data.y, this.leftSwipeDistance, width, this.rightSwipeDistance);
         if (this.showingSide) {
             return this[this.showingSide + 'OpenedDrawerAllowDraging'];
         } else if (
-            (!this.leftDrawer && !this.rightDrawer) ||
-            (this.leftDrawer && data.x > this.leftSwipeDistance && (!this.rightDrawer || data.x < width - this.rightSwipeDistance)) ||
-            (this.rightDrawer && data.x < width - this.rightSwipeDistance && (!this.leftDrawer || data.x > this.leftSwipeDistance))
+            (this.leftDrawer && data.x <= this.leftSwipeDistance) ||
+            (this.rightDrawer && data.x >= width - this.rightSwipeDistance) ||
+            (this.bottomDrawer && data.y >= height - this.bottomSwipeDistance) ||
+            (this.topDrawer && data.y <= this.topSwipeDistance)
         ) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
     initNativeView() {
         super.initNativeView();
@@ -179,6 +220,16 @@ export class Drawer extends GridLayout {
         this.modes['right'] = value;
         this.onSideModeChanged('right', value, oldValue);
     }
+    [topDrawerModeProperty.setNative](value: Mode) {
+        const oldValue = this.modes['top'];
+        this.modes['top'] = value;
+        this.onSideModeChanged('top', value, oldValue);
+    }
+    [bottomDrawerModeProperty.setNative](value: Mode) {
+        const oldValue = this.modes['bottom'];
+        this.modes['bottom'] = value;
+        this.onSideModeChanged('bottom', value, oldValue);
+    }
     public _onMainContentChanged(oldValue: View, newValue: View) {
         // console.log('_onMainContentChanged', oldValue, newValue);
         if (oldValue) {
@@ -205,6 +256,13 @@ export class Drawer extends GridLayout {
     onRightLayoutChanged(event: EventData) {
         return this.onLayoutChange('right', event);
     }
+    onTopLayoutChanged(event: EventData) {
+        return this.onLayoutChange('top', event);
+    }
+
+    onBottomLayoutChanged(event: EventData) {
+        return this.onLayoutChange('bottom', event);
+    }
     addChild(child) {
         // for now we ignore this
         // to make sure we add the view in the property change
@@ -212,24 +270,53 @@ export class Drawer extends GridLayout {
         // before we apply the translation
         // super.addChild(child);
     }
-    public _onDrawerContentChanged(side: Side, oldValue: View, newValue: View) {
+    public _onDrawerContentChanged(side: Side | VerticalSide, oldValue: View, newValue: View) {
         // console.log('_onDrawerContentChanged', side, oldValue, newValue);
         if (oldValue) {
-            if (side === 'right') {
-                oldValue.off('layoutChanged', this.onRightLayoutChanged, this);
-            } else {
-                oldValue.off('layoutChanged', this.onLeftLayoutChanged, this);
+            switch (side) {
+                case 'right':
+                    oldValue.off('layoutChanged', this.onRightLayoutChanged, this);
+                    break;
+
+                case 'left':
+                    oldValue.off('layoutChanged', this.onLeftLayoutChanged, this);
+                    break;
+
+                case 'top':
+                    oldValue.off('layoutChanged', this.onTopLayoutChanged, this);
+                    break;
+
+                case 'bottom':
+                    oldValue.off('layoutChanged', this.onBottomLayoutChanged, this);
+                    break;
             }
+
             this.removeChild(oldValue);
         }
 
         if (newValue) {
             // newValue.columns = "auto"
-            newValue.horizontalAlignment = side;
-            if (side === 'right') {
-                newValue.on('layoutChanged', this.onRightLayoutChanged, this);
+            if (side === 'left' || side === 'right') {
+                newValue.horizontalAlignment = side;
             } else {
-                newValue.on('layoutChanged', this.onLeftLayoutChanged, this);
+                newValue.verticalAlignment = side;
+            }
+            switch (side) {
+                case 'right':
+                    newValue.on('layoutChanged', this.onRightLayoutChanged, this);
+                    break;
+
+                case 'left':
+                    newValue.on('layoutChanged', this.onLeftLayoutChanged, this);
+                    break;
+
+                case 'top':
+                    newValue.on('layoutChanged', this.onTopLayoutChanged, this);
+                    break;
+
+                case 'bottom':
+                    newValue.on('layoutChanged', this.onBottomLayoutChanged, this);
+                    break;
             }
             const mode = this.modes[side];
             newValue.visibility = 'hidden';
@@ -237,11 +324,14 @@ export class Drawer extends GridLayout {
             this.onSideModeChanged(side, mode, undefined);
         }
     }
-    onSideModeChanged(side: Side, mode: Mode, oldMode: Mode) {
+    onSideModeChanged(side: Side | VerticalSide, mode: Mode, oldMode: Mode) {
         if ((oldMode && oldMode === mode) || (oldMode && oldMode !== 'under' && mode !== 'under')) {
             return;
         }
-        const drawer = side === 'left' ? this.leftDrawer : this.rightDrawer;
+        const drawer = this[side + 'Drawer'] as View;
+        if (!drawer) {
+            return;
+        }
         // console.log('onSideModeChanged', side, drawer);
         if (mode === 'under') {
             const indexBack = this.getChildIndex(this.backDrop);
@@ -268,55 +358,106 @@ export class Drawer extends GridLayout {
         }
     }
     computeTranslationData(side, value) {
-        const width = this.viewWidth[side];
-        const delta = Math.max(width - value, 0);
-        const progress = delta / width;
-        if (this.translationFunction) {
-            return this.translationFunction(side, width, value, delta, progress);
-        }
-        if (this.modes[side] === 'under') {
-            return {
-                mainContent: {
-                    translateX: delta,
-                },
-                [side + 'Drawer']: {
-                    translateX: 0,
-                },
-                backDrop: {
-                    translateX: delta,
-                    opacity: progress,
-                },
-            };
+        if (side === 'left' || side === 'right') {
+            const width = this.viewWidth[side];
+            const delta = Math.max(width - value, 0);
+            const progress = delta / width;
+            if (this.translationFunction) {
+                return this.translationFunction(side, width, value, delta, progress);
+            }
+            if (this.modes[side] === 'under') {
+                return {
+                    mainContent: {
+                        translateX: side === 'right' ? -delta : delta,
+                    },
+                    [side + 'Drawer']: {
+                        translateX: 0,
+                    },
+                    backDrop: {
+                        translateX: side === 'right' ? -delta : delta,
+                        opacity: progress,
+                    },
+                };
+            } else {
+                return {
+                    mainContent: {
+                        translateX: 0,
+                    },
+                    [side + 'Drawer']: {
+                        translateX: side === 'left' ? -value : value,
+                    },
+                    backDrop: {
+                        translateX: 0,
+                        opacity: progress,
+                    },
+                };
+            }
         } else {
-            return {
-                mainContent: {
-                    translateX: 0,
-                },
-                [side + 'Drawer']: {
-                    translateX: side === 'left' ? -value : value,
-                },
-                backDrop: {
-                    translateX: 0,
-                    opacity: progress,
-                },
-            };
+            const height = this.viewHeight[side];
+            const delta = Math.max(height - value, 0);
+            const progress = delta / height;
+            if (this.translationFunction) {
+                return this.translationFunction(side, height, value, delta, progress);
+            }
+            if (this.modes[side] === 'under') {
+                return {
+                    mainContent: {
+                        translateY: side === 'bottom' ? -delta : delta,
+                    },
+                    [side + 'Drawer']: {
+                        translateY: 0,
+                    },
+                    backDrop: {
+                        translateY: side === 'bottom' ? -delta : delta,
+                        opacity: progress,
+                    },
+                };
+            } else {
+                return {
+                    mainContent: {
+                        translateY: 0,
+                    },
+                    [side + 'Drawer']: {
+                        translateY: side === 'top' ? -value : value,
+                    },
+                    backDrop: {
+                        translateY: 0,
+                        opacity: progress,
+                    },
+                };
+            }
         }
     }
-    onLayoutChange(side: Side, event: EventData) {
+    onLayoutChange(side: Side | VerticalSide, event: EventData) {
         const contentView = event.object as GridLayout;
-        const width = (this.measureWidth = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth())));
         // console.log('onLayoutChange', side, width);
-        if (this.translationX[side] === 0) {
-            this.viewWidth[side] = width;
-            const data = this.computeTranslationData(side, width);
-            this.translationX[side] = width;
-            // delay applyTrData or it will create a layout issue on iOS
-            setTimeout(() => this.applyTrData(data, side), 0);
+        let data;
+        if (side === 'left' || side === 'right') {
+            const width = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()));
+            if (this.translationX[side] === 0) {
+                this.viewWidth[side] = width;
+                data = this.computeTranslationData(side, width);
+                this.translationX[side] = width;
+            } else {
+                const shown = this.viewWidth[side] - this.translationX[side];
+                this.viewWidth[side] = width;
+                data = this.computeTranslationData(side, width - shown);
+                this.translationX[side] = width - shown;
+            }
         } else {
-            const shown = this.viewWidth[side] - this.translationX[side];
-            this.viewWidth[side] = width;
-            const data = this.computeTranslationData(side, width - shown);
-            this.translationX[side] = width - shown;
+            const height = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()));
+            if (this.translationY[side] === 0) {
+                this.viewHeight[side] = height;
+                data = this.computeTranslationData(side, height);
+                this.translationY[side] = height;
+            } else {
+                const shown = this.viewHeight[side] - this.translationY[side];
+                this.viewHeight[side] = height;
+                data = this.computeTranslationData(side, height - shown);
+                this.translationY[side] = height - shown;
+            }
+        }
+        if (data) {
             // delay applyTrData or it will create a layout issue on iOS
             setTimeout(() => this.applyTrData(data, side), 0);
         }
@@ -330,69 +471,111 @@ export class Drawer extends GridLayout {
     }
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
-        // console.log('onGestureState', prevState, state, this.showingSide, this.needToSetSide);
+        const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
+        const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
+
+        // console.log('onGestureState', prevState, state, this.showingSide, this.needToSetSide, width, height);
         if (state === GestureState.BEGAN) {
-            const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
             if (
                 !this.showingSide &&
-                ((!this.leftDrawer && !this.rightDrawer) ||
-                    (this.leftDrawer && extraData.x > this.leftSwipeDistance && (!this.rightDrawer || extraData.x < width - this.rightSwipeDistance)) ||
-                    (this.rightDrawer && extraData.x < width - this.rightSwipeDistance && (!this.leftDrawer || extraData.x > this.leftSwipeDistance)))
+                !(
+                    (this.leftDrawer && extraData.x <= this.leftSwipeDistance) ||
+                    (this.rightDrawer && extraData.x >= width - this.rightSwipeDistance) ||
+                    (this.bottomDrawer && extraData.y >= height - this.bottomSwipeDistance) ||
+                    (this.topDrawer && extraData.y <= this.topSwipeDistance)
+                )
             ) {
                 args.object.cancel();
                 return;
             }
             // this.nativeGestureHandler.cancel();
-        }
-        if (state === GestureState.ACTIVE) {
-            const width = this.getMeasuredWidth();
-            if (this.leftDrawer && !this.showingSide && extraData.x <= this.leftSwipeDistance) {
+        } else if (state === GestureState.ACTIVE && !this.showingSide) {
+            if (this.leftDrawer && extraData.x <= this.leftSwipeDistance) {
                 this.needToSetSide = 'left';
                 this.leftDrawer.visibility = 'visible';
-            } else if (this.rightDrawer && !this.showingSide && extraData.x >= width - this.rightSwipeDistance) {
+            } else if (this.rightDrawer && extraData.x >= width - this.rightSwipeDistance) {
                 this.needToSetSide = 'right';
                 this.rightDrawer.visibility = 'visible';
+            } else if (this.bottomDrawer && extraData.y >= height - this.bottomSwipeDistance) {
+                this.needToSetSide = 'bottom';
+                this.bottomDrawer.visibility = 'visible';
+            } else if (this.topDrawer && extraData.y <= this.topSwipeDistance) {
+                this.needToSetSide = 'top';
+                this.topDrawer.visibility = 'visible';
             }
         }
         this.updateIsPanning(state);
 
         if (prevState === GestureState.ACTIVE) {
             this.needToSetSide = null;
-            if (!this.showingSide) {
+            const side = this.showingSide;
+            if (!side) {
                 return;
             }
-            const { velocityX, translationX } = extraData;
-            const viewX = this.translationX[this.showingSide] - this.viewWidth[this.showingSide];
+            const { velocityX, velocityY, translationX, translationY } = extraData;
 
             const dragToss = 0.05;
-            const x = translationX - this.prevDeltaX;
-            const totalDelta = x + dragToss * velocityX;
 
             let destSnapPoint = 0;
+            if (side === 'left' || side === 'right') {
+                const viewWidth = this.viewWidth[side];
+                const viewX = this.translationX[side] - viewWidth;
+                const x = translationX - this.prevDeltaX;
+                this.prevDeltaX = 0;
+                const totalDelta = x + dragToss * velocityX;
 
-            if (this.showingSide === 'left') {
-                if (totalDelta < -DEFAULT_TRIGGER_WIDTH) {
-                    destSnapPoint = 0;
-                } else if (totalDelta > DEFAULT_TRIGGER_WIDTH) {
-                    destSnapPoint = this.viewWidth[this.showingSide];
-                } else {
-                    const endOffsetX = viewX + totalDelta;
-                    const progress = Math.abs(endOffsetX / this.viewWidth[this.showingSide]);
-                    destSnapPoint = progress > 0.5 ? this.viewWidth[this.showingSide] : 0;
+                if (side === 'left') {
+                    if (totalDelta < -DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = 0;
+                    } else if (totalDelta > DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = viewWidth;
+                    } else {
+                        const endOffsetX = viewX + totalDelta;
+                        const progress = Math.abs(endOffsetX / viewWidth);
+                        destSnapPoint = progress > 0.5 ? viewWidth : 0;
+                    }
+                } else if (side === 'right') {
+                    if (-totalDelta < -DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = 0;
+                    } else if (-totalDelta > DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = viewWidth;
+                    } else {
+                        const endOffsetX = viewX + totalDelta;
+                        const progress = Math.abs(endOffsetX / viewWidth);
+                        destSnapPoint = progress > 0.5 ? viewWidth : 0;
+                    }
                 }
-            } else if (this.showingSide === 'right') {
-                if (-totalDelta < -DEFAULT_TRIGGER_WIDTH) {
-                    destSnapPoint = 0;
-                } else if (-totalDelta > DEFAULT_TRIGGER_WIDTH) {
-                    destSnapPoint = this.viewWidth[this.showingSide];
-                } else {
-                    const endOffsetX = viewX + totalDelta;
-                    const progress = Math.abs(endOffsetX / this.viewWidth[this.showingSide]);
-                    destSnapPoint = progress > 0.5 ? this.viewWidth[this.showingSide] : 0;
+            } else {
+                const viewHeight = this.viewHeight[side];
+                const viewY = this.translationY[side] - viewHeight;
+                const y = translationY - this.prevDeltaY;
+                this.prevDeltaY = 0;
+                const totalDelta = y + dragToss * velocityY;
+
+                if (side === 'top') {
+                    if (totalDelta < -DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = 0;
+                    } else if (totalDelta > DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = viewHeight;
+                    } else {
+                        const endOffsetY = viewY + totalDelta;
+                        const progress = Math.abs(endOffsetY / viewHeight);
+                        destSnapPoint = progress > 0.5 ? viewHeight : 0;
+                    }
+                } else if (side === 'bottom') {
+                    if (-totalDelta < -DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = 0;
+                    } else if (-totalDelta > DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = viewHeight;
+                    } else {
+                        const endOffsetY = viewY + totalDelta;
+                        const progress = Math.abs(endOffsetY / viewHeight);
+                        destSnapPoint = progress > 0.5 ? viewHeight : 0;
+                    }
                 }
             }
-            this.animateToPosition(this.showingSide, destSnapPoint);
-            this.prevDeltaX = 0;
+
+            this.animateToPosition(side, destSnapPoint);
         }
     }
     updateIsPanning(state: GestureState) {
@@ -405,38 +588,62 @@ export class Drawer extends GridLayout {
         if (data.state !== GestureState.ACTIVE || !side) {
             return;
         }
-        const deltaX = data.extraData.translationX;
-        if (this.isAnimating || !this.isPanning || deltaX === 0) {
+        if (side === 'left' || side === 'right') {
+            const deltaX = data.extraData.translationX;
+            if (this.isAnimating || !this.isPanning || deltaX === 0) {
+                this.prevDeltaX = deltaX;
+                return;
+            }
+            if (this.needToSetSide) {
+                this.showingSide = this.needToSetSide;
+                this.needToSetSide = null;
+            }
+            const width = this.viewWidth[side];
+
+            const viewX = this.translationX[side] - width;
+
+            let x = deltaX - this.prevDeltaX;
+            if (this.showingSide === 'left') {
+                x = -x;
+            }
+            const trX = this.constrainX(this.showingSide, viewX + x);
+
+            this.translationX[side] = width + trX;
+            const trData = this.computeTranslationData(side, width + trX);
+            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            this.applyTrData(trData, side);
+            this.updateIsPanning(data.state);
             this.prevDeltaX = deltaX;
-            return;
-        }
-        if (this.needToSetSide) {
-            this.showingSide = this.needToSetSide;
-            this.needToSetSide = null;
-            // (side === 'left' ? this.leftDrawer : this.rightDrawer).visibility = 'visible';
-            // console.log('show backDrop');
-            // this.backDrop.visibility = 'visible';
-        }
-        const width = this.viewWidth[side];
+        } else {
+            const deltaY = data.extraData.translationY;
+            if (this.isAnimating || !this.isPanning || deltaY === 0) {
+                this.prevDeltaY = deltaY;
+                return;
+            }
+            if (this.needToSetSide) {
+                this.showingSide = this.needToSetSide;
+                this.needToSetSide = null;
+            }
+            const height = this.viewHeight[side];
 
-        const viewX = this.translationX[side] - width;
+            const viewY = this.translationY[side] - height;
 
-        let x = deltaX - this.prevDeltaX;
-        if (this.showingSide === 'left') {
-            x = -x;
+            let y = deltaY - this.prevDeltaY;
+            if (this.showingSide === 'top') {
+                y = -y;
+            }
+            const trY = this.constrainY(this.showingSide, viewY + y);
+
+            this.translationY[side] = height + trY;
+            const trData = this.computeTranslationData(side, height + trY);
+            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            this.applyTrData(trData, side);
+            this.updateIsPanning(data.state);
+            this.prevDeltaY = deltaY;
         }
-        const trX = this.constrainX(this.showingSide, viewX + x);
-        // console.log('onGestureTouch', x, side, deltaX, viewX + x, trX);
-
-        this.translationX[side] = width + trX;
-        const trData = this.computeTranslationData(side, width + trX);
-        this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
-        this.applyTrData(trData, side);
-        this.updateIsPanning(data.state);
-        this.prevDeltaX = deltaX;
     }
 
-    applyTrData(trData: { [k: string]: any }, side: Side) {
+    applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
         // console.log('applyTrData', trData, side);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
@@ -454,14 +661,30 @@ export class Drawer extends GridLayout {
         }
         return x;
     }
+    constrainY(side, y) {
+        const height = this.viewHeight[side];
+        if (y > 0) {
+            return 0;
+        } else if (y < -height) {
+            return -height;
+        }
+        return y;
+    }
 
-    async animateToPosition(side, position, duration = OPEN_DURATION) {
+    async animateToPosition(side: Side | VerticalSide, position, duration = OPEN_DURATION) {
         if (this.showingSide && side !== this.showingSide) {
             this.animateToPosition(this.showingSide, 0, duration);
         }
-        const width = this.viewWidth[side];
-        const trData = this.computeTranslationData(side, width - position);
-        this.translationX[side] = width - position;
+        let trData;
+        if (side === 'left' || side === 'right') {
+            const width = this.viewWidth[side];
+            trData = this.computeTranslationData(side, width - position);
+            this.translationX[side] = width - position;
+        } else {
+            const height = this.viewHeight[side];
+            trData = this.computeTranslationData(side, height - position);
+            this.translationY[side] = height - position;
+        }
         if (position !== 0) {
             this.showingSide = side;
             (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
@@ -508,18 +731,22 @@ export class Drawer extends GridLayout {
         return !!this.showingSide;
     }
 
-    isOpened(side?: Side) {
+    isOpened(side?: Side | VerticalSide) {
         if (side) {
             return this.showingSide === side;
         }
         return !!this.showingSide;
     }
-    async toggle(side?: Side) {
+    async toggle(side?: Side | VerticalSide) {
         if (!side) {
             if (this.leftDrawer) {
                 side = 'left';
             } else if (this.rightDrawer) {
                 side = 'right';
+            } else if (this.bottomDrawer) {
+                side = 'bottom';
+            } else if (this.topDrawer) {
+                side = 'top';
             } else {
                 return;
             }
@@ -530,7 +757,7 @@ export class Drawer extends GridLayout {
             this.open(side);
         }
     }
-    async open(side?: Side) {
+    async open(side?: Side | VerticalSide) {
         if (!side) {
             if (this.leftDrawer) {
                 side = 'left';
@@ -542,7 +769,7 @@ export class Drawer extends GridLayout {
         }
         this.animateToPosition(side, this.viewWidth[side]);
     }
-    async close(side?: Side) {
+    async close(side?: Side | VerticalSide) {
         if (!side) {
             if (this.showingSide) {
                 side = this.showingSide;
@@ -553,12 +780,12 @@ export class Drawer extends GridLayout {
         this.showingSide = null;
         return this.animateToPosition(side, 0, CLOSE_DURATION);
     }
-    get mainViewTranslationX() {
-        if (!this.showingSide || this.modes[this.showingSide] !== 'slide') {
-            return 0;
-        }
-        return this.viewWidth[this.showingSide] - this.translationX[this.showingSide];
-    }
+    // get mainViewTranslationX() {
+    //     if (!this.showingSide || this.modes[this.showingSide] !== 'slide') {
+    //         return 0;
+    //     }
+    //     return this.viewWidth[this.showingSide] - this.translationX[this.showingSide];
+    // }
 }
 
 export const mainContentProperty = new Property<Drawer, View>({
@@ -573,9 +800,13 @@ mainContentProperty.register(Drawer);
 backdropColorProperty.register(Drawer);
 leftDrawerContentProperty.register(Drawer);
 rightDrawerContentProperty.register(Drawer);
+topDrawerContentProperty.register(Drawer);
+bottomDrawerContentProperty.register(Drawer);
 gestureEnabledProperty.register(Drawer);
 leftDrawerModeProperty.register(Drawer);
 rightDrawerModeProperty.register(Drawer);
+bottomDrawerModeProperty.register(Drawer);
+topDrawerModeProperty.register(Drawer);
 translationFunctionProperty.register(Drawer);
 
 export function install() {
