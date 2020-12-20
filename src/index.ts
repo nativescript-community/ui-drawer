@@ -6,9 +6,7 @@ import {
     GestureTouchEventData,
     HandlerType,
     Manager,
-    NativeViewGestureHandler,
     PanGestureHandler,
-    TapGestureHandler,
     install as installGestures,
 } from '@nativescript-community/gesturehandler';
 import { Animation, AnimationDefinition, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
@@ -170,9 +168,21 @@ export class Drawer extends GridLayout {
     shouldStartGesture(data) {
         const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
         const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
-        // console.log('shouldStartGesture', data.x, data.y, this.leftSwipeDistance, width, this.rightSwipeDistance);
-        if (this.showingSide) {
-            return this[this.showingSide + 'OpenedDrawerAllowDraging'];
+        const side = this.showingSide;
+        console.log('shouldStartGesture', data.x, data.y, side,  this.backDrop.opacity);
+        if (side) {
+            if (side === 'left' || side === 'right') {
+                const viewWidth = this.viewWidth[side];
+                if ((side === 'left' && data.x <= viewWidth) || (side === 'right' && data.x >= width - viewWidth)) {
+                    return this[side + 'OpenedDrawerAllowDraging'];
+                }
+            } else {
+                const viewHeight = this.viewHeight[side];
+                if ((side === 'top' && data.y <= viewHeight) || (side === 'bottom' && data.y >= height - viewHeight)) {
+                    return this[side + 'OpenedDrawerAllowDraging'];
+                }
+            }
+            return this.backDrop.opacity !== 0;
         } else if (
             (this.leftDrawer && data.x <= this.leftSwipeDistance) ||
             (this.rightDrawer && data.x >= width - this.rightSwipeDistance) ||
@@ -687,7 +697,10 @@ export class Drawer extends GridLayout {
         }
         if (position !== 0) {
             this.showingSide = side;
-            (side === 'right' ? this.rightDrawer : this.leftDrawer).visibility = 'visible';
+            const drawer = this[side + 'Drawer'] as View;
+            if (drawer) {
+                drawer.visibility = 'visible';
+            }
             if (trData.backDrop && trData.backDrop.opacity > 0 && this.backDrop.visibility !== 'visible') {
                 this.backDrop.opacity = 0;
                 this.backDrop.visibility = 'visible';
@@ -763,11 +776,19 @@ export class Drawer extends GridLayout {
                 side = 'left';
             } else if (this.rightDrawer) {
                 side = 'right';
+            } else if (this.bottomDrawer) {
+                side = 'bottom';
+            } else if (this.topDrawer) {
+                side = 'top';
             } else {
                 return;
             }
         }
-        this.animateToPosition(side, this.viewWidth[side]);
+        if (side === 'left' || side === 'right') {
+            this.animateToPosition(side, this.viewWidth[side]);
+        } else {
+            this.animateToPosition(side, this.viewHeight[side]);
+        }
     }
     async close(side?: Side | VerticalSide) {
         if (!side) {
