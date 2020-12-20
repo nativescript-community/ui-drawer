@@ -169,7 +169,6 @@ export class Drawer extends GridLayout {
         const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
         const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
         const side = this.showingSide;
-        console.log('shouldStartGesture', data.x, data.y, side,  this.backDrop.opacity);
         if (side) {
             if (side === 'left' || side === 'right') {
                 const viewWidth = this.viewWidth[side];
