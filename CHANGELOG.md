@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/nativescript-community/ui-drawer/compare/v0.0.19...v0.0.20) (2020-12-20)
+
+
+### Features
+
+* added bottom and top drawers ([3e76729](https://github.com/nativescript-community/ui-drawer/commit/3e7672969b84ed5e842a3ef45255aea9fbaab2d6))
+
+
+
+
+
 ## [0.0.19](https://github.com/nativescript-community/ui-drawer/compare/v0.0.18...v0.0.19) (2020-12-04)
 
 
