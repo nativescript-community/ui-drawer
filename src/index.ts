@@ -17,7 +17,7 @@ const CLOSE_DURATION = 200;
 export const PAN_GESTURE_TAG = 12431;
 const DEFAULT_TRIGGER_WIDTH = 20;
 const DEFAULT_TRIGGER_HEIGHT = 20;
-const SWIPE_DISTANCE_MINIMUM = 10;
+const SWIPE_DISTANCE_MINIMUM = 70;
 
 function transformAnimationValues(values) {
     values.translate = { x: values.translateX || 0, y: values.translateY || 0 };
@@ -100,6 +100,7 @@ export class Drawer extends GridLayout {
     public backDrop: View;
 
     isPanning = false;
+    panMinDist = SWIPE_DISTANCE_MINIMUM;
     leftSwipeDistance = 30;
     rightSwipeDistance = 30;
     bottomSwipeDistance = 30;
@@ -158,7 +159,7 @@ export class Drawer extends GridLayout {
         const manager = Manager.getInstance();
         const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
             shouldStartGesture: this.shouldStartGesture.bind(this),
-            minDist: SWIPE_DISTANCE_MINIMUM,
+            minDist: this.panMinDist,
         });
         gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
