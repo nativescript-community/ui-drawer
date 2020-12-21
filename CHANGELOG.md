@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.22](https://github.com/nativescript-community/ui-drawer/compare/v0.0.21...v0.0.22) (2020-12-21)
+
+
+### Features
+
+* panMinDist parameter ([0dcf5f6](https://github.com/nativescript-community/ui-drawer/commit/0dcf5f6536f26b75fee8a99d283e3f107867e3cd))
+
+
+
+
+
 ## [0.0.21](https://github.com/nativescript-community/ui-drawer/compare/v0.0.20...v0.0.21) (2020-12-20)
 
 
