@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.23](https://github.com/nativescript-community/ui-drawer/compare/v0.0.22...v0.0.23) (2021-01-29)
+
+
+### Bug Fixes
+
+* doc update about available settings ([c1079ea](https://github.com/nativescript-community/ui-drawer/commit/c1079ea119bd037b4c0a325091c174b458034761))
+* some fixes to make it “easier” to open the menu ([5c7653b](https://github.com/nativescript-community/ui-drawer/commit/5c7653b3f9b4ab658047d50677a38a811177a735))
+
+
+
+
+
 ## [0.0.22](https://github.com/nativescript-community/ui-drawer/compare/v0.0.21...v0.0.22) (2020-12-21)
 
 
