@@ -108,6 +108,7 @@ export class Drawer extends GridLayout {
     public leftOpenedDrawerAllowDraging = true;
     public rightOpenedDrawerAllowDraging = true;
     public bottomOpenedDrawerAllowDraging = true;
+    public topOpenedDrawerAllowDraging = true;
     public panGestureHandler: PanGestureHandler;
     public gestureEnabled = true;
 

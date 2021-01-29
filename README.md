@@ -48,6 +48,15 @@ install();
 | backdropColor       | `new Color('rgba(0, 0, 0, 0.7)')` | `Color`                     | The color of the backdrop behind the drawer             |
 | leftDrawerMode      | `slide`                           | `Mode ('under' or 'slide')` | The color of the backdrop behind the drawer             |
 | rightDrawerMode     | `slide`                           | `Mode ('under' or 'slide')` | The color of the backdrop behind the drawer             |
+| gestureMinDist     | `10`                           | number | The min "swipe" distance to trigger the menu gesture             |
+| leftSwipeDistance     | `40`                           | number | The "left" zone size from where the gesture is recognized             |
+| rightSwipeDistance     | `40`                           | number | The "right" zone size from where the gesture is recognized             |
+| topSwipeDistance     | `40`                           | number | The "top" zone size from where the gesture is recognized             |
+| bottomSwipeDistance     | `40`                           | number | The "bottom" zone size from where the gesture is recognized             |
+| leftOpenedDrawerAllowDraging     | `true`                           | boolean | Allow dragging the opened menu             |
+| rightOpenedDrawerAllowDraging     | `true`                           | boolean | Allow dragging the opened menu             |
+| topOpenedDrawerAllowDraging     | `true`                           | boolean | Allow dragging the opened menu             |
+| bottomOpenedDrawerAllowDraging     | `true`                           | boolean | Allow dragging the opened menu             |
 
 
 
