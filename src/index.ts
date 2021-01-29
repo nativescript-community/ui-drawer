@@ -99,34 +99,30 @@ export class Drawer extends GridLayout {
     public mainContent: View;
     public backDrop: View;
 
-    isPanning = false;
-    panMinDist = SWIPE_DISTANCE_MINIMUM;
-    leftSwipeDistance = 30;
-    rightSwipeDistance = 30;
-    bottomSwipeDistance = 30;
-    topSwipeDistance = 30;
-    hasRightMenu = false;
-    openingProgress = 0;
-    backdropColor = new Color('rgba(0, 0, 0, 0.7)');
+    public gestureMinDist = 10;
+    public leftSwipeDistance = 40;
+    public rightSwipeDistance = 40;
+    public bottomSwipeDistance = 40;
+    public topSwipeDistance = 40;
+    public backdropColor = new Color('rgba(0, 0, 0, 0.7)');
+    public leftOpenedDrawerAllowDraging = true;
+    public rightOpenedDrawerAllowDraging = true;
+    public bottomOpenedDrawerAllowDraging = true;
+    public panGestureHandler: PanGestureHandler;
+    public gestureEnabled = true;
 
-    measureWidth: number;
-    measureHeight: number;
-    isAnimating = false;
-    prevDeltaX = 0;
-    prevDeltaY = 0;
-    viewWidth: { [k in Side]: number } = { left: 0, right: 0 };
-    viewHeight: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
-    translationX: { [k in Side]: number } = { left: 0, right: 0 };
-    translationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
-    leftOpenedDrawerAllowDraging = true;
-    rightOpenedDrawerAllowDraging = true;
-    bottomOpenedDrawerAllowDraging = true;
-    panGestureHandler: PanGestureHandler;
-    showingSide: Side | VerticalSide = null;
-    needToSetSide: Side | VerticalSide;
+    private isPanning = false;
+    private isAnimating = false;
+    private prevDeltaX = 0;
+    private prevDeltaY = 0;
+    private viewWidth: { [k in Side]: number } = { left: 0, right: 0 };
+    private viewHeight: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
+    private translationX: { [k in Side]: number } = { left: 0, right: 0 };
+    private translationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
+    private showingSide: Side | VerticalSide = null;
+    private needToSetSide: Side | VerticalSide;
 
-    gestureEnabled = true;
-    modes: { [k in Side | VerticalSide]: Mode } = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
+    private modes: { [k in Side | VerticalSide]: Mode } = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
     translationFunction?: (
         side: Side | VerticalSide,
         width: number,
@@ -159,13 +155,31 @@ export class Drawer extends GridLayout {
         const manager = Manager.getInstance();
         const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
             shouldStartGesture: this.shouldStartGesture.bind(this),
-            minDist: this.panMinDist,
+            minDist: this.gestureMinDist,
         });
         gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
         gestureHandler.attachToView(this);
         this.panGestureHandler = gestureHandler as any;
     }
+    initNativeView() {
+        super.initNativeView();
+        this.backDrop.on('tap', this.onBackdropTap, this);
+        if (this.gestureEnabled) {
+            this.initGestures();
+        }
+    }
+    disposeNativeView() {
+        super.disposeNativeView();
+        this.backDrop.off('tap', this.onBackdropTap, this);
+        if (this.panGestureHandler) {
+            this.panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
+            this.panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
+            this.panGestureHandler.detachFromView();
+            this.panGestureHandler = null;
+        }
+    }
+
     shouldStartGesture(data) {
         const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
         const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
@@ -183,31 +197,167 @@ export class Drawer extends GridLayout {
                 }
             }
             return this.backDrop.opacity !== 0;
-        } else if (
-            (this.leftDrawer && data.x <= this.leftSwipeDistance) ||
-            (this.rightDrawer && data.x >= width - this.rightSwipeDistance) ||
-            (this.bottomDrawer && data.y >= height - this.bottomSwipeDistance) ||
-            (this.topDrawer && data.y <= this.topSwipeDistance)
-        ) {
+        } else if (this.leftDrawer && data.x <= this.leftSwipeDistance) {
+            this.needToSetSide = 'left';
+            return true;
+        } else if (this.rightDrawer && data.x >= width - this.rightSwipeDistance) {
+            this.needToSetSide = 'right';
+            return true;
+        } else if (this.bottomDrawer && data.y >= height - this.bottomSwipeDistance) {
+            this.needToSetSide = 'bottom';
+            return true;
+        } else if (this.topDrawer && data.y <= this.topSwipeDistance) {
+            this.needToSetSide = 'top';
             return true;
         }
         return false;
     }
-    initNativeView() {
-        super.initNativeView();
-        this.backDrop.on('tap', this.onBackdropTap, this);
-        if (this.gestureEnabled) {
-            this.initGestures();
+    onGestureState(args: GestureStateEventData) {
+        const { state, prevState, extraData, view } = args.data;
+        if (state === GestureState.ACTIVE && !this.showingSide) {
+            if (this.needToSetSide === 'left') {
+                this.leftDrawer.visibility = 'visible';
+            } else if (this.needToSetSide === 'right') {
+                this.rightDrawer.visibility = 'visible';
+            } else if (this.needToSetSide === 'bottom') {
+                this.bottomDrawer.visibility = 'visible';
+            } else if (this.needToSetSide === 'top') {
+                this.topDrawer.visibility = 'visible';
+            }
+        }
+        this.updateIsPanning(state);
+
+        if (prevState === GestureState.ACTIVE) {
+            this.needToSetSide = null;
+            const side = this.showingSide;
+            if (!side) {
+                return;
+            }
+            const { velocityX, velocityY, translationX, translationY } = extraData;
+
+            const dragToss = 0.05;
+
+            let destSnapPoint = 0;
+            if (side === 'left' || side === 'right') {
+                const viewWidth = this.viewWidth[side];
+                const viewX = this.translationX[side] - viewWidth;
+                const x = translationX - this.prevDeltaX;
+                this.prevDeltaX = 0;
+                const totalDelta = x + dragToss * velocityX;
+
+                if (side === 'left') {
+                    if (totalDelta < -DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = 0;
+                    } else if (totalDelta > DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = viewWidth;
+                    } else {
+                        const endOffsetX = viewX + totalDelta;
+                        const progress = Math.abs(endOffsetX / viewWidth);
+                        destSnapPoint = progress > 0.5 ? viewWidth : 0;
+                    }
+                } else if (side === 'right') {
+                    if (-totalDelta < -DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = 0;
+                    } else if (-totalDelta > DEFAULT_TRIGGER_WIDTH) {
+                        destSnapPoint = viewWidth;
+                    } else {
+                        const endOffsetX = viewX + totalDelta;
+                        const progress = Math.abs(endOffsetX / viewWidth);
+                        destSnapPoint = progress > 0.5 ? viewWidth : 0;
+                    }
+                }
+            } else {
+                const viewHeight = this.viewHeight[side];
+                const viewY = this.translationY[side] - viewHeight;
+                const y = translationY - this.prevDeltaY;
+                this.prevDeltaY = 0;
+                const totalDelta = y + dragToss * velocityY;
+
+                if (side === 'top') {
+                    if (totalDelta < -DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = 0;
+                    } else if (totalDelta > DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = viewHeight;
+                    } else {
+                        const endOffsetY = viewY + totalDelta;
+                        const progress = Math.abs(endOffsetY / viewHeight);
+                        destSnapPoint = progress > 0.5 ? viewHeight : 0;
+                    }
+                } else if (side === 'bottom') {
+                    if (-totalDelta < -DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = 0;
+                    } else if (-totalDelta > DEFAULT_TRIGGER_HEIGHT) {
+                        destSnapPoint = viewHeight;
+                    } else {
+                        const endOffsetY = viewY + totalDelta;
+                        const progress = Math.abs(endOffsetY / viewHeight);
+                        destSnapPoint = progress > 0.5 ? viewHeight : 0;
+                    }
+                }
+            }
+
+            this.animateToPosition(side, destSnapPoint);
         }
     }
-    disposeNativeView() {
-        super.disposeNativeView();
-        this.backDrop.off('tap', this.onBackdropTap, this);
-        if (this.panGestureHandler) {
-            this.panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
-            this.panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
-            this.panGestureHandler.detachFromView();
-            this.panGestureHandler = null;
+    onGestureTouch(args: GestureTouchEventData) {
+        const data = args.data;
+        const side = this.showingSide || this.needToSetSide;
+        // console.log('onGestureTouch', data.state, side);
+        if (data.state !== GestureState.ACTIVE || !side) {
+            return;
+        }
+        if (side === 'left' || side === 'right') {
+            const deltaX = data.extraData.translationX;
+            if (this.isAnimating || !this.isPanning || deltaX === 0) {
+                this.prevDeltaX = deltaX;
+                return;
+            }
+            if (this.needToSetSide) {
+                this.showingSide = this.needToSetSide;
+                this.needToSetSide = null;
+            }
+            const width = this.viewWidth[side];
+
+            const viewX = this.translationX[side] - width;
+
+            let x = deltaX - this.prevDeltaX;
+            if (this.showingSide === 'left') {
+                x = -x;
+            }
+            const trX = this.constrainX(this.showingSide, viewX + x);
+
+            this.translationX[side] = width + trX;
+            const trData = this.computeTranslationData(side, width + trX);
+            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            this.applyTrData(trData, side);
+            this.updateIsPanning(data.state);
+            this.prevDeltaX = deltaX;
+        } else {
+            const deltaY = data.extraData.translationY;
+            if (this.isAnimating || !this.isPanning || deltaY === 0) {
+                this.prevDeltaY = deltaY;
+                return;
+            }
+            if (this.needToSetSide) {
+                this.showingSide = this.needToSetSide;
+                this.needToSetSide = null;
+            }
+            const height = this.viewHeight[side];
+
+            const viewY = this.translationY[side] - height;
+
+            let y = deltaY - this.prevDeltaY;
+            if (this.showingSide === 'top') {
+                y = -y;
+            }
+            const trY = this.constrainY(this.showingSide, viewY + y);
+
+            this.translationY[side] = height + trY;
+            const trData = this.computeTranslationData(side, height + trY);
+            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            this.applyTrData(trData, side);
+            this.updateIsPanning(data.state);
+            this.prevDeltaY = deltaY;
         }
     }
     [gestureEnabledProperty.setNative](value) {
@@ -479,178 +629,8 @@ export class Drawer extends GridLayout {
             this.close();
         }
     }
-    onGestureState(args: GestureStateEventData) {
-        const { state, prevState, extraData, view } = args.data;
-        const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
-        const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
-
-        // console.log('onGestureState', prevState, state, this.showingSide, this.needToSetSide, width, height);
-        if (state === GestureState.BEGAN) {
-            if (
-                !this.showingSide &&
-                !(
-                    (this.leftDrawer && extraData.x <= this.leftSwipeDistance) ||
-                    (this.rightDrawer && extraData.x >= width - this.rightSwipeDistance) ||
-                    (this.bottomDrawer && extraData.y >= height - this.bottomSwipeDistance) ||
-                    (this.topDrawer && extraData.y <= this.topSwipeDistance)
-                )
-            ) {
-                args.object.cancel();
-                return;
-            }
-            // this.nativeGestureHandler.cancel();
-        } else if (state === GestureState.ACTIVE && !this.showingSide) {
-            if (this.leftDrawer && extraData.x <= this.leftSwipeDistance) {
-                this.needToSetSide = 'left';
-                this.leftDrawer.visibility = 'visible';
-            } else if (this.rightDrawer && extraData.x >= width - this.rightSwipeDistance) {
-                this.needToSetSide = 'right';
-                this.rightDrawer.visibility = 'visible';
-            } else if (this.bottomDrawer && extraData.y >= height - this.bottomSwipeDistance) {
-                this.needToSetSide = 'bottom';
-                this.bottomDrawer.visibility = 'visible';
-            } else if (this.topDrawer && extraData.y <= this.topSwipeDistance) {
-                this.needToSetSide = 'top';
-                this.topDrawer.visibility = 'visible';
-            }
-        }
-        this.updateIsPanning(state);
-
-        if (prevState === GestureState.ACTIVE) {
-            this.needToSetSide = null;
-            const side = this.showingSide;
-            if (!side) {
-                return;
-            }
-            const { velocityX, velocityY, translationX, translationY } = extraData;
-
-            const dragToss = 0.05;
-
-            let destSnapPoint = 0;
-            if (side === 'left' || side === 'right') {
-                const viewWidth = this.viewWidth[side];
-                const viewX = this.translationX[side] - viewWidth;
-                const x = translationX - this.prevDeltaX;
-                this.prevDeltaX = 0;
-                const totalDelta = x + dragToss * velocityX;
-
-                if (side === 'left') {
-                    if (totalDelta < -DEFAULT_TRIGGER_WIDTH) {
-                        destSnapPoint = 0;
-                    } else if (totalDelta > DEFAULT_TRIGGER_WIDTH) {
-                        destSnapPoint = viewWidth;
-                    } else {
-                        const endOffsetX = viewX + totalDelta;
-                        const progress = Math.abs(endOffsetX / viewWidth);
-                        destSnapPoint = progress > 0.5 ? viewWidth : 0;
-                    }
-                } else if (side === 'right') {
-                    if (-totalDelta < -DEFAULT_TRIGGER_WIDTH) {
-                        destSnapPoint = 0;
-                    } else if (-totalDelta > DEFAULT_TRIGGER_WIDTH) {
-                        destSnapPoint = viewWidth;
-                    } else {
-                        const endOffsetX = viewX + totalDelta;
-                        const progress = Math.abs(endOffsetX / viewWidth);
-                        destSnapPoint = progress > 0.5 ? viewWidth : 0;
-                    }
-                }
-            } else {
-                const viewHeight = this.viewHeight[side];
-                const viewY = this.translationY[side] - viewHeight;
-                const y = translationY - this.prevDeltaY;
-                this.prevDeltaY = 0;
-                const totalDelta = y + dragToss * velocityY;
-
-                if (side === 'top') {
-                    if (totalDelta < -DEFAULT_TRIGGER_HEIGHT) {
-                        destSnapPoint = 0;
-                    } else if (totalDelta > DEFAULT_TRIGGER_HEIGHT) {
-                        destSnapPoint = viewHeight;
-                    } else {
-                        const endOffsetY = viewY + totalDelta;
-                        const progress = Math.abs(endOffsetY / viewHeight);
-                        destSnapPoint = progress > 0.5 ? viewHeight : 0;
-                    }
-                } else if (side === 'bottom') {
-                    if (-totalDelta < -DEFAULT_TRIGGER_HEIGHT) {
-                        destSnapPoint = 0;
-                    } else if (-totalDelta > DEFAULT_TRIGGER_HEIGHT) {
-                        destSnapPoint = viewHeight;
-                    } else {
-                        const endOffsetY = viewY + totalDelta;
-                        const progress = Math.abs(endOffsetY / viewHeight);
-                        destSnapPoint = progress > 0.5 ? viewHeight : 0;
-                    }
-                }
-            }
-
-            this.animateToPosition(side, destSnapPoint);
-        }
-    }
     updateIsPanning(state: GestureState) {
         this.isPanning = state === GestureState.ACTIVE || state === GestureState.BEGAN;
-    }
-    onGestureTouch(args: GestureTouchEventData) {
-        const data = args.data;
-        const side = this.showingSide || this.needToSetSide;
-        // console.log('onGestureTouch', data.state, side);
-        if (data.state !== GestureState.ACTIVE || !side) {
-            return;
-        }
-        if (side === 'left' || side === 'right') {
-            const deltaX = data.extraData.translationX;
-            if (this.isAnimating || !this.isPanning || deltaX === 0) {
-                this.prevDeltaX = deltaX;
-                return;
-            }
-            if (this.needToSetSide) {
-                this.showingSide = this.needToSetSide;
-                this.needToSetSide = null;
-            }
-            const width = this.viewWidth[side];
-
-            const viewX = this.translationX[side] - width;
-
-            let x = deltaX - this.prevDeltaX;
-            if (this.showingSide === 'left') {
-                x = -x;
-            }
-            const trX = this.constrainX(this.showingSide, viewX + x);
-
-            this.translationX[side] = width + trX;
-            const trData = this.computeTranslationData(side, width + trX);
-            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
-            this.applyTrData(trData, side);
-            this.updateIsPanning(data.state);
-            this.prevDeltaX = deltaX;
-        } else {
-            const deltaY = data.extraData.translationY;
-            if (this.isAnimating || !this.isPanning || deltaY === 0) {
-                this.prevDeltaY = deltaY;
-                return;
-            }
-            if (this.needToSetSide) {
-                this.showingSide = this.needToSetSide;
-                this.needToSetSide = null;
-            }
-            const height = this.viewHeight[side];
-
-            const viewY = this.translationY[side] - height;
-
-            let y = deltaY - this.prevDeltaY;
-            if (this.showingSide === 'top') {
-                y = -y;
-            }
-            const trY = this.constrainY(this.showingSide, viewY + y);
-
-            this.translationY[side] = height + trY;
-            const trData = this.computeTranslationData(side, height + trY);
-            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
-            this.applyTrData(trData, side);
-            this.updateIsPanning(data.state);
-            this.prevDeltaY = deltaY;
-        }
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
