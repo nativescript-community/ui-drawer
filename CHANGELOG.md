@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/nativescript-community/ui-drawer/compare/v0.0.23...v0.0.24) (2021-02-22)
+
+
+### Features
+
+* added leftClosedDrawerAllowDraging and other to disable drag to open ([e59230e](https://github.com/nativescript-community/ui-drawer/commit/e59230e15f4abbeac062215f17d7cd20631119ab))
+
+
+
+
+
 ## [0.0.23](https://github.com/nativescript-community/ui-drawer/compare/v0.0.22...v0.0.23) (2021-01-29)
 
 
