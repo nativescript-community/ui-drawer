@@ -109,6 +109,10 @@ export class Drawer extends GridLayout {
     public rightOpenedDrawerAllowDraging = true;
     public bottomOpenedDrawerAllowDraging = true;
     public topOpenedDrawerAllowDraging = true;
+    public leftClosedDrawerAllowDraging = true;
+    public rightClosedDrawerAllowDraging = true;
+    public bottomClosedDrawerAllowDraging = true;
+    public topClosedDrawerAllowDraging = true;
     public panGestureHandler: PanGestureHandler;
     public gestureEnabled = true;
 
@@ -198,18 +202,21 @@ export class Drawer extends GridLayout {
                 }
             }
             return this.backDrop.opacity !== 0;
-        } else if (this.leftDrawer && data.x <= this.leftSwipeDistance) {
-            this.needToSetSide = 'left';
-            return true;
-        } else if (this.rightDrawer && data.x >= width - this.rightSwipeDistance) {
-            this.needToSetSide = 'right';
-            return true;
-        } else if (this.bottomDrawer && data.y >= height - this.bottomSwipeDistance) {
-            this.needToSetSide = 'bottom';
-            return true;
-        } else if (this.topDrawer && data.y <= this.topSwipeDistance) {
-            this.needToSetSide = 'top';
-            return true;
+        } else {
+            let needToSetSide;
+            if (this.leftDrawer && data.x <= this.leftSwipeDistance) {
+                needToSetSide = 'left';
+            } else if (this.rightDrawer && data.x >= width - this.rightSwipeDistance) {
+                needToSetSide = 'right';
+            } else if (this.bottomDrawer && data.y >= height - this.bottomSwipeDistance) {
+                needToSetSide = 'bottom';
+            } else if (this.topDrawer && data.y <= this.topSwipeDistance) {
+                needToSetSide = 'top';
+            }
+            if (needToSetSide && this[needToSetSide + 'ClosedDrawerAllowDraging']) {
+                this.needToSetSide = needToSetSide;
+                return true;
+            }
         }
         return false;
     }
