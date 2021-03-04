@@ -43,6 +43,8 @@ install();
 | ------------------- | --------------------------------- | --------------------------- | ------------------------------------------------------- |
 | leftDrawer          | `undefined`                       | `View`                      | View containing the content for the left side drawer    |
 | rightDrawer         | `undefined`                       | `View`                      | View containing the content for the right side drawer   |
+| topDrawer          | `undefined`                       | `View`                      | View containing the content for the top side drawer    |
+| bottomDrawer         | `undefined`                       | `View`                      | View containing the content for the bottom side drawer   |
 | mainContent         | `undefined`                       | `View`                      | View containing the main content of the app             |
 | gestureEnabled      | `true`                            | `boolean`                   | Boolean setting if swipe gestures are enabled           |
 | backdropColor       | `new Color('rgba(0, 0, 0, 0.7)')` | `Color`                     | The color of the backdrop behind the drawer             |
@@ -68,6 +70,13 @@ install();
 | close()      | `void` | Programatically close the drawer                |
 | toggle()     | `void` | Programatically toggle the state of the drawer  |
 | install()    | `void` | Install gestures                                |
+
+### Events
+
+| Name      | Event Data         | Description                  |
+| --------- | ------------------ | ---------------------------- |
+| open      | `side`, `duration` | Drawer opens                 |
+| close     | `side`, `duration` | Drawer closes                |
 
 ## Usage in Angular
 Import the module into your project.
@@ -107,7 +116,7 @@ For a more complete example, look in the `demo-ng` directory.
 Register the plugin in your `app.js`.
 
 ```typescript
-import DrawerPlugin from '~/components/drawer/vue';
+import DrawerPlugin from '@nativescript-community/ui-drawer/vue'
 Vue.use(DrawerPlugin);
 ```
 
