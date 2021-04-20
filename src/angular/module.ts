@@ -4,6 +4,8 @@ import { Drawer } from '@nativescript-community/ui-drawer';
 
 const LEFTDRAWER: string = 'LeftDrawer';
 const RIGHTDRAWER: string = 'RightDrawer';
+const TOPDRAWER: string = 'TopDrawer';
+const BOTTOMDRAWER: string = 'BottomDrawer';
 const MAINCONTENT: string = 'MainContent';
 
 export interface ItemEventArgs {
@@ -70,6 +72,30 @@ export class RightDrawerDirective {
 }
 
 /**
+ * Directive identifying the right drawer
+ */
+@Directive({
+    selector: '[topDrawer]',
+})
+export class TopDrawerDirective {
+    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
+        this._elementRef.nativeElement.id = TOPDRAWER;
+    }
+}
+
+/**
+ * Directive identifying the right drawer
+ */
+@Directive({
+    selector: '[bottomDrawer]',
+})
+export class BottomDrawerDirective {
+    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
+        this._elementRef.nativeElement.id = BOTTOMDRAWER;
+    }
+}
+
+/**
  * Directive identifying the main content.
  */
 @Directive({
@@ -96,6 +122,12 @@ const sideDrawerMeta: ViewClassMeta = {
         if (childView.id === RIGHTDRAWER) {
             drawer.rightDrawer = childView;
         }
+        if (childView.id === TOPDRAWER) {
+            drawer.topDrawer = childView;
+        }
+        if (childView.id === BOTTOMDRAWER) {
+            drawer.bottomDrawer = childView;
+        }
     },
     removeChild: (parent: NgView, child: NgView) => {
         const drawer = (parent as any) as Drawer;
@@ -111,13 +143,19 @@ const sideDrawerMeta: ViewClassMeta = {
         if (childView.id === RIGHTDRAWER) {
             drawer.rightDrawer = null;
         }
+        if (childView.id === TOPDRAWER) {
+            drawer.topDrawer = null;
+        }
+        if (childView.id === BOTTOMDRAWER) {
+            drawer.bottomDrawer = null;
+        }
     },
 };
 
 /**
  * Directives identifying the Drawer.
  */
-export const SIDEDRAWER_DIRECTIVES = [LeftDrawerDirective, RightDrawerDirective, MainContentDirective];
+export const SIDEDRAWER_DIRECTIVES = [LeftDrawerDirective, RightDrawerDirective, TopDrawerDirective, BottomDrawerDirective, MainContentDirective];
 
 registerElement('Drawer', () => Drawer, sideDrawerMeta);
 
