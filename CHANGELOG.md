@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/nativescript-community/ui-drawer/compare/v0.0.24...v0.0.25) (2021-04-20)
+
+
+### Features
+
+* support top/bottom in Angular ([79ea1b7](https://github.com/nativescript-community/ui-drawer/commit/79ea1b766fb918a26e22e00a7b6c72b2cf001ece))
+
+
+
+
+
 ## [0.0.24](https://github.com/nativescript-community/ui-drawer/compare/v0.0.23...v0.0.24) (2021-02-22)
 
 
