@@ -7,7 +7,7 @@ import {
     HandlerType,
     Manager,
     PanGestureHandler,
-    install as installGestures,
+    install as installGestures
 } from '@nativescript-community/gesturehandler';
 import { Animation, AnimationDefinition, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 import { AnimationCurve } from '@nativescript/core/ui/enums';
@@ -17,7 +17,6 @@ const CLOSE_DURATION = 200;
 export const PAN_GESTURE_TAG = 12431;
 const DEFAULT_TRIGGER_WIDTH = 20;
 const DEFAULT_TRIGGER_HEIGHT = 20;
-const SWIPE_DISTANCE_MINIMUM = 70;
 
 function transformAnimationValues(values) {
     values.translate = { x: values.translateX || 0, y: values.translateY || 0 };
@@ -42,52 +41,52 @@ export const leftDrawerContentProperty = new Property<Drawer, View>({
     defaultValue: undefined,
     valueChanged: (target, oldValue, newValue) => {
         target._onDrawerContentChanged('left', oldValue, newValue);
-    },
+    }
 });
 export const rightDrawerContentProperty = new Property<Drawer, View>({
     name: 'rightDrawer',
     defaultValue: undefined,
     valueChanged: (target, oldValue, newValue) => {
         target._onDrawerContentChanged('right', oldValue, newValue);
-    },
+    }
 });
 export const topDrawerContentProperty = new Property<Drawer, View>({
     name: 'topDrawer',
     defaultValue: undefined,
     valueChanged: (target, oldValue, newValue) => {
         target._onDrawerContentChanged('top', oldValue, newValue);
-    },
+    }
 });
 export const bottomDrawerContentProperty = new Property<Drawer, View>({
     name: 'bottomDrawer',
     defaultValue: undefined,
     valueChanged: (target, oldValue, newValue) => {
         target._onDrawerContentChanged('bottom', oldValue, newValue);
-    },
+    }
 });
 export const gestureEnabledProperty = new Property<Drawer, boolean>({
     name: 'gestureEnabled',
     defaultValue: true,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 export const backdropColorProperty = new Property<Drawer, Color>({
     name: 'backdropColor',
-    valueConverter: (c) => (c ? new Color(c) : null),
+    valueConverter: (c) => (c ? new Color(c) : null)
 });
 export const leftDrawerModeProperty = new Property<Drawer, Mode>({
-    name: 'leftDrawerMode',
+    name: 'leftDrawerMode'
 });
 export const rightDrawerModeProperty = new Property<Drawer, Mode>({
-    name: 'rightDrawerMode',
+    name: 'rightDrawerMode'
 });
 export const topDrawerModeProperty = new Property<Drawer, Mode>({
-    name: 'topDrawerMode',
+    name: 'topDrawerMode'
 });
 export const bottomDrawerModeProperty = new Property<Drawer, Mode>({
-    name: 'bottomDrawerMode',
+    name: 'bottomDrawerMode'
 });
 export const translationFunctionProperty = new Property<Drawer, Function>({
-    name: 'translationFunction',
+    name: 'translationFunction'
 });
 
 @CSSType('Drawer')
@@ -100,6 +99,7 @@ export class Drawer extends GridLayout {
     public backDrop: View;
 
     public gestureMinDist = 10;
+    public waitFor = undefined;
     public leftSwipeDistance = 40;
     public rightSwipeDistance = 40;
     public bottomSwipeDistance = 40;
@@ -160,7 +160,8 @@ export class Drawer extends GridLayout {
         const manager = Manager.getInstance();
         const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
             shouldStartGesture: this.shouldStartGesture.bind(this),
-            minDist: this.gestureMinDist,
+            waitFor: this.waitFor,
+            minDist: this.gestureMinDist
         });
         gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
@@ -536,28 +537,28 @@ export class Drawer extends GridLayout {
             if (this.modes[side] === 'under') {
                 return {
                     mainContent: {
-                        translateX: side === 'right' ? -delta : delta,
+                        translateX: side === 'right' ? -delta : delta
                     },
                     [side + 'Drawer']: {
-                        translateX: 0,
+                        translateX: 0
                     },
                     backDrop: {
                         translateX: side === 'right' ? -delta : delta,
-                        opacity: progress,
-                    },
+                        opacity: progress
+                    }
                 };
             } else {
                 return {
                     mainContent: {
-                        translateX: 0,
+                        translateX: 0
                     },
                     [side + 'Drawer']: {
-                        translateX: side === 'left' ? -value : value,
+                        translateX: side === 'left' ? -value : value
                     },
                     backDrop: {
                         translateX: 0,
-                        opacity: progress,
-                    },
+                        opacity: progress
+                    }
                 };
             }
         } else {
@@ -570,28 +571,28 @@ export class Drawer extends GridLayout {
             if (this.modes[side] === 'under') {
                 return {
                     mainContent: {
-                        translateY: side === 'bottom' ? -delta : delta,
+                        translateY: side === 'bottom' ? -delta : delta
                     },
                     [side + 'Drawer']: {
-                        translateY: 0,
+                        translateY: 0
                     },
                     backDrop: {
                         translateY: side === 'bottom' ? -delta : delta,
-                        opacity: progress,
-                    },
+                        opacity: progress
+                    }
                 };
             } else {
                 return {
                     mainContent: {
-                        translateY: 0,
+                        translateY: 0
                     },
                     [side + 'Drawer']: {
-                        translateY: side === 'top' ? -value : value,
+                        translateY: side === 'top' ? -value : value
                     },
                     backDrop: {
                         translateY: 0,
-                        opacity: progress,
-                    },
+                        opacity: progress
+                    }
                 };
             }
         }
@@ -706,7 +707,7 @@ export class Drawer extends GridLayout {
                         {
                             target: this[k],
                             curve: AnimationCurve.easeInOut,
-                            duration,
+                            duration
                         },
                         transformAnimationValues(trData[k])
                     )
@@ -802,7 +803,7 @@ export const mainContentProperty = new Property<Drawer, View>({
     defaultValue: undefined,
     valueChanged: (target, oldValue, newValue) => {
         target._onMainContentChanged(oldValue, newValue);
-    },
+    }
 });
 
 mainContentProperty.register(Drawer);
