@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/nativescript-community/ui-drawer/compare/v0.0.26...v0.0.27) (2021-04-21)
+
+
+### Bug Fixes
+
+* more options for the gesture handling ([e18b815](https://github.com/nativescript-community/ui-drawer/commit/e18b8157a783f5bad17f7e5b58bcc1e1de595ce7))
+
+
+
+
+
 ## [0.0.26](https://github.com/nativescript-community/ui-drawer/compare/v0.0.25...v0.0.26) (2021-04-21)
 
 
