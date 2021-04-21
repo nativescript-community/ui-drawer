@@ -100,6 +100,9 @@ export class Drawer extends GridLayout {
 
     public gestureMinDist = 10;
     public waitFor = [];
+    public simultaneousHandlers = [];
+    public shouldStartSheetDragging?: (side: Side | VerticalSide) => boolean;
+    public shouldPan?: (side: Side | VerticalSide) => boolean;
     public leftSwipeDistance = 40;
     public rightSwipeDistance = 40;
     public bottomSwipeDistance = 40;
@@ -160,6 +163,7 @@ export class Drawer extends GridLayout {
         const manager = Manager.getInstance();
         const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
             shouldStartGesture: this.shouldStartGesture.bind(this),
+            simultaneousHandlers: this.simultaneousHandlers,
             waitFor: this.waitFor,
             minDist: this.gestureMinDist
         });
@@ -186,6 +190,14 @@ export class Drawer extends GridLayout {
         }
     }
 
+    shouldStartSheetDraggingInternal(side: Side | VerticalSide) {
+        let result = this[side + 'OpenedDrawerAllowDraging'];
+        if (result && this.shouldStartSheetDragging) {
+            result = this.shouldStartSheetDragging(side);
+        }
+        return result;
+    }
+
     shouldStartGesture(data) {
         const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
         const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
@@ -194,12 +206,12 @@ export class Drawer extends GridLayout {
             if (side === 'left' || side === 'right') {
                 const viewWidth = this.viewWidth[side];
                 if ((side === 'left' && data.x <= viewWidth) || (side === 'right' && data.x >= width - viewWidth)) {
-                    return this[side + 'OpenedDrawerAllowDraging'];
+                    return this.shouldStartSheetDraggingInternal(side);
                 }
             } else {
                 const viewHeight = this.viewHeight[side];
                 if ((side === 'top' && data.y <= viewHeight) || (side === 'bottom' && data.y >= height - viewHeight)) {
-                    return this[side + 'OpenedDrawerAllowDraging'];
+                    return this.shouldStartSheetDraggingInternal(side);
                 }
             }
             return this.backDrop.opacity !== 0;
@@ -239,7 +251,7 @@ export class Drawer extends GridLayout {
         if (prevState === GestureState.ACTIVE) {
             this.needToSetSide = null;
             const side = this.showingSide;
-            if (!side) {
+            if (!side || (this.shouldPan && !this.shouldPan(side))) {
                 return;
             }
             const { velocityX, velocityY, translationX, translationY } = extraData;
@@ -317,7 +329,7 @@ export class Drawer extends GridLayout {
         }
         if (side === 'left' || side === 'right') {
             const deltaX = data.extraData.translationX;
-            if (this.isAnimating || !this.isPanning || deltaX === 0) {
+            if (this.isAnimating || !this.isPanning || deltaX === 0 || (this.shouldPan && !this.shouldPan(side))) {
                 this.prevDeltaX = deltaX;
                 return;
             }
@@ -343,7 +355,7 @@ export class Drawer extends GridLayout {
             this.prevDeltaX = deltaX;
         } else {
             const deltaY = data.extraData.translationY;
-            if (this.isAnimating || !this.isPanning || deltaY === 0) {
+            if (this.isAnimating || !this.isPanning || deltaY === 0 || (this.shouldPan && !this.shouldPan(side))) {
                 this.prevDeltaY = deltaY;
                 return;
             }
