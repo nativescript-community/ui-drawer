@@ -99,7 +99,7 @@ export class Drawer extends GridLayout {
     public backDrop: View;
 
     public gestureMinDist = 10;
-    public waitFor = undefined;
+    public waitFor = [];
     public leftSwipeDistance = 40;
     public rightSwipeDistance = 40;
     public bottomSwipeDistance = 40;
