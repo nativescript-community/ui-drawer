@@ -9,7 +9,7 @@ import {
     PanGestureHandler,
     install as installGestures
 } from '@nativescript-community/gesturehandler';
-import { Animation, AnimationDefinition, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
+import { Animation, AnimationDefinition, Application, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 import { AnimationCurve } from '@nativescript/core/ui/enums';
 installGestures(false);
 const OPEN_DURATION = 200;
@@ -626,7 +626,8 @@ export class Drawer extends GridLayout {
                 this.translationX[side] = width - shown;
             }
         } else {
-            const height = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()));
+            const safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
             if (this.translationY[side] === 0) {
                 this.viewHeight[side] = height;
                 data = this.computeTranslationData(side, height);
