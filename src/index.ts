@@ -614,7 +614,9 @@ export class Drawer extends GridLayout {
         // console.log('onLayoutChange', side, width);
         let data;
         if (side === 'left' || side === 'right') {
-            const width = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()));
+            // iOS: left and right safeAreaInsets are equal in landscape mode. Using left inset value.
+            const safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.left : 0;
+            const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
             if (this.translationX[side] === 0) {
                 this.viewWidth[side] = width;
                 data = this.computeTranslationData(side, width);
