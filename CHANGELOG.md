@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/nativescript-community/ui-drawer/compare/v0.0.25...v0.0.26) (2021-04-21)
+
+
+### Bug Fixes
+
+* iOS initialize ([f2eb71a](https://github.com/nativescript-community/ui-drawer/commit/f2eb71ad4a0d008bd9dce57add3939a6da021215))
+
+
+
+
+
 ## [0.0.25](https://github.com/nativescript-community/ui-drawer/compare/v0.0.24...v0.0.25) (2021-04-20)
 
 
