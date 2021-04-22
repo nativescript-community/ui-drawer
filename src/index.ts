@@ -9,7 +9,7 @@ import {
     PanGestureHandler,
     install as installGestures
 } from '@nativescript-community/gesturehandler';
-import { Animation, AnimationDefinition, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
+import { Animation, AnimationDefinition, Application, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 import { AnimationCurve } from '@nativescript/core/ui/enums';
 installGestures(false);
 const OPEN_DURATION = 200;
@@ -613,8 +613,17 @@ export class Drawer extends GridLayout {
         const contentView = event.object as GridLayout;
         // console.log('onLayoutChange', side, width);
         let data;
+        let safeAreaOffset = 0;
         if (side === 'left' || side === 'right') {
-            const width = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()));
+            if (global.isIOS) {
+                const deviceOrientation = UIDevice.currentDevice.orientation;
+                if (deviceOrientation === UIDeviceOrientation.LandscapeLeft) {
+                    safeAreaOffset = Application.ios.window.safeAreaInsets.left;
+                } else if (deviceOrientation === UIDeviceOrientation.LandscapeRight) {
+                    safeAreaOffset = Application.ios.window.safeAreaInsets.right;
+                }
+            }
+            const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
             if (this.translationX[side] === 0) {
                 this.viewWidth[side] = width;
                 data = this.computeTranslationData(side, width);
@@ -626,7 +635,8 @@ export class Drawer extends GridLayout {
                 this.translationX[side] = width - shown;
             }
         } else {
-            const height = Math.round(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()));
+            safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
             if (this.translationY[side] === 0) {
                 this.viewHeight[side] = height;
                 data = this.computeTranslationData(side, height);
