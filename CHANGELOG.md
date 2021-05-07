@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/nativescript-community/ui-drawer/compare/v0.0.27...v0.0.28) (2021-05-07)
+
+
+### Bug Fixes
+
+* calculate height w/ safe area included ([f11265b](https://github.com/nativescript-community/ui-drawer/commit/f11265b62e3da78a725b2542d806ae3de2895ae6))
+* check orientation ([71523f6](https://github.com/nativescript-community/ui-drawer/commit/71523f68943a967729d0a6f4d867898b38ca018d))
+* safe area bug in landscape ([e9f6e97](https://github.com/nativescript-community/ui-drawer/commit/e9f6e971aaf7454f802ee8a09803530e34175ada))
+* update vue demo ([257fbe1](https://github.com/nativescript-community/ui-drawer/commit/257fbe196af1297208f4a578dbb94ca0f786a631))
+
+
+
+
+
 ## [0.0.27](https://github.com/nativescript-community/ui-drawer/compare/v0.0.26...v0.0.27) (2021-04-21)
 
 
