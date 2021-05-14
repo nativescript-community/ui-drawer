@@ -19,19 +19,20 @@
         "noImplicitReturns": true,
         "noImplicitUseStrict": true,
         "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
         "sourceRoot": "../src",
         "baseUrl": ".",
         "outDir": "./plugin",
         "paths": {
             "tns-core-modules": ["./node_modules/@nativescript/core"],
             "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
-            "@nativescript-community/ui-drawer": ["src/image"],
+            "@nativescript-community/ui-drawer": ["src/plugin"],
             "@nativescript-community/ui-drawer/*": ["src/*"],
             "*": ["node_modules/*"]
         },
         "plugins": [{ "transform": "./node_modules/@nativescript/webpack/transformers/ns-transform-native-classes", "type": "raw" }]
     },
     "include": ["src/**/*", "./references.d.ts"],
-    "exclude": ["node_modules", "platforms", "src/angular/**/*"],
+    "exclude": ["node_modules", "platforms", "src/angular", "demo-svelte", "demo-vue", "demo-ng", "demo-react"],
     "compileOnSave": false
 }
