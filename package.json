@@ -1,38 +1,71 @@
 {
     "name": "@nativescript-community/ui-drawer",
     "version": "1.0.0",
+    "homepage": "https://github.com/nativescript-community/ui-drawer#readme",
+    "bugs": {
+        "url": "https://github.com/nativescript-community/ui-drawer/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nativescript-community/ui-drawer.git"
+    },
+    "license": "ISC",
+    "author": "",
     "scripts": {
         "setup": "ts-patch install",
         "prepare": "npm run setup",
         "build.angular": "ng-packagr -p src/angular/package.json -c src/angular/tsconfig.json",
-        "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map plugin/node_modules plugin/package-lock.json plugin/README.md demo/node_modules demo-angular/node_modules",
+        "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map node_modules package-lock.json",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
-        "build": "cp README.md ./plugin && rm -f .tsbuildinfo && npm run tsc ",
-        "publish": "npm run setup && npm run build && npm run build.angular && lerna publish --create-release=github --force-publish",
-        "commitmsg": "commitlint -e $GIT_PARAMS"
+        "build": "rm -f .tsbuildinfo && npm run tsc",
+        "publish": "npm run setup && npm run build && lerna publish --create-release=github --force-publish",
+        "commitmsg": "commitlint -e $GIT_PARAMS",
+        "build.all": "npm run build && npm run build.angular",
+        "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr",
+        "demo.ng.ios": "cd ./demo-ng && ns run ios --no-hmr",
+        "demo.react.android": "cd ./demo-react && ns run android --no-hmr",
+        "demo.react.ios": "cd ./demo-react && ns run ios --no-hmr",
+        "demo.svelte.android": "cd ./demo-svelte && ns run android --no-hmr",
+        "demo.svelte.ios": "cd ./demo-svelte && ns run ios --no-hmr",
+        "demo.vue.android": "cd ./demo-vue && ns run android --no-hmr",
+        "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr",
+        "doc": "typedoc --out docs --tsconfig tsconfig.doc.json --includeDeclarations --excludeExternals --mode file --ignoreCompilerErrors --excludeNotExported --excludePrivate --theme minimal",
+        "postinstall": "npm run setup",
+        "start": "./node_modules/.bin/ntl -A -s 15 -o",
+        "sync": "node ./tools/sync.js -w && npx sort-package-json",
+        "sync.test": "node ./tools/sync.js",
+        "watch": "npm run tsc -- -w"
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "dependencies": {
+        "ts-node": "^8.10.2"
     },
     "devDependencies": {
-        "@angular/animations": "~10.1.5",
-        "@angular/common": "~10.1.5",
-        "@angular/compiler": "~10.1.5",
-        "@angular/compiler-cli": "~10.1.5",
-        "@angular/core": "~10.1.5",
-        "@angular/forms": "~10.1.5",
-        "@angular/platform-browser": "~10.1.5",
-        "@angular/platform-browser-dynamic": "~10.1.5",
-        "@angular/router": "~10.1.5",
-        "@commitlint/cli": "^11.0.0",
-        "@commitlint/config-conventional": "^11.0.0",
+        "@angular/animations": "~11.2.14",
+        "@angular/common": "~11.2.14",
+        "@angular/compiler": "~11.2.14",
+        "@angular/compiler-cli": "~11.2.14",
+        "@angular/core": "~11.2.14",
+        "@angular/forms": "~11.2.14",
+        "@angular/platform-browser": "~11.2.14",
+        "@angular/platform-browser-dynamic": "~11.2.14",
+        "@angular/router": "~11.2.14",
+        "@commitlint/cli": "~12.1.4",
+        "@commitlint/config-conventional": "~12.1.4",
         "@nativescript-community/gesturehandler": "^0.1.35",
         "@nativescript-community/ui-drawer": "file:plugin",
-        "@nativescript/angular": "10.1.7",
-        "@nativescript/core": "7.0.13",
-        "@nativescript/ios": "7.0.4",
-        "@nativescript/types-android": "~7.0.4",
-        "@nativescript/types-ios": "~7.0.4",
-        "@nativescript/webpack": "3.0.8",
+        "@nativescript/angular": "~11.8.1",
+        "@nativescript/core": "~8.0.5",
+        "@nativescript/ios": "~8.0.0",
+        "@nativescript/types-android": "~8.0.1",
+        "@nativescript/types-ios": "~8.0.1",
+        "@nativescript/webpack": "~4.1.0",
         "@types/node": "14.11.8",
-        "@types/react": "16.9.34",
+        "@types/react": "16.9.56",
         "@typescript-eslint/eslint-plugin": "4.6.0",
         "@typescript-eslint/parser": "4.6.0",
         "cpy-cli": "^3.1.1",
@@ -41,35 +74,20 @@
         "eslint-plugin-prettier": "^3.1.4",
         "husky": "^4.3.0",
         "lerna": "^3.22.1",
-        "ng-packagr": "~10.1.2",
+        "ng-packagr": "~11.2.4",
+        "ntl": "^5.1.0",
+        "package-json-merge": "0.0.1",
         "prettier": "^2.1.2",
-        "prompt": "^1.0.0",
-        "react-nativescript": "^2.1.0",
-        "rimraf": "^3.0.2",
-        "rxjs": "^6.6.3",
-        "svelte-native": "0.9.4",
-        "ts-patch": "^1.3.0",
-        "tslib": "2.0.3",
-        "typescript": "3.9.7",
-        "zone.js": "0.11.1",
-        "vue": "^2.6.12"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/nativescript-community/ui-drawer.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/nativescript-community/ui-drawer/issues"
-    },
-    "homepage": "https://github.com/nativescript-community/ui-drawer#readme",
-    "commitlint": {
-        "extends": [
-            "@commitlint/config-conventional"
-        ]
-    },
-    "dependencies": {
-        "ts-node": "^8.10.2"
+        "prompt": "~1.1.0",
+        "react-nativescript": "3.0.0-beta.1",
+        "rimraf": "~3.0.2",
+        "rxjs": "~6.5.3",
+        "svelte-native": "1.0.0-beta.0",
+        "ts-patch": "~1.3.3",
+        "tslib": "2.2.0",
+        "typedoc": "~0.20.36",
+        "typescript": "~4.0.6",
+        "vue": "~2.6.12",
+        "zone.js": "~0.11.4"
     }
 }
