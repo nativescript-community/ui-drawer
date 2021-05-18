@@ -36,6 +36,7 @@ devices.js
 **/*.js.map
 src/**/*.js
 plugin/**/*.js
+plugin/**/*.json
 plugin/**/*.d.ts
 bin
 build

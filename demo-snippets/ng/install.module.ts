@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
-import { NativeScriptVersionNumberModule } from '@nativescript-community/plugin-seed/angular';
+import { DrawerModule } from "@nativescript-community/ui-drawer/angular";
 
 import { Demo1Component } from './demo1/demo1.component';
 import { Demo2Component } from './demo2/demo2.component';
@@ -8,8 +8,8 @@ import { DevelopmentComponent } from './development/development.component';
 
 export const COMPONENTS = [Demo1Component, Demo2Component, DevelopmentComponent];
 @NgModule({
-    imports: [NativeScriptVersionNumberModule],
-    exports: [NativeScriptVersionNumberModule],
+    imports: [DrawerModule],
+    exports: [DrawerModule],
     schemas: [NO_ERRORS_SCHEMA]
 })
 export class InstallModule {}

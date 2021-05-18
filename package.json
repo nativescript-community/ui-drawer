@@ -14,13 +14,13 @@
     "scripts": {
         "setup": "ts-patch install",
         "prepare": "npm run setup",
+        "build": "rm -f .tsbuildinfo && npm run tsc",
         "build.angular": "ng-packagr -p src/angular/package.json -c src/angular/tsconfig.json",
+        "build.all": "npm run build && npm run build.angular",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map node_modules package-lock.json",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
-        "build": "rm -f .tsbuildinfo && npm run tsc",
         "publish": "npm run setup && npm run build && lerna publish --create-release=github --force-publish",
         "commitmsg": "commitlint -e $GIT_PARAMS",
-        "build.all": "npm run build && npm run build.angular",
         "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr",
         "demo.ng.ios": "cd ./demo-ng && ns run ios --no-hmr",
         "demo.react.android": "cd ./demo-react && ns run android --no-hmr",
@@ -65,7 +65,7 @@
         "@nativescript/types-ios": "~8.0.1",
         "@nativescript/webpack": "~4.1.0",
         "@types/node": "14.11.8",
-        "@types/react": "16.9.56",
+        "@types/react": "16.9.34",
         "@typescript-eslint/eslint-plugin": "4.6.0",
         "@typescript-eslint/parser": "4.6.0",
         "cpy-cli": "^3.1.1",
@@ -74,9 +74,11 @@
         "eslint-plugin-prettier": "^3.1.4",
         "husky": "^4.3.0",
         "lerna": "^3.22.1",
+        "nativescript-vue": "~2.9.0",
         "ng-packagr": "~11.2.4",
         "ntl": "^5.1.0",
         "package-json-merge": "0.0.1",
+        "patch-package": "~6.2.2",
         "prettier": "^2.1.2",
         "prompt": "~1.1.0",
         "react-nativescript": "3.0.0-beta.1",
@@ -89,5 +91,22 @@
         "typescript": "~4.0.6",
         "vue": "~2.6.12",
         "zone.js": "~0.11.4"
+    },
+    "ntl": {
+        "descriptions": {
+            "build": "Build the plugin",
+            "build.angular": "Build the plugin for Angular",
+            "build.all": "Build the plugin for all platforms",
+            "clean": "Clean the local environment.",
+            "demo.ng.android": "Runs the Angular demo on Android.",
+            "demo.ng.ios": "Runs the Angular demo on iOS.",
+            "demo.react.android": "Runs the React demo on Android.",
+            "demo.react.ios": "Runs the React demo on iOS.",
+            "demo.svelte.android": "Runs the Svelte demo on Android.",
+            "demo.svelte.ios": "Runs the Svelte demo on iOS.",
+            "demo.vue.android": "Runs the Vue demo on Android.",
+            "demo.vue.ios": "Runs the Vue demo on iOS.",
+            "watch": "Watch for changes in the plugin source and re-build."
+        }
     }
 }

@@ -1,11 +1,13 @@
-import { register } from '@nativescript-community/plugin-seed/react';
+import * as drawer from '@nativescript-community/ui-drawer';
+import { registerDrawer } from "@nativescript-community/ui-drawer/react";
 
 import { Demo1 } from './Demo1';
 import { Demo2 } from './Demo2';
 import { Development } from './Development';
 
 export function install() {
-    register();
+    drawer.install();
+    registerDrawer();
 }
 
 export const demos = [

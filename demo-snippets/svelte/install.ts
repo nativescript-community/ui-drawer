@@ -1,11 +1,15 @@
-import VersionNumber from '@nativescript-community/plugin-seed/svelte';
-
 import Demo1 from './Demo1.svelte';
 import Demo2 from './Demo2.svelte';
 import Development from './Development.svelte';
 
+import * as drawer from '@nativescript-community/ui-drawer';
+install();
+
+import DrawerElement from '@nativescript-community/ui-drawer/svelte';
+
 export function install() {
-    VersionNumber.register();
+    drawer.install();
+    DrawerElement.register();
 }
 
 export const demos = [
