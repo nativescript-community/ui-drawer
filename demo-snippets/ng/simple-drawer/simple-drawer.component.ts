@@ -1,13 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { RouterExtensions } from '@nativescript/angular';
-
 import { Drawer } from "@nativescript-community/ui-drawer";
+
 @Component({
-    selector: 'ns-demo1',
-    templateUrl: './demo1.component.html',
-    styleUrls: ["./demo1.component.css"]
+    selector: 'ns-simple-drawer',
+    templateUrl: './simple-drawer.component.html',
+    styleUrls: ["./simple-drawer.component.css"]
 })
-export class Demo1Component implements OnInit {
+export class SimpleDrawerComponent implements OnInit {
     drawer: Drawer;
 
     @ViewChild("drawer", { static: true }) drawerElementRef: ElementRef;

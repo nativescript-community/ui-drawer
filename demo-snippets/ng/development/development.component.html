@@ -4,5 +4,30 @@
 </ActionBar>
 
 <StackLayout>
-    <Label text="This is the development demo..."></Label>
+    <Drawer #drawer class="drawer">
+        <GridLayout leftDrawer width="300" backgroundColor="white" rows="auto, *">
+            <StackLayout>
+                <Label text="Left Drawer"></Label>
+                <CollectionView 
+                    [items]="items"  
+                    colWidth="50%" 
+                    rowHeight="200"
+                >
+                    <ng-template let-item="item">
+                        <GridLayout rows="*, auto" [backgroundColor]="item.color" class="item">
+                            <StackLayout row="1">
+                                <Label row="1" [text]="item.name" class="title"></Label>
+                                <Label row="1" [text]="item.color" class="subtitle"></Label>
+                            </StackLayout>
+                        </GridLayout>
+                    </ng-template>
+                </CollectionView>
+            </StackLayout>
+        </GridLayout>
+    
+        <StackLayout mainContent backgroundColor="white" padding="25">
+            <Label textWrap="true" text="This development demo contains specific features that are tested in development."></Label>
+            <Button (tap)="onOpenDrawer()" text="Open Drawer" width="250" marginTop="25"></Button>
+        </StackLayout>
+    </Drawer>
 </StackLayout>

@@ -2,11 +2,11 @@ import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 
 import { DrawerModule } from "@nativescript-community/ui-drawer/angular";
 
-import { Demo1Component } from './demo1/demo1.component';
-import { Demo2Component } from './demo2/demo2.component';
+import { SimpleDrawerComponent } from './simple-drawer/simple-drawer.component';
+import { AllSidesComponent } from './all-sides/all-sides.component';
 import { DevelopmentComponent } from './development/development.component';
 
-export const COMPONENTS = [Demo1Component, Demo2Component, DevelopmentComponent];
+export const COMPONENTS = [SimpleDrawerComponent, AllSidesComponent, DevelopmentComponent];
 @NgModule({
     imports: [DrawerModule],
     exports: [DrawerModule],
@@ -17,8 +17,8 @@ export class InstallModule {}
 export function install() { }
 
 export const demos = [
-    { name: 'Demo 1', path: 'demo1', component: Demo1Component },
-    { name: 'Demo 2', path: 'demo2', component: Demo2Component },
+    { name: 'Simple Drawer', path: 'simple-drawer', component: SimpleDrawerComponent },
+    { name: 'All Sides', path: 'all-sides', component: AllSidesComponent },
     { name: 'Development', path: 'development', component: DevelopmentComponent }
 ];
 

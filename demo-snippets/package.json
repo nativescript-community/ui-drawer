@@ -2,6 +2,7 @@
     "name": "@nativescript-community/template-snippet",
     "version": "0.0.1",
     "dependencies": {
+        "@nativescript-community/ui-collectionview": "~4.0.29",
         "@nativescript-community/ui-drawer": "../plugin",
         "@nativescript-community/gesturehandler": "~0.1.44"
     }

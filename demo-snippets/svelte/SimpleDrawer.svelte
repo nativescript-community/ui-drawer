@@ -39,10 +39,11 @@
 </style>
 
 <page>
-    <actionBar title="Demo 1">
-        <navigationButton text="Go back" on:tap={goBack} />
+    <actionBar title="Simple Drawer">
+        <navigationButton text="Go back" />
     </actionBar>
     <stackLayout>
+
         <drawer bind:this="{drawer}" class="drawer">
             <gridlayout prop:leftDrawer width="300" backgroundColor="white" rows="auto, *">
                 <stacklayout row="0">

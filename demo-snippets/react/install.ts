@@ -1,8 +1,8 @@
 import * as drawer from '@nativescript-community/ui-drawer';
 import { registerDrawer } from "@nativescript-community/ui-drawer/react";
 
-import { Demo1 } from './Demo1';
-import { Demo2 } from './Demo2';
+import { SimpleDrawer } from './SimpleDrawer';
+import { AllSides } from './AllSides';
 import { Development } from './Development';
 
 export function install() {
@@ -11,7 +11,7 @@ export function install() {
 }
 
 export const demos = [
-    { name: 'Demo 1', path: 'demo1', component: Demo1 },
-    { name: 'Demo 2', path: 'demo2', component: Demo2 },
+    { name: 'Simple Drawer', path: 'simple-drawer', component: SimpleDrawer },
+    { name: 'All Sides', path: 'all-sides', component: AllSides },
     { name: 'Development', path: 'development', component: Development }
 ];
