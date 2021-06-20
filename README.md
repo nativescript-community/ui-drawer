@@ -189,9 +189,9 @@ For a more complete example, look in the `demo-react` directory.
 ## Demos
 This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
 ```shell
-$ git clone https://github.com/@nativescript-community/ui-drawer
+$ git clone https://github.com/nativescript-community/ui-drawer
 $ cd ui-drawer
-$ npm run i
+$ npm i
 $ npm run setup
 $ npm run build && npm run build.angular
 $ cd demo-ng # or demo-vue or demo-svelte or demo-react
