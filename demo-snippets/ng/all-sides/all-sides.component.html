@@ -1,0 +1,31 @@
+<ActionBar>
+    <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+    <Label text="All Sides"></Label>
+</ActionBar>
+
+<StackLayout>
+    <Drawer #drawer class="drawer">
+        <GridLayout leftDrawer width="65%" backgroundColor="white" rows="auto, *" padding="25">
+            <Label text="Left drawer"></Label>
+        </GridLayout>
+
+        <GridLayout rightDrawer width="65%" backgroundColor="white" rows="auto, *" padding="25">
+            <Label text="Right drawer"></Label>
+        </GridLayout>
+    
+        <GridLayout topDrawer height="65%" backgroundColor="white" rows="auto, *" padding="25">
+            <Label text="Top drawer"></Label>
+        </GridLayout>
+
+        <GridLayout bottomDrawer height="65%" backgroundColor="white" rows="auto, *" padding="25">
+            <Label text="Bottom drawer"></Label>
+        </GridLayout>
+
+        <StackLayout mainContent backgroundColor="white">
+            <Button (tap)="onOpenDrawer('left')" text="Open Left Drawer" width="250" marginTop="25"></Button>
+            <Button (tap)="onOpenDrawer('right')" text="Open Right Drawer" width="250" marginTop="25"></Button>
+            <Button (tap)="onOpenDrawer('bottom')" text="Open Bottom Drawer" width="250" marginTop="25"></Button>
+            <Button (tap)="onOpenDrawer('top')" text="Open Top Drawer" width="250" marginTop="25"></Button>
+        </StackLayout>
+    </Drawer>
+</StackLayout>

@@ -1,0 +1,10 @@
+{
+    "extends": "../../demo-svelte/tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "*": ["../../demo-svelte/node_modules/*"],
+        },
+        "typeRoots": ["../../demo-svelte/node_modules"],
+    }
+}
