@@ -614,6 +614,7 @@ export class Drawer extends GridLayout {
         // console.log('onLayoutChange', side, width);
         let data;
         let safeAreaOffset = 0;
+        let changed = false;
         if (side === 'left' || side === 'right') {
             if (global.isIOS) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
@@ -624,33 +625,54 @@ export class Drawer extends GridLayout {
                 }
             }
             const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
+            changed = width !== this.viewWidth[side];
+            this.viewWidth[side] = width;
             if (this.translationX[side] === 0) {
-                this.viewWidth[side] = width;
                 data = this.computeTranslationData(side, width);
                 this.translationX[side] = width;
             } else {
                 const shown = this.viewWidth[side] - this.translationX[side];
-                this.viewWidth[side] = width;
                 data = this.computeTranslationData(side, width - shown);
                 this.translationX[side] = width - shown;
             }
         } else {
             safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
             const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
+            changed = height !== this.viewHeight[side];
+            this.viewHeight[side] = height;
             if (this.translationY[side] === 0) {
-                this.viewHeight[side] = height;
                 data = this.computeTranslationData(side, height);
                 this.translationY[side] = height;
             } else {
                 const shown = this.viewHeight[side] - this.translationY[side];
-                this.viewHeight[side] = height;
                 data = this.computeTranslationData(side, height - shown);
                 this.translationY[side] = height - shown;
             }
         }
-        if (data) {
+        if (changed && data) {
             // delay applyTrData or it will create a layout issue on iOS
             setTimeout(() => this.applyTrData(data, side), 0);
+        }
+    }
+    forceEnsureSize(side: Side | VerticalSide) {
+        const contentView = this[side + 'Drawer'] as View;
+        let data;
+        let safeAreaOffset = 0;
+        if (side === 'left' || side === 'right') {
+            if (global.isIOS) {
+                const deviceOrientation = UIDevice.currentDevice.orientation;
+                if (deviceOrientation === 3) {
+                    safeAreaOffset = Application.ios.window.safeAreaInsets.left;
+                } else if (deviceOrientation === 4) {
+                    safeAreaOffset = Application.ios.window.safeAreaInsets.right;
+                }
+            }
+            const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
+            this.viewWidth[side] = width;
+        } else {
+            safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
+            this.viewHeight[side] = height;
         }
     }
     onTapGestureState(args: GestureStateEventData) {
@@ -794,6 +816,10 @@ export class Drawer extends GridLayout {
             } else {
                 return;
             }
+        }
+
+        if (!this.isOpened(side)) {
+            this.forceEnsureSize(side);
         }
         if (side === 'left' || side === 'right') {
             this.animateToPosition(side, this.viewWidth[side]);
