@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/nativescript-community/ui-drawer/compare/v0.0.28...v0.0.29) (2021-08-05)
+
+
+### Bug Fixes
+
+* ensure the drawer is layed out on first open ([484bef3](https://github.com/nativescript-community/ui-drawer/commit/484bef331fc4de1bf9f1b3b60d1a0811bfb999cb))
+
+
+
+
+
 ## [0.0.28](https://github.com/nativescript-community/ui-drawer/compare/v0.0.27...v0.0.28) (2021-05-07)
 
 
