@@ -324,7 +324,7 @@ export class Drawer extends GridLayout {
         const data = args.data;
         const side = this.showingSide || this.needToSetSide;
         // console.log('onGestureTouch', data.state, side);
-        if (data.state !== GestureState.ACTIVE || !side) {
+        if (data.state !== GestureState.ACTIVE || !side || this.isAnimating) {
             return;
         }
         if (side === 'left' || side === 'right') {
@@ -687,7 +687,7 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
-        // console.log('applyTrData', trData, side);
+        // console.log('applyTrData', side, JSON.stringify(trData), new Error().stack);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
                 Object.assign(this[k], trData[k]);
@@ -764,13 +764,17 @@ export class Drawer extends GridLayout {
         } finally {
             // apply tr data to prevent hickups on iOS
             // and handle animation cancelled errors
-            this.applyTrData(trData, side);
-            if (position !== 0) {
-            } else {
-                if (trData.backDrop) {
-                    this.backDrop.visibility = 'hidden';
+            if ((position !== 0 && this.showingSide === side) ||
+                (position ===0 && !this.showingSide)) {
+                this.applyTrData(trData, side);
+                if (position !== 0) {
+                } else {
+                    if (trData.backDrop) {
+                        this.backDrop.visibility = 'hidden';
+                    }
                 }
             }
+            
         }
     }
     isSideOpened() {
