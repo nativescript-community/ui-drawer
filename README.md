@@ -19,7 +19,7 @@ NativeScript plugin that allows you to easily add a side drawer (side menu) to y
 5. [Usage in Vue](#usage-in-vue)
 6. [Usage in Svelte](#usage-in-svelte)
 7. [Usage in React](#usage-in-react)
-8. [Demos](#demos)
+8. [Demos and Development](#demos-and-development)
 
 ## Installation
 
@@ -96,68 +96,13 @@ import { DrawerModule } from "@nativescript-community/ui-drawer/angular";
 export class AppModule { }
 ```
 
-Then in your component add the following:
+### Examples:
 
-```xml
-<Drawer>
-    <GridLayout leftDrawer backgroundColor="white">
-      <Label text="This is the side drawer content"></Label>
-    </GridLayout>
+- [Basic Drawer](demo-snippets/ng/basic-drawer)
+  - A basic sliding drawer.
+- [All Sides](demo-snippets/ng/all-sides)
+  - An example of drawers on all sides: left, right, top, bottom.
 
-    <StackLayout mainContent backgroundColor="white">
-      <Label text="This is the main content"></Label>
-    </StackLayout>
-</Drawer>
-```
-For a more complete example, look in the `demo-ng` directory.
-
-## Usage in Vue
-
-Register the plugin in your `app.js`.
-
-```typescript
-import DrawerPlugin from '@nativescript-community/ui-drawer/vue'
-Vue.use(DrawerPlugin);
-```
-
-Then in your component add the following:
-
-```xml
-<Drawer>
-    <GridLayout ~leftDrawer backgroundColor="white">
-      <Label text="This is the side drawer content" />
-    </GridLayout>
-
-    <StackLayout ~mainContent backgroundColor="white">
-      <Label text="This is the main content" />
-    </StackLayout>
-</Drawer>
-```
-For a more complete example, look in the `demo-vue` directory.
-
-## Usage in Svelte
-
-Register the plugin in your `app.ts`.
-
-```typescript
-import DrawerElement from '@nativescript-community/ui-drawer/svelte';
-DrawerElement.register();
-```
-
-Then in your component, add the following:
-
-```xml
-<drawer>
-    <gridlayout prop:leftDrawer backgroundColor="white">
-      <Label text="This is the side drawer content" />
-    </gridlayout>
-
-    <stacklayout prop:mainContent backgroundColor="white">
-      <Label text="This is the main content" />
-    </stacklayout>
-</drawer>
-```
-For a more complete example, look in the `demo-svelte` directory.
 
 ## Usage in React
 
@@ -168,32 +113,73 @@ import DrawerElement from '@nativescript-community/ui-drawer/react';
 DrawerElement.register();
 ```
 
-Then in your component, add the following:
-```ts
-import { Drawer } from "@nativescript-community/ui-drawer/react"
+### Examples:
+
+- [Basic Drawer](demo-snippets/react/BasicDrawer.tsx)
+  - A basic sliding drawer.
+- [All Sides](demo-snippets/react/AllSides.tsx)
+  - An example of drawers on all sides: left, right, top, bottom.
+
+## Usage in Svelte
+
+Register the plugin in your `app.ts`.
+
+```typescript
+import DrawerElement from '@nativescript-community/ui-drawer/svelte';
+DrawerElement.register();
 ```
 
-```xml
-<Drawer>
-  <gridLayout nodeRole="leftDrawer" backgroundColor="white" width="300">
-    <label text="This is the side drawer content" />
-  </gridLayout>
+### Examples:
 
-  <stackLayout nodeRole="mainContent" backgroundColor="white">
-    <label text="This is the main content" />
-  </stackLayout>
-</Drawer>
+- [Basic Drawer](demo-snippets/svelte/BasicDrawer.svelte)
+  - A basic sliding drawer.
+- [All Sides](demo-snippets/svelte/AllSides.svelte)
+  - An example of drawers on all sides: left, right, top, bottom.
+
+## Usage in Vue
+
+Register the plugin in your `app.js`.
+
+```typescript
+import DrawerPlugin from '@nativescript-community/ui-drawer/vue'
+Vue.use(DrawerPlugin);
 ```
-For a more complete example, look in the `demo-react` directory.
 
-## Demos
-This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
-```shell
-$ git clone https://github.com/nativescript-community/ui-drawer
-$ cd ui-drawer
-$ npm i
-$ npm run setup
-$ npm run build && npm run build.angular
-$ cd demo-ng # or demo-vue or demo-svelte or demo-react
-$ ns run ios|android
+### Examples:
+
+- [Basic Drawer](demo-snippets/vue/BasicDrawer.vue)
+  - A basic sliding drawer.
+- [All Sides](demo-snippets/vue/AllSides.vue)
+  - An example of drawers on all sides: left, right, top, bottom.
+
+## Demos and Development
+
+To run the demos, you must clone this repo **recursively**.
+
+```
+git clone https://github.com/nativescript-community/ui-drawer.git --recursive
+```
+
+### Install Dependencies:
+```bash
+npm i # or 'yarn install' or 'pnpm install'
+```
+
+### Interactive Menu:
+To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`). This will list all of the commonly used scripts.
+
+### Building Plugin:
+```bash
+npm run build
+
+# or for Angular
+npm run build.angular
+```
+
+### Running Demos:
+```bash
+npm run demo.[ng|react|svelte|vue].[ios|android]
+
+# Example:
+npm run demo.svelte.ios
 ```
