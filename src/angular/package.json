@@ -11,7 +11,7 @@
         "@nativescript-community/ui-drawer": "ns-drawer"
       }
     },
-    "whitelistedNonPeerDependencies": [
+    "allowedNonPeerDependencies": [
       "."
     ]
   }
