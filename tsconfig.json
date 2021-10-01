@@ -1,38 +1,9 @@
-{
+{    
+    "extends": "./tools/tsconfig",
     "compilerOptions": {
-        "target": "es2017",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "removeComments": true,
-        "noLib": false,
-        "emitDecoratorMetadata": false,
-        "experimentalDecorators": true,
-        "jsx": "react",
-        "lib": ["es6", "dom"],
-        "sourceMap": true,
-        "pretty": true,
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "noEmitHelpers": true,
-        "noEmitOnError": false,
-        "noImplicitAny": false,
-        "noImplicitReturns": true,
-        "noImplicitUseStrict": true,
-        "noFallthroughCasesInSwitch": true,
-        "skipLibCheck": true,
-        "sourceRoot": "../src",
-        "baseUrl": ".",
-        "outDir": "./plugin",
         "paths": {
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
             "@nativescript-community/ui-drawer": ["src/plugin"],
             "@nativescript-community/ui-drawer/*": ["src/*"],
-            "*": ["node_modules/*"]
-        },
-        "plugins": [{ "transform": "./node_modules/@nativescript/webpack/dist/transformers/NativeClass", "type": "raw" }]
-    },
-    "include": ["src/**/*", "./references.d.ts"],
-    "exclude": ["node_modules", "platforms", "src/angular", "demo-svelte", "demo-vue", "demo-ng", "demo-react"],
-    "compileOnSave": false
+       },
+    }
 }

@@ -1,0 +1,10 @@
+{
+	"type": "single",
+    "angular": true,
+    "demos": [
+        "ng",
+        "react",
+        "svelte",
+        "vue"
+    ]
+}
