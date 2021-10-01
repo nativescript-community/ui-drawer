@@ -13,7 +13,7 @@ export const COMPONENTS = [BasicDrawerComponent, AllSidesComponent];
 })
 export class InstallModule {}
 
-export function install() { }
+export function installPlugin() { }
 
 export const demos = [
     { name: 'Basic Drawer', path: 'basic-drawer', component: BasicDrawerComponent },

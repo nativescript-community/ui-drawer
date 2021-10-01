@@ -1,12 +1,12 @@
 import DrawerElement from '@nativescript-community/ui-drawer/svelte';
-import { install as installDrawer } from '@nativescript-community/ui-drawer';
+import { install } from '@nativescript-community/ui-drawer';
 
 import BasicDrawer from './BasicDrawer.svelte';
 import AllSides from './AllSides.svelte';
 
-export function install() {
+export function installPlugin() {
     DrawerElement.register();
-    installDrawer();
+    install();
 }
 
 export const demos = [

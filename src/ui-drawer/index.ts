@@ -764,8 +764,7 @@ export class Drawer extends GridLayout {
         } finally {
             // apply tr data to prevent hickups on iOS
             // and handle animation cancelled errors
-            if ((position !== 0 && this.showingSide === side) ||
-                (position ===0 && !this.showingSide)) {
+            if ((position !== 0 && this.showingSide === side) || (position === 0 && !this.showingSide)) {
                 this.applyTrData(trData, side);
                 if (position !== 0) {
                 } else {
@@ -774,7 +773,6 @@ export class Drawer extends GridLayout {
                     }
                 }
             }
-            
         }
     }
     isSideOpened() {

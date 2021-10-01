@@ -1,14 +1,14 @@
 import Vue from 'nativescript-vue';
 
-import { install as installDrawer } from '@nativescript-community/ui-drawer';
+import { install } from '@nativescript-community/ui-drawer';
 import DrawerPlugin from '@nativescript-community/ui-drawer/vue';
 
 import BasicDrawer from './BasicDrawer.vue';
 import AllSides from './AllSides.vue';
 
-export function install() {
+export function installPlugin() {
     Vue.use(DrawerPlugin);
-    installDrawer();
+    install();
 }
 
 export const demos = [

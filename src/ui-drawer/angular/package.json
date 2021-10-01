@@ -2,7 +2,7 @@
   "name": "@nativescript-community/ui-drawer-angular",
   "main": "index.js",
   "ngPackage": {
-    "dest": "../../plugin/angular",
+    "dest": "../../../packages/ui-drawer/angular",
     "lib": {
       "entryFile": "index.ts",
       "umdModuleIds": {

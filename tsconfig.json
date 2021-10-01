@@ -2,8 +2,8 @@
     "extends": "./tools/tsconfig",
     "compilerOptions": {
         "paths": {
-            "@nativescript-community/ui-drawer": ["src/plugin"],
-            "@nativescript-community/ui-drawer/*": ["src/*"],
+            "@nativescript-community/ui-drawer": ["src/ui-drawer"],
+            "@nativescript-community/ui-drawer/*": ["src/ui-drawer/*"],
        },
     }
 }

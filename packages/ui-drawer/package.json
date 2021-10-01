@@ -5,6 +5,13 @@
     "main": "./index",
     "sideEffects": false,
     "typings": "./index.d.ts",
+    "scripts": {
+        "build": "npm run tsc",
+        "build.all": "npm run build && npm run build.angular",
+        "build.angular": "../../node_modules/.bin/ng-packagr -p ../../src/ui-drawer/angular/package.json -c ../../src/ui-drawer/angular/tsconfig.json",
+        "tsc": "../../node_modules/.bin/cpy '**/*.d.ts' '../../packages/ui-drawer' --parents --cwd=../../src/ui-drawer && ../../node_modules/.bin/tsc -skipLibCheck -d",
+        "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map"
+    },
     "nativescript": {
         "platforms": {
             "android": "6.0.0",
