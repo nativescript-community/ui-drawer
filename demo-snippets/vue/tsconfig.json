@@ -1,3 +1,9 @@
 {
-    "extends": "../../demo-vue/tsconfig.json"
+    "extends": "../../demo-vue/tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+            "@nativescript-community/ui-drawer": ["../src/ui-drawer"],
+            "@nativescript-community/ui-drawer/*": ["../src/ui-drawer/*"],
+        }
+    },
 }
