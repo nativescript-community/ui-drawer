@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.31](https://github.com/nativescript-community/ui-drawer/compare/v0.0.30...v0.0.31) (2021-10-12)
+
+
+### Bug Fixes
+
+* **ios:** drawer showing on navigation back ([a6993c8](https://github.com/nativescript-community/ui-drawer/commit/a6993c8cb374acdfc9ad90526bc43a8a6b00c873))
+
+
+
+
+
 ## [0.0.30](https://github.com/nativescript-community/ui-drawer/compare/v0.0.29...v0.0.30) (2021-09-21)
 
 
