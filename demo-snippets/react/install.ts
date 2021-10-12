@@ -1,9 +1,9 @@
 import { BasicDrawer } from './BasicDrawer';
 import { AllSides } from './AllSides';
 import { install } from '@nativescript-community/ui-drawer';
-import { registerDrawer } from "@nativescript-community/ui-drawer/react";
+import { registerDrawer } from '@nativescript-community/ui-drawer/react';
 
-export function installPlugin() { 
+export function installPlugin() {
     install();
     registerDrawer();
 }

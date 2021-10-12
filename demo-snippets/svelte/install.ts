@@ -10,6 +10,6 @@ export function installPlugin() {
 }
 
 export const demos = [
-    { name: 'Basic Drawer', path: "basic", component: BasicDrawer },
-    { name: 'All Sides', path: "all-sides", component: AllSides }
+    { name: 'Basic Drawer', path: 'basic', component: BasicDrawer },
+    { name: 'All Sides', path: 'all-sides', component: AllSides }
 ];

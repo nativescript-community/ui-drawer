@@ -32,20 +32,19 @@
     </Page>
 </template>
 
-<script >
+<script>
 export default {
-  computed: {
-    message() {
-      return "Blank {N}-Vue app";
+    computed: {
+        message() {
+            return 'Blank {N}-Vue app';
+        }
+    },
+    methods: {
+        onOpenDrawer(side) {
+            this.$refs['drawer'].open(side);
+        }
     }
-  },
-  methods: {
-      onOpenDrawer(side) {
-          this.$refs["drawer"].open(side);
-      }
-  }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,20 +1,17 @@
-
+import { Drawer as NativeScriptDrawer } from '@nativescript-community/ui-drawer';
+import { Drawer } from '@nativescript-community/ui-drawer/react';
 import * as React from 'react';
-import { Drawer } from "@nativescript-community/ui-drawer/react";
-import { Drawer as NativeScriptDrawer } from "@nativescript-community/ui-drawer";
-import { StyleSheet } from "react-nativescript";
-import { NSVElement } from "react-nativescript";
-
+import { NSVElement, StyleSheet } from 'react-nativescript';
 
 export function BasicDrawer() {
     const drawerRef = React.useRef<NSVElement<NativeScriptDrawer>>(null);
 
     function onOpenDrawer() {
-        drawerRef.current!.nativeView.open("left");
+        drawerRef.current.nativeView.open('left');
     }
 
     function onCloseDrawer() {
-        drawerRef.current!.nativeView.close("left");
+        drawerRef.current.nativeView.close('left');
     }
 
     return (
@@ -34,11 +31,21 @@ export function BasicDrawer() {
                             </stackLayout>
                         </stackLayout>
                         <stackLayout>
-                            <button style={styles.drawerButton} onTap={onCloseDrawer}>My Profile</button>
-                            <button style={styles.drawerButton} onTap={onCloseDrawer}>Settings</button>
-                            <button style={styles.drawerButton} onTap={onCloseDrawer}>Rate Us</button>
-                            <button style={styles.drawerButton} onTap={onCloseDrawer}>Support</button>
-                            <button style={styles.drawerButton} onTap={onCloseDrawer}>Contact</button>
+                            <button style={styles.drawerButton} onTap={onCloseDrawer}>
+                                My Profile
+                            </button>
+                            <button style={styles.drawerButton} onTap={onCloseDrawer}>
+                                Settings
+                            </button>
+                            <button style={styles.drawerButton} onTap={onCloseDrawer}>
+                                Rate Us
+                            </button>
+                            <button style={styles.drawerButton} onTap={onCloseDrawer}>
+                                Support
+                            </button>
+                            <button style={styles.drawerButton} onTap={onCloseDrawer}>
+                                Contact
+                            </button>
                         </stackLayout>
                     </stackLayout>
                 </gridLayout>
@@ -53,23 +60,23 @@ export function BasicDrawer() {
 
 const styles = StyleSheet.create({
     avatar: {
-        backgroundColor: "#61DBFB",
+        backgroundColor: '#61DBFB',
         borderRadius: 40,
         height: 80,
-        verticalAlignment: "middle"
+        verticalAlignment: 'middle'
     },
     avatarLabel: {
-        verticanAlignment: "middle",
-        horizontalAlignment: "center",
+        verticanAlignment: 'middle',
+        horizontalAlignment: 'center',
         fontSize: 30,
-        color: "white"
+        color: 'white'
     },
     drawerButton: {
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         margin: 0,
         padding: 0,
-        color: "#222222",
-        textAlignment: "left",
+        color: '#222222',
+        textAlignment: 'left',
         paddingLeft: 25,
         height: 50,
         fontSize: 14

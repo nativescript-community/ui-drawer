@@ -9,8 +9,7 @@ import {
     PanGestureHandler,
     install as installGestures
 } from '@nativescript-community/gesturehandler';
-import { Animation, AnimationDefinition, Application, CSSType, Color, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
-import { AnimationCurve } from '@nativescript/core/ui/enums';
+import { Animation, AnimationDefinition, Application, CSSType, Color, CoreTypes, EventData, GridLayout, Property, Utils, View, booleanConverter } from '@nativescript/core';
 installGestures(false);
 const OPEN_DURATION = 200;
 const CLOSE_DURATION = 200;
@@ -750,7 +749,7 @@ export class Drawer extends GridLayout {
                     Object.assign(
                         {
                             target: this[k],
-                            curve: AnimationCurve.easeInOut,
+                            curve: CoreTypes.AnimationCurve.easeInOut,
                             duration
                         },
                         transformAnimationValues(trData[k])

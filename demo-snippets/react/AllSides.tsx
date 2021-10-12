@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Drawer } from "@nativescript-community/ui-drawer/react";
-import { Drawer as NativeScriptDrawer } from "@nativescript-community/ui-drawer";
-import { NSVElement } from "react-nativescript";
+import { Drawer } from '@nativescript-community/ui-drawer/react';
+import { Drawer as NativeScriptDrawer } from '@nativescript-community/ui-drawer';
+import { NSVElement } from 'react-nativescript';
 
 export function AllSides() {
     const drawerRef = React.useRef<NSVElement<NativeScriptDrawer>>(null);
 
     function onOpenDrawer(side) {
-        drawerRef.current!.nativeView.open(side);
+        drawerRef.current.nativeView.open(side);
     }
 
     return (

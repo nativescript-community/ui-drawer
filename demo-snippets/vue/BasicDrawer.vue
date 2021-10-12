@@ -37,19 +37,19 @@
 
 <script lang="typescript">
 export default {
-  computed: {
-    message() {
-      return "Blank {N}-Vue app";
+    computed: {
+        message() {
+            return 'Blank {N}-Vue app';
+        }
+    },
+    methods: {
+        onOpenDrawer() {
+            this.$refs['drawer'].open('left');
+        },
+        onCloseDrawer() {
+            this.$refs['drawer'].close('left');
+        }
     }
-  },
-  methods: {
-      onOpenDrawer() {
-          this.$refs["drawer"].open("left");
-      },
-      onCloseDrawer() {
-          this.$refs["drawer"].close("left");
-      }
-  }
 };
 </script>
 
