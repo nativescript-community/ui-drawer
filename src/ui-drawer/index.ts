@@ -767,6 +767,10 @@ export class Drawer extends GridLayout {
                 this.applyTrData(trData, side);
                 if (position !== 0) {
                 } else {
+                    const drawer = this[side + 'Drawer'] as View;
+                    if (drawer) {
+                        drawer.visibility = 'hidden';
+                    }
                     if (trData.backDrop) {
                         this.backDrop.visibility = 'hidden';
                     }
