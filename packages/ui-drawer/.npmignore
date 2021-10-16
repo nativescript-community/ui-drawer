@@ -8,3 +8,4 @@ hooks/
 *.old
 tsconfig.json
 !*.d.ts
+blueprint.md

@@ -1,4 +1,5 @@
 {
+    "readme": true,
     "angular": true,
     "demos": [
         "ng",

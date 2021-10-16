@@ -1,9 +1,0 @@
-{
-    "extends": "../../demo-ng/tsconfig.json",
-    "compilerOptions": {
-        "paths": {
-            "@nativescript-community/ui-drawer": ["../src/ui-drawer"],
-            "@nativescript-community/ui-drawer/*": ["../src/ui-drawer/*"],
-        }
-    },
-}

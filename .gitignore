@@ -51,3 +51,5 @@ packages/*.ngsummary.json
 packages/*.metadata.json
 packages/angular
 pnpm-lock.yaml
+
+/blueprint.md
