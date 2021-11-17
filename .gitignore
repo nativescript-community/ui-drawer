@@ -41,7 +41,7 @@ bin
 build
 Pods
 !packages/platforms
-/packages/platforms/android/*.aar
+/packages/**/*.aar
 *.xcuserdatad
 /packages/README.md
 packages/**/*js.map
