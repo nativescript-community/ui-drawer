@@ -2,7 +2,7 @@
     "name": "@nativescript-community/template-snippet",
     "version": "0.0.1",
     "dependencies": {
-        "@nativescript-community/ui-drawer": "../packages/ui-drawer",
-        "@nativescript-community/gesturehandler": "~0.1.45"
+        "@nativescript-community/ui-drawer": "file:../packages/ui-drawer",
+        "@nativescript-community/gesturehandler": "~0.1.48"
     }
 }
