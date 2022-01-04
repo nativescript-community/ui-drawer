@@ -3,6 +3,6 @@
     "version": "0.0.1",
     "dependencies": {
         "@nativescript-community/ui-drawer": "file:../packages/ui-drawer",
-        "@nativescript-community/gesturehandler": "~0.1.48"
+        "@nativescript-community/gesturehandler": "^0.1.49"
     }
 }
