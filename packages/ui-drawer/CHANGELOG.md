@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/nativescript-community/ui-drawer/compare/v0.0.32...v0.0.33) (2022-01-04)
+
+
+### Bug Fixes
+
+* deps fix ([6957b33](https://github.com/nativescript-community/ui-drawer/commit/6957b33be832996995e153abe2fba817964bc302))
+
+
+
+
+
 ## [0.0.32](https://github.com/nativescript-community/ui-drawer/compare/v0.0.31...v0.0.32) (2022-01-04)
 
 
