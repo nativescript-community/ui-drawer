@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.32](https://github.com/nativescript-community/ui-drawer/compare/v0.0.31...v0.0.32) (2022-01-04)
+
+
+### Bug Fixes
+
+* gesturehandler fix for `gestureEnabled` property ([8f92c62](https://github.com/nativescript-community/ui-drawer/commit/8f92c62426a439a4175fb64e64e8883f0fda3c4f))
+
+
+
+
+
 ## [0.0.31](https://github.com/nativescript-community/ui-drawer/compare/v0.0.30...v0.0.31) (2021-10-12)
 
 **Note:** Version bump only for package @nativescript-community/ui-drawer
