@@ -1,0 +1,9 @@
+{
+    "dest": "../../../packages/ui-drawer/angular",
+    "lib": {
+      "entryFile": "index.ts"
+    },
+    "allowedNonPeerDependencies": [
+      "."
+    ]
+}
