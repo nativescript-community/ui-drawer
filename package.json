@@ -15,7 +15,7 @@
         "build": "lerna run build",
         "build.all": "lerna run build.all",
         "build.angular": "lerna run build.angular",
-        "clean": "rimraf packages/**/*.d.ts packages/**/*.js packages/**/*.js.map packages/**/*.metadata.json packages/**/*.ngsummary.json node_modules package-lock.json",
+        "clean": "rimraf 'packages/**/*.d.ts' 'packages/**/*.js' 'packages/**/*.js.map' 'packages/**/*.metadata.json' 'packages/**/*.ngsummary.json' 'packages/**/*.mjs' 'packages/**/*.mjs.map' 'packages/**/node_modules' 'packages/**/angular/package.json' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
         "commitmsg": "commitlint -e $GIT_PARAMS",
         "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr",
         "demo.ng.clean": "cd ./demo-ng && ns clean",
@@ -38,8 +38,7 @@
         "sync": "node ./tools/sync.js",
         "sync.test": "node ./tools/sync.js",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
-        "update": "node ./tools/update.js",
-        "watch": "npm run tsc -- -w"
+        "update": "node ./tools/update.js"
     },
     "commitlint": {
         "extends": [
@@ -47,11 +46,8 @@
         ]
     },
     "dependencies": {
+        "@nativescript-community/gesturehandler": "^0.1.50",
         "@nativescript-community/plugin-seed-tools": "file:tools"
-    },
-    "devDependencies": {
-        
-        "@nativescript-community/gesturehandler": "^0.1.50"
     },
     "ntl": {
         "descriptions": {

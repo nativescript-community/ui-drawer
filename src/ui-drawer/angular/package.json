@@ -1,18 +1,4 @@
 {
   "name": "@nativescript-community/ui-drawer-angular",
-  "main": "index.js",
-  "ngPackage": {
-    "dest": "../../../packages/ui-drawer/angular",
-    "lib": {
-      "entryFile": "index.ts",
-      "umdModuleIds": {
-        "@nativescript/core": "ns-core",
-        "@nativescript/angular": "ns-angular",
-        "@nativescript-community/ui-drawer": "ns-drawer"
-      }
-    },
-    "allowedNonPeerDependencies": [
-      "."
-    ]
-  }
+  "main": "index.js"
 }
