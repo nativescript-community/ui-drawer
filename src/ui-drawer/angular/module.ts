@@ -21,7 +21,7 @@ export interface ItemEventArgs {
  */
 @Component({
     selector: 'Drawer',
-    template: '<ng-content></ng-content>',
+    template: '<ng-content></ng-content>'
 })
 export class DrawerComponent {
     public drawer: Drawer;
@@ -52,7 +52,7 @@ export class DrawerComponent {
  * Directive identifying the left drawer
  */
 @Directive({
-    selector: '[leftDrawer]',
+    selector: '[leftDrawer]'
 })
 export class LeftDrawerDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
@@ -63,7 +63,7 @@ export class LeftDrawerDirective {
  * Directive identifying the right drawer
  */
 @Directive({
-    selector: '[rightDrawer]',
+    selector: '[rightDrawer]'
 })
 export class RightDrawerDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
@@ -75,7 +75,7 @@ export class RightDrawerDirective {
  * Directive identifying the right drawer
  */
 @Directive({
-    selector: '[topDrawer]',
+    selector: '[topDrawer]'
 })
 export class TopDrawerDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
@@ -87,7 +87,7 @@ export class TopDrawerDirective {
  * Directive identifying the right drawer
  */
 @Directive({
-    selector: '[bottomDrawer]',
+    selector: '[bottomDrawer]'
 })
 export class BottomDrawerDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
@@ -99,7 +99,7 @@ export class BottomDrawerDirective {
  * Directive identifying the main content.
  */
 @Directive({
-    selector: '[mainContent]',
+    selector: '[mainContent]'
 })
 export class MainContentDirective {
     constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
@@ -109,7 +109,7 @@ export class MainContentDirective {
 
 const sideDrawerMeta: ViewClassMeta = {
     insertChild: (parent: NgView, child: NgView) => {
-        const drawer = (parent as any) as Drawer;
+        const drawer = parent as any as Drawer;
         const childView = child;
 
         if (childView.id === MAINCONTENT) {
@@ -130,7 +130,7 @@ const sideDrawerMeta: ViewClassMeta = {
         }
     },
     removeChild: (parent: NgView, child: NgView) => {
-        const drawer = (parent as any) as Drawer;
+        const drawer = parent as any as Drawer;
         const childView = child;
 
         if (childView.id === MAINCONTENT) {
@@ -149,7 +149,7 @@ const sideDrawerMeta: ViewClassMeta = {
         if (childView.id === BOTTOMDRAWER) {
             drawer.bottomDrawer = null;
         }
-    },
+    }
 };
 
 /**
@@ -164,6 +164,6 @@ registerElement('Drawer', () => Drawer, sideDrawerMeta);
  */
 @NgModule({
     declarations: [DrawerComponent, SIDEDRAWER_DIRECTIVES],
-    exports: [DrawerComponent, SIDEDRAWER_DIRECTIVES],
+    exports: [DrawerComponent, SIDEDRAWER_DIRECTIVES]
 })
 export class DrawerModule {}
