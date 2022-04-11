@@ -46,7 +46,7 @@
         ]
     },
     "dependencies": {
-        "@nativescript-community/gesturehandler": "^0.1.50",
+        "@nativescript-community/gesturehandler": "^2.0.3",
         "@nativescript-community/plugin-seed-tools": "file:tools"
     },
     "ntl": {
