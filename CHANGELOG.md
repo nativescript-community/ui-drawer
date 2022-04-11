@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.34](https://github.com/nativescript-community/ui-drawer/compare/v0.0.33...v0.0.34) (2022-04-11)
+
+
+### Bug Fixes
+
+* **android:** gesture lifecycle fixes ([7a5f070](https://github.com/nativescript-community/ui-drawer/commit/7a5f070962a5eb57a09cbfa581e98251f20a6a36))
+* **react:** react build fix ([181d6a2](https://github.com/nativescript-community/ui-drawer/commit/181d6a21f30ed8085dece1e9d6d4ec688c99d4dd))
+
+
+
+
+
 ## [0.0.33](https://github.com/nativescript-community/ui-drawer/compare/v0.0.32...v0.0.33) (2022-01-04)
 
 
