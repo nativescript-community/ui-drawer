@@ -117,7 +117,7 @@ export class Drawer extends GridLayout {
     public topClosedDrawerAllowDraging = true;
     public panGestureHandler: PanGestureHandler;
     public gestureEnabled = true;
-
+    public backdropTapGestureEnabled = true;
     private isPanning = false;
     private isAnimating = false;
     private prevDeltaX = 0;
@@ -156,7 +156,9 @@ export class Drawer extends GridLayout {
         this.insertChild(this.backDrop, 0);
     }
     onBackdropTap() {
-        this.close();
+        if (this.backdropTapGestureEnabled) {
+            this.close();
+        }
     }
     initGestures() {
         const manager = Manager.getInstance();
