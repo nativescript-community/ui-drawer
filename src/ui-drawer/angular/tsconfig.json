@@ -8,6 +8,6 @@
             "@nativescript-community/ui-drawer/*": ["packages/ui-drawer/*"]
         }
     },
-    "include": ["./**/*.ts", "../../../references.d.ts", "../references.d.ts"],
+    "include": ["./**/*.ts", "../../../references.d.ts"],
     "exclude": ["../node_modules"]
 }

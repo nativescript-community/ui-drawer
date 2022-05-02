@@ -1,6 +1,16 @@
-import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Input, NgModule, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, Directive, ElementRef, EmbeddedViewRef, Host, HostListener, Inject, NgModule, TemplateRef } from '@angular/core';
+import { TouchGestureEventData, isAndroid } from '@nativescript/core';
 import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
 import { Drawer } from '@nativescript-community/ui-drawer';
+
+declare namespace android {
+    namespace view {
+        class MotionEvent {
+            public static ACTION_DOWN: number;
+            public static ACTION_MOVE: number;
+        }
+    }
+}
 
 const LEFTDRAWER: string = 'LeftDrawer';
 const RIGHTDRAWER: string = 'RightDrawer';
@@ -30,7 +40,7 @@ export class DrawerComponent {
 
     private _gestureEnabled: boolean;
 
-    constructor(@Inject(ElementRef) public elementRef: ElementRef, @Inject(ViewContainerRef) private viewContainer: ViewContainerRef) {
+    constructor(@Inject(ElementRef) public elementRef: ElementRef) {
         this.drawer = this.elementRef.nativeElement;
     }
 
@@ -55,8 +65,8 @@ export class DrawerComponent {
     selector: '[leftDrawer]'
 })
 export class LeftDrawerDirective {
-    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = LEFTDRAWER;
+    constructor(@Inject(ElementRef) elementRef: ElementRef) {
+        elementRef.nativeElement.id = LEFTDRAWER;
     }
 }
 /**
@@ -66,8 +76,8 @@ export class LeftDrawerDirective {
     selector: '[rightDrawer]'
 })
 export class RightDrawerDirective {
-    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = RIGHTDRAWER;
+    constructor(@Inject(ElementRef) elementRef: ElementRef) {
+        elementRef.nativeElement.id = RIGHTDRAWER;
     }
 }
 
@@ -78,8 +88,8 @@ export class RightDrawerDirective {
     selector: '[topDrawer]'
 })
 export class TopDrawerDirective {
-    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = TOPDRAWER;
+    constructor(@Inject(ElementRef) elementRef: ElementRef) {
+        elementRef.nativeElement.id = TOPDRAWER;
     }
 }
 
@@ -90,8 +100,8 @@ export class TopDrawerDirective {
     selector: '[bottomDrawer]'
 })
 export class BottomDrawerDirective {
-    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = BOTTOMDRAWER;
+    constructor(@Inject(ElementRef) elementRef: ElementRef) {
+        elementRef.nativeElement.id = BOTTOMDRAWER;
     }
 }
 
@@ -102,8 +112,29 @@ export class BottomDrawerDirective {
     selector: '[mainContent]'
 })
 export class MainContentDirective {
-    constructor(@Inject(ElementRef) private _elementRef: ElementRef) {
-        this._elementRef.nativeElement.id = MAINCONTENT;
+    constructor(@Inject(ElementRef) elementRef: ElementRef) {
+        elementRef.nativeElement.id = MAINCONTENT;
+    }
+}
+
+/**
+ * Directive allows intercepting touch events (e.g. for inner scrolls)
+ */
+@Directive({
+    selector: '[drawerInterceptTouch]'
+})
+export class DrawerInterceptTouchDirective {
+    constructor(@Host() private _drawerComponent: DrawerComponent) {}
+
+    @HostListener('touch', [ '$event' ]) public interceptTouch(event: TouchGestureEventData) {
+        if (isAndroid) {
+            const shouldIntercept = [
+                android.view.MotionEvent.ACTION_DOWN,
+                android.view.MotionEvent.ACTION_MOVE
+            ].indexOf(event.android.getActionMasked()) !== -1;
+            this._drawerComponent?.nativeElement?.android
+                .requestDisallowInterceptTouchEvent(shouldIntercept);
+        }
     }
 }
 
@@ -163,7 +194,7 @@ registerElement('Drawer', () => Drawer, sideDrawerMeta);
  * NgModule containing all of the RadSideDrawer directives.
  */
 @NgModule({
-    declarations: [DrawerComponent, SIDEDRAWER_DIRECTIVES],
-    exports: [DrawerComponent, SIDEDRAWER_DIRECTIVES]
+    declarations: [DrawerComponent, DrawerInterceptTouchDirective, SIDEDRAWER_DIRECTIVES],
+    exports: [DrawerComponent, DrawerInterceptTouchDirective, SIDEDRAWER_DIRECTIVES]
 })
 export class DrawerModule {}
