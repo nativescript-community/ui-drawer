@@ -4,28 +4,30 @@
             <Label text="Basic Drawer" />
         </ActionBar>
 
-        <Drawer ref="drawer">
+        <Drawer
+            ref="drawer"
+            :gestureHandlerOptions="{
+                failOffsetYStart: -10,
+                failOffsetYEnd: 10
+            }"
+        >
             <GridLayout ~leftDrawer class="drawer" width="300" backgroundColor="white" rows="auto, *">
-                <StackLayout row="0">
-                    <StackLayout backgroundColor="#eeeeee" padding="25">
-                        <GridLayout columns="80, *" height="100">
-                            <StackLayout col="0" class="avatar">
-                                <Label text="JS" />
-                            </StackLayout>
-                        </GridLayout>
-                        <StackLayout>
-                            <Label text="John Smith" fontWeight="bold" />
-                            <Label text="john.smith@example.com" />
+                <StackLayout backgroundColor="#eeeeee" padding="25">
+                    <GridLayout columns="80, *" height="100">
+                        <StackLayout col="0" class="avatar">
+                            <Label text="JS" />
                         </StackLayout>
-                    </StackLayout>
+                    </GridLayout>
                     <StackLayout>
-                        <Button text="My Profile" @tap="onCloseDrawer" />
-                        <Button text="Settings" @tap="onCloseDrawer" />
-                        <Button text="Rate Us" @tap="onCloseDrawer" />
-                        <Button text="Support" @tap="onCloseDrawer" />
-                        <Button text="Contact" @tap="onCloseDrawer" />
+                        <Label text="John Smith" fontWeight="bold" />
+                        <Label text="john.smith@example.com" />
                     </StackLayout>
                 </StackLayout>
+                <ListView row="1" :items="items">
+                    <v-template>
+                        <Label :text="item.title" @tap="onCloseDrawer" />
+                    </v-template>
+                </ListView>
             </GridLayout>
 
             <StackLayout ~mainContent backgroundColor="white">
@@ -37,9 +39,13 @@
 
 <script lang="typescript">
 export default {
+
     computed: {
         message() {
             return 'Blank {N}-Vue app';
+        },
+        items() {
+            return new Array(100).fill({ title: 'My profile' });
         }
     },
     methods: {
