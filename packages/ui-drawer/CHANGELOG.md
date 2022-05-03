@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/nativescript-community/ui-drawer/compare/v0.0.35...v0.1.0) (2022-05-03)
+
+
+### Features
+
+* allow `gestureHandlerOptions` to customize gesture handler ([6ba74c2](https://github.com/nativescript-community/ui-drawer/commit/6ba74c21cf8f96b05a4a030a049c96d606285aa2))
+
+
+
+
+
 ## [0.0.35](https://github.com/nativescript-community/ui-drawer/compare/v0.0.34...v0.0.35) (2022-04-14)
 
 **Note:** Version bump only for package @nativescript-community/ui-drawer
