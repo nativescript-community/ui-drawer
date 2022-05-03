@@ -46,7 +46,7 @@
         ]
     },
     "dependencies": {
-        "@nativescript-community/gesturehandler": "^2.0.3",
+        "@nativescript-community/template-snippet": "file:demo-snippets",
         "@nativescript-community/plugin-seed-tools": "file:tools"
     },
     "ntl": {
@@ -64,11 +64,6 @@
             "demo.vue.android": "Runs the Vue demo on Android.",
             "demo.vue.ios": "Runs the Vue demo on iOS.",
             "watch": "Watch for changes in the plugin source and re-build."
-        }
-    },
-    "dependenciesMeta": {
-        "@nativescript-community/plugin-seed-tools": {
-            "injected": true
         }
     }
 }

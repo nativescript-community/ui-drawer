@@ -98,6 +98,7 @@ export class Drawer extends GridLayout {
     public backDrop: View;
 
     public gestureMinDist = 10;
+    public gestureHandlerOptions;
     public waitFor = [];
     public simultaneousHandlers = [];
     public shouldStartSheetDragging?: (side: Side | VerticalSide) => boolean;
@@ -166,7 +167,8 @@ export class Drawer extends GridLayout {
             shouldStartGesture: this.shouldStartGesture.bind(this),
             simultaneousHandlers: this.simultaneousHandlers,
             waitFor: this.waitFor,
-            minDist: this.gestureMinDist
+            minDist: this.gestureMinDist,
+            ...(this.gestureHandlerOptions || {})
         });
         gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
         gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);

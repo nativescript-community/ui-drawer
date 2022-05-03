@@ -38,6 +38,7 @@ install();
 | leftDrawerMode      | `slide`                           | `Mode ('under' or 'slide')` | The color of the backdrop behind the drawer             |
 | rightDrawerMode     | `slide`                           | `Mode ('under' or 'slide')` | The color of the backdrop behind the drawer             |
 | gestureMinDist     | `10`                           | number | The min "swipe" distance to trigger the menu gesture             |
+| gestureHandlerOptions     | `null`                           | PanGestureHandlerOptions | Options to customize the pan gesture handler             |
 | leftSwipeDistance     | `40`                           | number | The "left" zone size from where the gesture is recognized             |
 | rightSwipeDistance     | `40`                           | number | The "right" zone size from where the gesture is recognized             |
 | topSwipeDistance     | `40`                           | number | The "top" zone size from where the gesture is recognized             |
