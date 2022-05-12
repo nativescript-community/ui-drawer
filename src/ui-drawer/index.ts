@@ -806,6 +806,7 @@ export class Drawer extends GridLayout {
                 return;
             }
         }
+
         if (this.isOpened(side)) {
             this.close(side);
         } else {
@@ -825,6 +826,9 @@ export class Drawer extends GridLayout {
             } else {
                 return;
             }
+        }
+        if (this.showingSide && this.showingSide !== side) {
+            this.close();
         }
 
         if (!this.isOpened(side)) {
