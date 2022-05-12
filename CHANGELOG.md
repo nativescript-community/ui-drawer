@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/nativescript-community/ui-drawer/compare/v0.1.0...v0.1.1) (2022-05-12)
+
+
+### Bug Fixes
+
+* ensure we dont open multiple drawers at the same time ([048a69b](https://github.com/nativescript-community/ui-drawer/commit/048a69bebc41b457b4e2104eb92d69d8ac911b00))
+
+
+
+
+
 # [0.1.0](https://github.com/nativescript-community/ui-drawer/compare/v0.0.35...v0.1.0) (2022-05-03)
 
 
