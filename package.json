@@ -47,8 +47,8 @@
         ]
     },
     "dependencies": {
-        "@nativescript-community/template-snippet": "0.0.1",
-        "@nativescript-community/plugin-seed-tools": "file:tools"
+        "@nativescript-community/plugin-seed-tools": "file:tools",
+        "@nativescript-community/template-snippet": "0.0.1"
     },
     "ntl": {
         "descriptions": {
