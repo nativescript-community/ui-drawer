@@ -1,5 +1,4 @@
 {
-    "name": "@nativescript-community/ui-drawer",
     "version": "1.0.0",
     "homepage": "https://github.com/nativescript-community/ui-drawer#readme",
     "bugs": {
@@ -15,22 +14,22 @@
         "build": "lerna run build",
         "build.all": "lerna run build.all",
         "build.angular": "lerna run build.angular",
-        "clean": "rimraf 'packages/**/*.d.ts' 'packages/**/*.js' 'packages/**/*.js.map' 'packages/**/*.metadata.json' 'packages/**/*.ngsummary.json' 'packages/**/*.mjs' 'packages/**/*.mjs.map' 'packages/**/node_modules' 'packages/**/angular/package.json' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
+        "clean": "rimraf 'packages/**/*.d.ts' 'packages/**/*.js' 'packages/**/*.js.map' 'packages/**/*.metada' 'packages/**/angular/ng-package.json'",
         "commitmsg": "commitlint -e $GIT_PARAMS",
-        "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr",
+        "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr --env.watchNodeModules",
         "demo.ng.clean": "cd ./demo-ng && ns clean",
-        "demo.ng.ios": "cd ./demo-ng && ns run ios --no-hmr",
-        "demo.react.android": "cd ./demo-react && ns run android --no-hmr",
+        "demo.ng.ios": "cd ./demo-ng && ns run ios --no-hmr --env.watchNodeModules",
+        "demo.react.android": "cd ./demo-react && ns run android --no-hmr --env.watchNodeModules",
         "demo.react.clean": "cd ./demo-react && ns clean",
-        "demo.react.ios": "cd ./demo-react && ns run ios --no-hmr",
-        "demo.svelte.android": "cd ./demo-svelte && ns run android --no-hmr",
+        "demo.react.ios": "cd ./demo-react && ns run ios --no-hmr --env.watchNodeModules",
+        "demo.svelte.android": "cd ./demo-svelte && ns run android --no-hmr --env.watchNodeModules",
         "demo.svelte.clean": "cd ./demo-svelte && ns clean",
-        "demo.svelte.ios": "cd ./demo-svelte && ns run ios --no-hmr",
-        "demo.vue.android": "cd ./demo-vue && ns run android --no-hmr",
+        "demo.svelte.ios": "cd ./demo-svelte && ns run ios --no-hmr --env.watchNodeModules",
+        "demo.vue.android": "cd ./demo-vue && ns run android --no-hmr --env.watchNodeModules",
         "demo.vue.clean": "cd ./demo-vue && ns clean",
-        "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr",
+        "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr --env.watchNodeModules",
         "postinstall": "npm run setup",
-        "publish": "npm run setup && npm run build.all && lerna publish --create-release=github --force-publish",
+        "publish": "npm run clean && npm run build.all && npm run readme && lerna publish --no-private --create-release=github --force-publish",
         "readme": "node ./tools/readme.js",
         "setup": "npm run submodules && ts-patch install",
         "start": "./node_modules/.bin/ntl -A -s 15 -o",
@@ -38,7 +37,9 @@
         "sync": "node ./tools/sync.js",
         "sync.test": "node ./tools/sync.js",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
-        "update": "node ./tools/update.js"
+        "update": "node ./tools/update.js",
+        "fullclean": "npm run clean && rimraf 'packages/**/node_modules' 'demo-*/hooks' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
+        "doc": "node tools/builddoc.mjs && git add docs/* && git commit -m \"chore:doc\""
     },
     "commitlint": {
         "extends": [
@@ -46,7 +47,7 @@
         ]
     },
     "dependencies": {
-        "@nativescript-community/template-snippet": "file:demo-snippets",
+        "@nativescript-community/template-snippet": "0.0.1",
         "@nativescript-community/plugin-seed-tools": "file:tools"
     },
     "ntl": {
@@ -65,5 +66,18 @@
             "demo.vue.ios": "Runs the Vue demo on iOS.",
             "watch": "Watch for changes in the plugin source and re-build."
         }
+    },
+    "workspaces": [
+        "packages/*",
+        "demo-vue",
+        "demo-ng",
+        "demo-svelte",
+        "demo-react",
+        "demo-snippets"
+    ],
+    "engines": {
+        "npm": "please use yarn or pnpm",
+        "yarn": ">=1.19.1",
+        "pnpm": ">=7.0.0"
     }
 }
