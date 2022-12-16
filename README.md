@@ -126,9 +126,12 @@ npm run publish
 * [Usage in Vue](#usage-in-vue)
 	* [Examples:](#examples-3)
 * [Demos and Development](#demos-and-development)
-	* [Setup](#setup)
+	* [Repo Setup](#repo-setup)
 	* [Build](#build)
 	* [Demos](#demos)
+* [Contributing](#contributing)
+	* [Update repo ](#update-repo-)
+	* [Publish](#publish)
 * [Questions](#questions)
 
 
@@ -313,18 +316,18 @@ Vue.use(DrawerPlugin);
 ## Demos and Development
 
 
-### Setup
+### Repo Setup
 
-To run the demos, you must clone this repo **recursively**.
+The repo uses submodules. If you did not clone with ` --recursive` then you need to call
+```
+git submodule update --init
+```
 
-```
-git clone https://github.com/@nativescript-community/ui-drawer.git --recursive
-```
+The package manager used to install and link dependencies must be `pnpm` or `yarn`. `npm` wont work.
 
-**Install Dependencies:**
-```bash
-npm i # or 'yarn install' or 'pnpm install'
-```
+To develop and test:
+if you use `yarn` then run `yarn`
+if you use `pnpm` then run `pnpm i`
 
 **Interactive Menu:**
 
@@ -333,9 +336,7 @@ To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`)
 ### Build
 
 ```bash
-npm run build
-
-npm run build.angular # or for Angular
+npm run build.all
 ```
 
 ### Demos
@@ -345,6 +346,41 @@ npm run demo.[ng|react|svelte|vue].[ios|android]
 
 npm run demo.svelte.ios # Example
 ```
+
+
+[](#contributing)
+
+
+[](#contributing)
+
+## Contributing
+
+### Update repo 
+
+You can update the repo files quite easily
+
+First update the submodules
+
+```bash
+npm run update
+```
+
+Then commit the changes
+Then update common files
+
+```bash
+npm run sync
+```
+Then you can run `yarn|pnpm`, commit changed files if any
+
+### Publish
+
+The publishing is completely handled by `lerna` (you can add `-- --bump major` to force a major release)
+Simply run 
+```shell
+npm run publish
+```
+
 
 [](#questions)
 
