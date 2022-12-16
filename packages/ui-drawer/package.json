@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-drawer",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "Easily add a side drawer (side menu) to your projects.",
     "main": "./index",
     "sideEffects": false,
@@ -53,5 +53,6 @@
     "readmeFilename": "README.md",
     "dependencies": {
         "@nativescript-community/gesturehandler": "^2.0.8"
-    }
+    },
+    "gitHead": "5c91f884f8ca30cfcff1c3ac88f90492831c73aa"
 }
