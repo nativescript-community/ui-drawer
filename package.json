@@ -38,8 +38,8 @@
         "sync.test": "node ./tools/sync.js",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
         "update": "node ./tools/update.js",
-        "fullclean": "npm run clean && rimraf 'packages/**/node_modules' 'demo-*/hooks' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
-        "doc": "node tools/builddoc.mjs && git add docs/* && git commit -m \"chore:doc\""
+        "fullclean": "npm run clean && rimraf 'packages/**/node_modules' 'demo-*/hooks' 'demo-*/node_modules' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
+        "doc": "node tools/builddoc.mjs"
     },
     "commitlint": {
         "extends": [
@@ -78,6 +78,7 @@
     "engines": {
         "npm": "please use yarn or pnpm",
         "yarn": ">=1.19.1",
-        "pnpm": ">=7.0.0"
+        "pnpm": ">=7.0.0",
+        "node": "^14.20.0 || ^16.13.0 || >=18.10.0"
     }
 }
