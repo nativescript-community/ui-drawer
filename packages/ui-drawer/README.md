@@ -61,6 +61,8 @@
 	* [Demos](#demos)
 * [Contributing](#contributing)
 	* [Update repo ](#update-repo-)
+	* [Update readme ](#update-readme-)
+	* [Update doc ](#update-doc-)
 	* [Publish](#publish)
 * [Questions](#questions)
 
@@ -275,6 +277,16 @@ Then update common files
 npm run sync
 ```
 Then you can run `yarn|pnpm`, commit changed files if any
+
+### Update readme 
+```bash
+npm run readme
+```
+
+### Update doc 
+```bash
+npm run doc
+```
 
 ### Publish
 
