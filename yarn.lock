@@ -3333,7 +3333,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=e56ffa&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=9bfd32&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": ~14.2.12
     "@angular/common": ~14.2.12
@@ -3392,7 +3392,7 @@ __metadata:
     vue: ~2.6.14
     yargs: ^17.6.2
     zone.js: ~0.12.0
-  checksum: a21745770b430db5ec930e603e42991d456979f7916b615989394061f809a51cb8b89dbad7aa0561178ff6a4648de80c7646becbcbb5f04011d0ca48ab9b5b2c
+  checksum: fb291c67d524f3d2594301c09a508a61603acd005ab85e7c3f8be560a395af76023df5843ed11e34d3cead5e99fbd79fbc92fb18ddb8c4719438ea904b41a5b5
   languageName: node
   linkType: hard
 
@@ -3406,28 +3406,28 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=f5c550&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=67bc7f&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-drawer": "file:../packages/ui-drawer"
-  checksum: 7ae790eb99bd6a90dc6bd3bf7aa07e07ffc9d6a86efcb17dfa5ba615cab955d52c4e70f9aec6c06a9572b23d7e6a77f3a973175c0d77b2d93c9e5641fa9c74d0
+  checksum: 1fb4cad08fefc94b2e5474aa3f621d413991f08faf6e00a8fdec06b5f4c6c42a36468380ef18a639cd8f3c2738c61a2d1aedfafae49afde3af05564233ee8d1e
   languageName: node
   linkType: hard
 
-"@nativescript-community/ui-drawer@file:../packages/ui-drawer::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df5c550%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-drawer@file:../packages/ui-drawer::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D67bc7f%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.1.4
-  resolution: "@nativescript-community/ui-drawer@file:../packages/ui-drawer#../packages/ui-drawer::hash=443d2a&locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df5c550%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-drawer@file:../packages/ui-drawer#../packages/ui-drawer::hash=eb9382&locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D67bc7f%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   dependencies:
     "@nativescript-community/gesturehandler": ^2.0.8
-  checksum: d9f36fac34ab36fa95675aaac51efc9f86f2acd57abc0dde62fe7aa11850abf52f2a430acfb7cf4428472fe90815b2f63223ba29c964326e81d06c1957a95d40
+  checksum: 92423403ef079bc2fd594c2c96b9a60462d8f1c0ccb126a0860e45f6b8b3fd1daeaf16c26bc069d27cef77bdbb3803bacbab714754a4abf720a8e5a5304c7d8c
   languageName: node
   linkType: hard
 
 "@nativescript-community/ui-drawer@file:../packages/ui-drawer::locator=%40nativescript-community%2Ftemplate-snippet%40workspace%3Ademo-snippets":
   version: 0.1.4
-  resolution: "@nativescript-community/ui-drawer@file:../packages/ui-drawer#../packages/ui-drawer::hash=443d2a&locator=%40nativescript-community%2Ftemplate-snippet%40workspace%3Ademo-snippets"
+  resolution: "@nativescript-community/ui-drawer@file:../packages/ui-drawer#../packages/ui-drawer::hash=eb9382&locator=%40nativescript-community%2Ftemplate-snippet%40workspace%3Ademo-snippets"
   dependencies:
     "@nativescript-community/gesturehandler": ^2.0.8
-  checksum: d9f36fac34ab36fa95675aaac51efc9f86f2acd57abc0dde62fe7aa11850abf52f2a430acfb7cf4428472fe90815b2f63223ba29c964326e81d06c1957a95d40
+  checksum: 92423403ef079bc2fd594c2c96b9a60462d8f1c0ccb126a0860e45f6b8b3fd1daeaf16c26bc069d27cef77bdbb3803bacbab714754a4abf720a8e5a5304c7d8c
   languageName: node
   linkType: hard
 
