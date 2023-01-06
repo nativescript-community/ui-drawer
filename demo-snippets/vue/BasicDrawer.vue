@@ -37,9 +37,9 @@
     </Page>
 </template>
 
-<script lang="typescript">
-export default {
-
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({
     computed: {
         message() {
             return 'Blank {N}-Vue app';
@@ -56,7 +56,7 @@ export default {
             this.$refs['drawer'].close('left');
         }
     }
-};
+});
 </script>
 
 <style scoped lang="scss">

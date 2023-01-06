@@ -6,7 +6,7 @@
     "sideEffects": false,
     "typings": "./index.d.ts",
     "scripts": {
-        "build": "npm run tsc && npm run readme",
+        "build": "npm run tsc",
         "build.all": "npm run build && npm run build.angular",
         "build.angular": "ng-packagr -p ../../src/ui-drawer/angular/ng-package.json -c ../../src/ui-drawer/angular/tsconfig.json",
         "readme": "readme generate -c ../../tools/readme/blueprint.json",

@@ -32,19 +32,20 @@
     </Page>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({
     computed: {
         message() {
             return 'Blank {N}-Vue app';
         }
     },
     methods: {
-        onOpenDrawer(side) {
+        onOpenDrawer(side: string) {
             this.$refs['drawer'].open(side);
         }
     }
-};
+});
 </script>
 
 <style lang="scss" scoped></style>
