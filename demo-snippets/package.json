@@ -3,6 +3,6 @@
     "private": true,
     "version": "0.0.1",
     "dependencies": {
-        "@nativescript-community/ui-drawer": "file:../packages/ui-drawer"
+        "@nativescript-community/ui-drawer": "*"
     }
 }

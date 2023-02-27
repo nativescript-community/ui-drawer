@@ -3315,7 +3315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nativescript-community/gesturehandler@npm:^2.0.8":
+"@nativescript-community/gesturehandler@npm:2.0.8, @nativescript-community/gesturehandler@npm:^2.0.8":
   version: 2.0.8
   resolution: "@nativescript-community/gesturehandler@npm:2.0.8"
   dependencies:
@@ -3333,7 +3333,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=9bfd32&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=460b02&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": ~14.2.12
     "@angular/common": ~14.2.12
@@ -3392,7 +3392,7 @@ __metadata:
     vue: ~2.6.14
     yargs: ^17.6.2
     zone.js: ~0.12.0
-  checksum: fb291c67d524f3d2594301c09a508a61603acd005ab85e7c3f8be560a395af76023df5843ed11e34d3cead5e99fbd79fbc92fb18ddb8c4719438ea904b41a5b5
+  checksum: ac02bb52e0645a46291a45a6b596e82ba8faf49e4b1351677a3aad64044de7e3673f4684c500f7608399338d768ac98f11a075e63dcad431fb335e283535ceca
   languageName: node
   linkType: hard
 
@@ -3400,38 +3400,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/template-snippet@workspace:demo-snippets"
   dependencies:
-    "@nativescript-community/ui-drawer": "file:../packages/ui-drawer"
+    "@nativescript-community/ui-drawer": "*"
   languageName: unknown
   linkType: soft
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=67bc7f&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=b09c30&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
-    "@nativescript-community/ui-drawer": "file:../packages/ui-drawer"
-  checksum: 1fb4cad08fefc94b2e5474aa3f621d413991f08faf6e00a8fdec06b5f4c6c42a36468380ef18a639cd8f3c2738c61a2d1aedfafae49afde3af05564233ee8d1e
+    "@nativescript-community/ui-drawer": "*"
+  checksum: 1e6cd875cd834d171cdb519236079673d946eae8a278ab0566dc303694d9d0f1d4e27f453ceeafbc1092a289b2beeca1b6b280b6a282ee085756ed67d063dad9
   languageName: node
   linkType: hard
 
-"@nativescript-community/ui-drawer@file:../packages/ui-drawer::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D67bc7f%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
-  version: 0.1.4
-  resolution: "@nativescript-community/ui-drawer@file:../packages/ui-drawer#../packages/ui-drawer::hash=eb9382&locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D67bc7f%26locator%3Droot-workspace-0b6124%2540workspace%253A."
-  dependencies:
-    "@nativescript-community/gesturehandler": ^2.0.8
-  checksum: 92423403ef079bc2fd594c2c96b9a60462d8f1c0ccb126a0860e45f6b8b3fd1daeaf16c26bc069d27cef77bdbb3803bacbab714754a4abf720a8e5a5304c7d8c
-  languageName: node
-  linkType: hard
-
-"@nativescript-community/ui-drawer@file:../packages/ui-drawer::locator=%40nativescript-community%2Ftemplate-snippet%40workspace%3Ademo-snippets":
-  version: 0.1.4
-  resolution: "@nativescript-community/ui-drawer@file:../packages/ui-drawer#../packages/ui-drawer::hash=eb9382&locator=%40nativescript-community%2Ftemplate-snippet%40workspace%3Ademo-snippets"
-  dependencies:
-    "@nativescript-community/gesturehandler": ^2.0.8
-  checksum: 92423403ef079bc2fd594c2c96b9a60462d8f1c0ccb126a0860e45f6b8b3fd1daeaf16c26bc069d27cef77bdbb3803bacbab714754a4abf720a8e5a5304c7d8c
-  languageName: node
-  linkType: hard
-
-"@nativescript-community/ui-drawer@workspace:packages/ui-drawer":
+"@nativescript-community/ui-drawer@*, @nativescript-community/ui-drawer@workspace:packages/ui-drawer":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-drawer@workspace:packages/ui-drawer"
   dependencies:
@@ -16170,6 +16152,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@nativescript-community/gesturehandler": 2.0.8
     "@nativescript-community/plugin-seed-tools": "file:tools"
     "@nativescript-community/template-snippet": "file:demo-snippets"
   languageName: unknown
