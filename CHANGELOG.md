@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.5](https://github.com/nativescript-community/ui-drawer/compare/v0.1.4...v0.1.5) (2023-02-27)
+
+
+### Bug Fixes
+
+* correctly layout after orientation change with drawer opened ([b5e3462](https://github.com/nativescript-community/ui-drawer/commit/b5e3462332cfca96b70ec60376e12c1d6026b0c0))
+
+
+
+
+
 ## [0.1.4](https://github.com/nativescript-community/ui-drawer/compare/v0.1.3...v0.1.4) (2022-12-16)
 
 **Note:** Version bump only for package ui-drawer
