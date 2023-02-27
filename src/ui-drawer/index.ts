@@ -157,9 +157,7 @@ export class Drawer extends GridLayout {
         this.insertChild(this.backDrop, 0);
     }
     onBackdropTap() {
-        if (this.backdropTapGestureEnabled) {
-            this.close();
-        }
+        this.close();
     }
     initGestures() {
         const manager = Manager.getInstance();
@@ -177,7 +175,9 @@ export class Drawer extends GridLayout {
     }
     initNativeView() {
         super.initNativeView();
-        this.backDrop.on('tap', this.onBackdropTap, this);
+        if (this.backdropTapGestureEnabled) {
+            this.backDrop.on('tap', this.onBackdropTap, this);
+        }
         if (this.gestureEnabled) {
             this.initGestures();
         }
