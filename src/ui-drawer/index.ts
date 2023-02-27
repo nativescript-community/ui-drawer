@@ -326,7 +326,6 @@ export class Drawer extends GridLayout {
     onGestureTouch(args: GestureTouchEventData) {
         const data = args.data;
         const side = this.showingSide || this.needToSetSide;
-        // console.log('onGestureTouch', data.state, side);
         if (data.state !== GestureState.ACTIVE || !side || this.isAnimating) {
             return;
         }
@@ -415,7 +414,6 @@ export class Drawer extends GridLayout {
         this.onSideModeChanged('bottom', value, oldValue);
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
-        // console.log('_onMainContentChanged', oldValue, newValue);
         if (oldValue) {
             this.removeChild(oldValue);
         }
@@ -423,7 +421,6 @@ export class Drawer extends GridLayout {
         if (newValue) {
             const indexBack = this.getChildIndex(this.backDrop);
             const index = this.getChildIndex(newValue);
-            // console.log('_onMainContentChanged', newValue, indexBack, index);
             if (index !== indexBack - 1 && newValue.parent === this) {
                 this.removeChild(newValue);
                 this.insertChild(newValue, indexBack);
@@ -455,7 +452,6 @@ export class Drawer extends GridLayout {
         // super.addChild(child);
     }
     public _onDrawerContentChanged(side: Side | VerticalSide, oldValue: View, newValue: View) {
-        // console.log('_onDrawerContentChanged', side, oldValue, newValue);
         if (oldValue) {
             switch (side) {
                 case 'right':
@@ -516,7 +512,6 @@ export class Drawer extends GridLayout {
         if (!drawer) {
             return;
         }
-        // console.log('onSideModeChanged', side, drawer);
         if (mode === 'under') {
             const indexBack = this.getChildIndex(this.backDrop);
             const index = this.getChildIndex(drawer);
@@ -614,12 +609,11 @@ export class Drawer extends GridLayout {
     }
     onLayoutChange(side: Side | VerticalSide, event: EventData) {
         const contentView = event.object as GridLayout;
-        // console.log('onLayoutChange', side, width);
         let data;
         let safeAreaOffset = 0;
         let changed = false;
         if (side === 'left' || side === 'right') {
-            if (global.isIOS) {
+            if (__IOS__) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
                 if (deviceOrientation === UIDeviceOrientation.LandscapeLeft) {
                     safeAreaOffset = Application.ios.window.safeAreaInsets.left;
@@ -630,22 +624,23 @@ export class Drawer extends GridLayout {
             const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
             changed = width !== this.viewWidth[side];
             this.viewWidth[side] = width;
+            // contentView.translateX = 0;
             if (this.translationX[side] === 0) {
-                data = this.computeTranslationData(side, width);
-                this.translationX[side] = width;
+                //opened: we dont need to do anything as no translation
             } else {
                 const shown = this.viewWidth[side] - this.translationX[side];
                 data = this.computeTranslationData(side, width - shown);
                 this.translationX[side] = width - shown;
             }
         } else {
-            safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            safeAreaOffset = __IOS__ && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
             const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
             changed = height !== this.viewHeight[side];
             this.viewHeight[side] = height;
             if (this.translationY[side] === 0) {
-                data = this.computeTranslationData(side, height);
-                this.translationY[side] = height;
+                //opened: we dont need to do anything as no translation
+                // data = this.computeTranslationData(side, height);
+                // this.translationY[side] = height;
             } else {
                 const shown = this.viewHeight[side] - this.translationY[side];
                 data = this.computeTranslationData(side, height - shown);
@@ -662,7 +657,7 @@ export class Drawer extends GridLayout {
         let data;
         let safeAreaOffset = 0;
         if (side === 'left' || side === 'right') {
-            if (global.isIOS) {
+            if (__IOS__) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
                 if (deviceOrientation === 3) {
                     safeAreaOffset = Application.ios.window.safeAreaInsets.left;
@@ -673,14 +668,13 @@ export class Drawer extends GridLayout {
             const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
             this.viewWidth[side] = width;
         } else {
-            safeAreaOffset = global.isIOS && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            safeAreaOffset = __IOS__ && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
             const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
             this.viewHeight[side] = height;
         }
     }
     onTapGestureState(args: GestureStateEventData) {
         const { state } = args.data;
-        // console.log('onTapGestureState', state, this.showingSide, this.needToSetSide);
         if (state === GestureState.BEGAN) {
             this.close();
         }
@@ -690,7 +684,6 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
-        // console.log('applyTrData', side, JSON.stringify(trData), new Error().stack);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
                 Object.assign(this[k], trData[k]);
@@ -770,6 +763,9 @@ export class Drawer extends GridLayout {
             if ((position !== 0 && this.showingSide === side) || (position === 0 && !this.showingSide)) {
                 this.applyTrData(trData, side);
                 if (position !== 0) {
+                    // if (trData.backDrop) {
+                    //     this.backDrop.opacity = 1;
+                    // }
                 } else {
                     const drawer = this[side + 'Drawer'] as View;
                     if (drawer) {
