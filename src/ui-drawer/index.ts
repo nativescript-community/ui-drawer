@@ -123,8 +123,8 @@ export class Drawer extends GridLayout {
     private isAnimating = false;
     private prevDeltaX = 0;
     private prevDeltaY = 0;
-    private viewWidth: { [k in Side]: number } = { left: 0, right: 0 };
-    private viewHeight: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
+    private viewWidth: { [k in Side]: number } = { left: undefined, right: undefined };
+    private viewHeight: { [k in VerticalSide]: number } = { bottom: undefined, top: undefined };
     private translationX: { [k in Side]: number } = { left: 0, right: 0 };
     private translationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
     private showingSide: Side | VerticalSide = null;
@@ -612,6 +612,8 @@ export class Drawer extends GridLayout {
         let data;
         let safeAreaOffset = 0;
         let changed = false;
+        const getMeasuredWidth = () => (Application.orientation() === 'landscape' ? contentView.getMeasuredHeight() : contentView.getMeasuredWidth());
+        const getMeasuredHeight = () => (Application.orientation() === 'landscape' ? contentView.getMeasuredWidth() : contentView.getMeasuredHeight());
         if (side === 'left' || side === 'right') {
             if (__IOS__) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
@@ -622,11 +624,14 @@ export class Drawer extends GridLayout {
                 }
             }
             const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
+            const firstSet = this.viewWidth[side] === undefined;
             changed = width !== this.viewWidth[side];
             this.viewWidth[side] = width;
-            // contentView.translateX = 0;
             if (this.translationX[side] === 0) {
                 //opened: we dont need to do anything as no translation
+                if (firstSet) {
+                    data = this.computeTranslationData(side, width);
+                }
             } else {
                 const shown = this.viewWidth[side] - this.translationX[side];
                 data = this.computeTranslationData(side, width - shown);
@@ -635,12 +640,14 @@ export class Drawer extends GridLayout {
         } else {
             safeAreaOffset = __IOS__ && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
             const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
+            const firstSet = this.viewHeight[side] === undefined;
             changed = height !== this.viewHeight[side];
             this.viewHeight[side] = height;
             if (this.translationY[side] === 0) {
                 //opened: we dont need to do anything as no translation
-                // data = this.computeTranslationData(side, height);
-                // this.translationY[side] = height;
+                if (firstSet) {
+                    data = this.computeTranslationData(side, height);
+                }
             } else {
                 const shown = this.viewHeight[side] - this.translationY[side];
                 data = this.computeTranslationData(side, height - shown);
