@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.6](https://github.com/nativescript-community/ui-drawer/compare/v0.1.5...v0.1.6) (2023-03-24)
+
+
+### Bug Fixes
+
+* regression fix causing first opening to be without animatino ([385b95d](https://github.com/nativescript-community/ui-drawer/commit/385b95d1bdee3572165e241774729bb7c909f2c5))
+
+
+
+
+
 ## [0.1.5](https://github.com/nativescript-community/ui-drawer/compare/v0.1.4...v0.1.5) (2023-02-27)
 
 
