@@ -100,9 +100,10 @@ install();
 | bottomDrawer         | `undefined`                       | `View`                      | View containing the content for the bottom side drawer   |
 | mainContent         | `undefined`                       | `View`                      | View containing the main content of the app             |
 | gestureEnabled      | `true`                            | `boolean`                   | Boolean setting if swipe gestures are enabled           |
+| backdropTapGestureEnabled       | `true` | `boolean`                     | Allow tapping the backdrop to close the drawer             |
 | backdropColor       | `new Color('rgba(0, 0, 0, 0.7)')` | `Color`                     | The color of the backdrop behind the drawer             |
-| leftDrawerMode      | `slide`                           | `Mode ('under' or 'slide')` | The color of the backdrop behind the drawer             |
-| rightDrawerMode     | `slide`                           | `Mode ('under' or 'slide')` | The color of the backdrop behind the drawer             |
+| leftDrawerMode      | `slide`                           | `Mode ('under' or 'slide')` | The drawer's enter-animation behavior             |
+| rightDrawerMode     | `slide`                           | `Mode ('under' or 'slide')` | The drawer's enter-animation behavior             |
 | gestureMinDist     | `10`                           | number | The min "swipe" distance to trigger the menu gesture             |
 | gestureHandlerOptions     | `null`                           | PanGestureHandlerOptions | Options to customize the pan gesture handler             |
 | leftSwipeDistance     | `40`                           | number | The "left" zone size from where the gesture is recognized             |
