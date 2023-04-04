@@ -9,7 +9,7 @@
             :gestureHandlerOptions="{
                 failOffsetYStart: -10,
                 failOffsetYEnd: 10
-            }">
+            }" :backDropEnabled="false">
 
             <GridLayout ~leftDrawer class="drawer" width="80%" backgroundColor="white" rows="auto, *">
                 <StackLayout backgroundColor="#eeeeee" padding="25">
