@@ -87,6 +87,11 @@ export const bottomDrawerModeProperty = new Property<Drawer, Mode>({
 export const translationFunctionProperty = new Property<Drawer, Function>({
     name: 'translationFunction'
 });
+export const backDropEnabledProperty = new Property<Drawer, boolean>({
+    defaultValue: true,
+    valueConverter: booleanConverter,
+    name: 'backDropEnabled'
+});
 
 @CSSType('Drawer')
 export class Drawer extends GridLayout {
@@ -108,6 +113,10 @@ export class Drawer extends GridLayout {
     public bottomSwipeDistance = 40;
     public topSwipeDistance = 40;
     public backdropColor = new Color('rgba(0, 0, 0, 0.7)');
+    public leftOpenedOnStart = true;
+    public rightOpenedOnStart = false;
+    public topOpenedOnStart = false;
+    public bottomOpenedOnStart = false;
     public leftOpenedDrawerAllowDraging = true;
     public rightOpenedDrawerAllowDraging = true;
     public bottomOpenedDrawerAllowDraging = true;
@@ -130,7 +139,7 @@ export class Drawer extends GridLayout {
     private showingSide: Side | VerticalSide = null;
     private needToSetSide: Side | VerticalSide;
 
-    private modes: { [k in Side | VerticalSide]: Mode } = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
+    private modes: Partial<{ [k in Side | VerticalSide]: Mode }> = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
     translationFunction?: (
         side: Side | VerticalSide,
         width: number,
@@ -145,16 +154,31 @@ export class Drawer extends GridLayout {
         backDrop?: AnimationDefinition;
         mainContent?: AnimationDefinition;
     };
+    backDropEnabled: boolean = true;
 
     constructor() {
         super();
         this.isPassThroughParentEnabled = true;
-        this.backDrop = new GridLayout();
-        this.backDrop.backgroundColor = this.backdropColor;
-        this.backDrop.opacity = 0;
-        this.backDrop.visibility = 'hidden';
+    }
+    _onBackDropEnabledValueChanged() {
+        console.log('_onBackDropEnabledValueChanged', this.backDropEnabled, !!this.backDrop, !!this.mainContent);
+        if (this.backDropEnabled && !this.backDrop) {
+            this.backDrop = new GridLayout();
+            this.backDrop.backgroundColor = this.backdropColor;
+            this.backDrop.opacity = 0;
+            this.backDrop.visibility = 'hidden';
 
-        this.insertChild(this.backDrop, 0);
+            this.insertChild(this.backDrop, 0);
+        } else if (!this.backDropEnabled && this.backDrop) {
+            this.removeChild(this.backDrop);
+            this.backDrop = null;
+        }
+    }
+    [backDropEnabledProperty.setNative](value) {
+        this._onBackDropEnabledValueChanged();
+    }
+    onLoaded() {
+        super.onLoaded();
     }
     onBackdropTap() {
         this.close();
@@ -174,8 +198,12 @@ export class Drawer extends GridLayout {
         this.panGestureHandler = gestureHandler as any;
     }
     initNativeView() {
+        if (this.backDropEnabled && !this.backDrop) {
+            this[backDropEnabledProperty.setNative](this.backDropEnabled);
+        }
         super.initNativeView();
-        if (this.backdropTapGestureEnabled) {
+        console.log('initNativeView', this.backDropEnabled, !!this.backDrop);
+        if (this.backDrop && this.backdropTapGestureEnabled) {
             this.backDrop.on('tap', this.onBackdropTap, this);
         }
         if (this.gestureEnabled) {
@@ -184,7 +212,9 @@ export class Drawer extends GridLayout {
     }
     disposeNativeView() {
         super.disposeNativeView();
-        this.backDrop.off('tap', this.onBackdropTap, this);
+        if (this.backDrop) {
+            this.backDrop.off('tap', this.onBackdropTap, this);
+        }
         if (this.panGestureHandler) {
             this.panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
             this.panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
@@ -217,7 +247,8 @@ export class Drawer extends GridLayout {
                     return this.shouldStartSheetDraggingInternal(side);
                 }
             }
-            return this.backDrop.opacity !== 0;
+            // for now without backDrop we force allow gesture
+            return !this.backDrop || this.backDrop.opacity !== 0;
         } else {
             let needToSetSide;
             if (this.leftDrawer && data.x <= this.leftSwipeDistance) {
@@ -351,7 +382,9 @@ export class Drawer extends GridLayout {
 
             this.translationX[side] = width + trX;
             const trData = this.computeTranslationData(side, width + trX);
-            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            if (this.backDrop) {
+                this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            }
             this.applyTrData(trData, side);
             this.updateIsPanning(data.state);
             this.prevDeltaX = deltaX;
@@ -377,7 +410,9 @@ export class Drawer extends GridLayout {
 
             this.translationY[side] = height + trY;
             const trData = this.computeTranslationData(side, height + trY);
-            this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            if (this.backDrop) {
+                this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
+            }
             this.applyTrData(trData, side);
             this.updateIsPanning(data.state);
             this.prevDeltaY = deltaY;
@@ -391,7 +426,9 @@ export class Drawer extends GridLayout {
         }
     }
     [backdropColorProperty.setNative](value: Color) {
-        this.backDrop.backgroundColor = value;
+        if (this.backDrop) {
+            this.backDrop.backgroundColor = value;
+        }
     }
     [leftDrawerModeProperty.setNative](value: Mode) {
         const oldValue = this.modes['left'];
@@ -419,7 +456,7 @@ export class Drawer extends GridLayout {
         }
 
         if (newValue) {
-            const indexBack = this.getChildIndex(this.backDrop);
+            const indexBack = this.backDrop ? this.getChildIndex(this.backDrop) : 0;
             const index = this.getChildIndex(newValue);
             if (index !== indexBack - 1 && newValue.parent === this) {
                 this.removeChild(newValue);
@@ -452,6 +489,7 @@ export class Drawer extends GridLayout {
         // super.addChild(child);
     }
     public _onDrawerContentChanged(side: Side | VerticalSide, oldValue: View, newValue: View) {
+        this._onBackDropEnabledValueChanged()
         if (oldValue) {
             switch (side) {
                 case 'right':
@@ -498,10 +536,7 @@ export class Drawer extends GridLayout {
                     newValue.on('layoutChanged', this.onBottomLayoutChanged, this);
                     break;
             }
-            const mode = this.modes[side];
-            newValue.visibility = 'hidden';
-            // this.addChild(newValue);
-            this.onSideModeChanged(side, mode, undefined);
+            this.onSideModeChanged(side, this.modes[side], undefined);
         }
     }
     onSideModeChanged(side: Side | VerticalSide, mode: Mode, oldMode: Mode) {
@@ -512,26 +547,25 @@ export class Drawer extends GridLayout {
         if (!drawer) {
             return;
         }
+        const indexBack = this.backDrop ? this.getChildIndex(this.backDrop) : 0;
+        const index = this.getChildIndex(drawer);
+        drawer.visibility = this.showingSide === side ? 'visible' : 'hidden';
+
         if (mode === 'under') {
-            const indexBack = this.getChildIndex(this.backDrop);
-            const index = this.getChildIndex(drawer);
             if (index > indexBack - 1 && drawer.parent === this) {
                 this.removeChild(drawer);
                 this.insertChild(drawer, Math.max(indexBack - 1, 0));
             } else {
                 // initial addition
-                drawer.visibility = 'hidden';
+                // this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
                 this.insertChild(drawer, 0);
             }
         } else {
-            const indexBack = this.getChildIndex(this.backDrop);
-            const index = this.getChildIndex(drawer);
             if (index <= indexBack && drawer.parent === this) {
                 this.removeChild(drawer);
                 this.insertChild(drawer, indexBack + 1);
             } else {
                 // initial addition
-                drawer.visibility = 'hidden';
                 this.insertChild(drawer, indexBack + 1);
             }
         }
@@ -560,13 +594,13 @@ export class Drawer extends GridLayout {
             } else {
                 return {
                     mainContent: {
-                        translateX: 0
+                        // translateX: 0
                     },
                     [side + 'Drawer']: {
                         translateX: side === 'left' ? -value : value
                     },
                     backDrop: {
-                        translateX: 0,
+                        // translateX: 0,
                         opacity: progress
                     }
                 };
@@ -612,8 +646,6 @@ export class Drawer extends GridLayout {
         let data;
         let safeAreaOffset = 0;
         let changed = false;
-        const getMeasuredWidth = () => (Application.orientation() === 'landscape' ? contentView.getMeasuredHeight() : contentView.getMeasuredWidth());
-        const getMeasuredHeight = () => (Application.orientation() === 'landscape' ? contentView.getMeasuredWidth() : contentView.getMeasuredHeight());
         if (side === 'left' || side === 'right') {
             if (__IOS__) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
@@ -627,11 +659,13 @@ export class Drawer extends GridLayout {
             const firstSet = this.viewWidth[side] === undefined;
             changed = width !== this.viewWidth[side];
             this.viewWidth[side] = width;
-            if (this.translationX[side] === 0) {
+            if (firstSet) {
+                const offset = this.showingSide === side ? 0 : width;
+                data = this.computeTranslationData(side, offset);
+                const shown = this.viewWidth[side] - offset;
+                this.translationX[side] = width - shown;
+            } else if (this.translationX[side] === 0) {
                 //opened: we dont need to do anything as no translation
-                if (firstSet) {
-                    data = this.computeTranslationData(side, width);
-                }
             } else {
                 const shown = this.viewWidth[side] - this.translationX[side];
                 data = this.computeTranslationData(side, width - shown);
@@ -656,7 +690,12 @@ export class Drawer extends GridLayout {
         }
         if (changed && data) {
             // delay applyTrData or it will create a layout issue on iOS
-            setTimeout(() => this.applyTrData(data, side), 0);
+            setTimeout(() => {
+                this.applyTrData(data, side);
+                if (this.backDrop) {
+                    this.backDrop.visibility = data.backDrop && data.backDrop.opacity > 0 ? 'visible' : 'hidden';
+                }
+            }, 0);
         }
     }
     forceEnsureSize(side: Side | VerticalSide) {
@@ -737,7 +776,7 @@ export class Drawer extends GridLayout {
             if (drawer) {
                 drawer.visibility = 'visible';
             }
-            if (trData.backDrop && trData.backDrop.opacity > 0 && this.backDrop.visibility !== 'visible') {
+            if (this.backDrop && trData.backDrop && trData.backDrop.opacity > 0 && this.backDrop.visibility !== 'visible') {
                 this.backDrop.opacity = 0;
                 this.backDrop.visibility = 'visible';
             }
@@ -778,7 +817,7 @@ export class Drawer extends GridLayout {
                     if (drawer) {
                         drawer.visibility = 'hidden';
                     }
-                    if (trData.backDrop) {
+                    if (this.backDrop && trData.backDrop) {
                         this.backDrop.visibility = 'hidden';
                     }
                 }
@@ -882,6 +921,7 @@ rightDrawerModeProperty.register(Drawer);
 bottomDrawerModeProperty.register(Drawer);
 topDrawerModeProperty.register(Drawer);
 translationFunctionProperty.register(Drawer);
+backDropEnabledProperty.register(Drawer);
 
 export function install() {
     installGestures();
