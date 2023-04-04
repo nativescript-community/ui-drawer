@@ -113,10 +113,6 @@ export class Drawer extends GridLayout {
     public bottomSwipeDistance = 40;
     public topSwipeDistance = 40;
     public backdropColor = new Color('rgba(0, 0, 0, 0.7)');
-    public leftOpenedOnStart = true;
-    public rightOpenedOnStart = false;
-    public topOpenedOnStart = false;
-    public bottomOpenedOnStart = false;
     public leftOpenedDrawerAllowDraging = true;
     public rightOpenedDrawerAllowDraging = true;
     public bottomOpenedDrawerAllowDraging = true;
@@ -161,7 +157,6 @@ export class Drawer extends GridLayout {
         this.isPassThroughParentEnabled = true;
     }
     _onBackDropEnabledValueChanged() {
-        console.log('_onBackDropEnabledValueChanged', this.backDropEnabled, !!this.backDrop, !!this.mainContent);
         if (this.backDropEnabled && !this.backDrop) {
             this.backDrop = new GridLayout();
             this.backDrop.backgroundColor = this.backdropColor;
@@ -176,9 +171,6 @@ export class Drawer extends GridLayout {
     }
     [backDropEnabledProperty.setNative](value) {
         this._onBackDropEnabledValueChanged();
-    }
-    onLoaded() {
-        super.onLoaded();
     }
     onBackdropTap() {
         this.close();
@@ -202,7 +194,6 @@ export class Drawer extends GridLayout {
             this[backDropEnabledProperty.setNative](this.backDropEnabled);
         }
         super.initNativeView();
-        console.log('initNativeView', this.backDropEnabled, !!this.backDrop);
         if (this.backDrop && this.backdropTapGestureEnabled) {
             this.backDrop.on('tap', this.onBackdropTap, this);
         }
@@ -451,6 +442,7 @@ export class Drawer extends GridLayout {
         this.onSideModeChanged('bottom', value, oldValue);
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
+        this._onBackDropEnabledValueChanged();
         if (oldValue) {
             this.removeChild(oldValue);
         }
@@ -489,7 +481,7 @@ export class Drawer extends GridLayout {
         // super.addChild(child);
     }
     public _onDrawerContentChanged(side: Side | VerticalSide, oldValue: View, newValue: View) {
-        this._onBackDropEnabledValueChanged()
+        this._onBackDropEnabledValueChanged();
         if (oldValue) {
             switch (side) {
                 case 'right':
