@@ -799,6 +799,8 @@ export class Drawer extends GridLayout {
             this.showingSide = null;
             this.notify({ eventName: 'close', side, duration } as DrawerEventData);
         }
+
+        // TODO: custom animation curve + apply curve on gesture
         const params = Object.keys(trData)
             .map(
                 (k) =>
