@@ -93,6 +93,10 @@ export const backDropEnabledProperty = new Property<Drawer, boolean>({
     name: 'backDropEnabled'
 });
 
+export const startingSideProperty = new Property<Drawer, Side | VerticalSide>({
+    name: 'startingSide'
+});
+
 @CSSType('Drawer')
 export class Drawer extends GridLayout {
     public leftDrawer?: View;
@@ -133,6 +137,7 @@ export class Drawer extends GridLayout {
     private translationX: { [k in Side]: number } = { left: 0, right: 0 };
     private translationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
     private showingSide: Side | VerticalSide = null;
+    private startingSide: Side | VerticalSide = null;
     private needToSetSide: Side | VerticalSide;
 
     private modes: Partial<{ [k in Side | VerticalSide]: Mode }> = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
@@ -171,6 +176,18 @@ export class Drawer extends GridLayout {
     }
     [backDropEnabledProperty.setNative](value) {
         this._onBackDropEnabledValueChanged();
+    }
+    [startingSideProperty.setNative](value: Side | VerticalSide) {
+        console.log('startingSideProperty', value, this.isLayoutValid);
+        if (!this.isLayoutValid) {
+            this.showingSide = value;
+            const drawer = this[value + 'Drawer'] as View;
+            if (drawer) {
+                drawer.visibility = this.showingSide === value ? 'visible' : 'hidden';
+            }
+        } else {
+            this.open(value, 0);
+        }
     }
     onBackdropTap() {
         this.close();
@@ -669,11 +686,13 @@ export class Drawer extends GridLayout {
             const firstSet = this.viewHeight[side] === undefined;
             changed = height !== this.viewHeight[side];
             this.viewHeight[side] = height;
-            if (this.translationY[side] === 0) {
+            if (firstSet) {
+                const offset = this.showingSide === side ? 0 : height;
+                data = this.computeTranslationData(side, offset);
+                const shown = this.viewHeight[side] - offset;
+                this.translationY[side] = height - shown;
+            } else if (this.translationX[side] === 0) {
                 //opened: we dont need to do anything as no translation
-                if (firstSet) {
-                    data = this.computeTranslationData(side, height);
-                }
             } else {
                 const shown = this.viewHeight[side] - this.translationY[side];
                 data = this.computeTranslationData(side, height - shown);
@@ -722,6 +741,7 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
+        console.log('applyTrData', trData);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
                 Object.assign(this[k], trData[k]);
@@ -749,6 +769,7 @@ export class Drawer extends GridLayout {
     }
 
     async animateToPosition(side: Side | VerticalSide, position, duration = OPEN_DURATION) {
+        console.log('animateToPosition', side, position, duration, this.showingSide);
         if (this.showingSide && side !== this.showingSide) {
             this.animateToPosition(this.showingSide, 0, duration);
         }
@@ -766,6 +787,7 @@ export class Drawer extends GridLayout {
             this.showingSide = side;
             const drawer = this[side + 'Drawer'] as View;
             if (drawer) {
+                console.log('showing drawer');
                 drawer.visibility = 'visible';
             }
             if (this.backDrop && trData.backDrop && trData.backDrop.opacity > 0 && this.backDrop.visibility !== 'visible') {
@@ -787,12 +809,14 @@ export class Drawer extends GridLayout {
                             curve: CoreTypes.AnimationCurve.easeInOut,
                             duration
                         },
-                        transformAnimationValues(trData[k])
+                        duration ? transformAnimationValues(trData[k]) : trData[k]
                     )
             )
             .filter((a) => !!a);
         try {
-            await new Animation(params).play();
+            if (duration) {
+                await new Animation(params).play();
+            }
         } catch (err) {
             console.error('animateToPosition', err);
         } finally {
@@ -847,7 +871,7 @@ export class Drawer extends GridLayout {
             this.open(side);
         }
     }
-    async open(side?: Side | VerticalSide) {
+    async open(side?: Side | VerticalSide, duration = OPEN_DURATION) {
         if (!side) {
             if (this.leftDrawer) {
                 side = 'left';
@@ -869,12 +893,12 @@ export class Drawer extends GridLayout {
             this.forceEnsureSize(side);
         }
         if (side === 'left' || side === 'right') {
-            this.animateToPosition(side, this.viewWidth[side]);
+            this.animateToPosition(side, this.viewWidth[side], duration);
         } else {
-            this.animateToPosition(side, this.viewHeight[side]);
+            this.animateToPosition(side, this.viewHeight[side], duration);
         }
     }
-    async close(side?: Side | VerticalSide) {
+    async close(side?: Side | VerticalSide, duration = CLOSE_DURATION) {
         if (!side) {
             if (this.showingSide) {
                 side = this.showingSide;
@@ -883,7 +907,7 @@ export class Drawer extends GridLayout {
             }
         }
         this.showingSide = null;
-        return this.animateToPosition(side, 0, CLOSE_DURATION);
+        return this.animateToPosition(side, 0, duration);
     }
     // get mainViewTranslationX() {
     //     if (!this.showingSide || this.modes[this.showingSide] !== 'slide') {
@@ -914,6 +938,7 @@ bottomDrawerModeProperty.register(Drawer);
 topDrawerModeProperty.register(Drawer);
 translationFunctionProperty.register(Drawer);
 backDropEnabledProperty.register(Drawer);
+startingSideProperty.register(Drawer);
 
 export function install() {
     installGestures();
