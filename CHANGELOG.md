@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.9](https://github.com/nativescript-community/ui-drawer/compare/v0.1.8...v0.1.9) (2023-04-06)
+
+
+### Features
+
+* startingSide property which can be change to force open a side without animation (can you guess where it will be used?) ([01a7b1e](https://github.com/nativescript-community/ui-drawer/commit/01a7b1e6e2d5421a8a866909d1f6c43a0120211e))
+
+
+
+
+
 ## [0.1.8](https://github.com/nativescript-community/ui-drawer/compare/v0.1.7...v0.1.8) (2023-04-04)
 
 
