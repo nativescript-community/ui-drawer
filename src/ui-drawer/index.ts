@@ -178,7 +178,6 @@ export class Drawer extends GridLayout {
         this._onBackDropEnabledValueChanged();
     }
     [startingSideProperty.setNative](value: Side | VerticalSide) {
-        console.log('startingSideProperty', value, this.isLayoutValid);
         if (!this.isLayoutValid) {
             this.showingSide = value;
             const drawer = this[value + 'Drawer'] as View;
@@ -741,7 +740,6 @@ export class Drawer extends GridLayout {
     }
 
     applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
-        console.log('applyTrData', trData);
         Object.keys(trData).forEach((k) => {
             if (this[k]) {
                 Object.assign(this[k], trData[k]);
@@ -769,7 +767,6 @@ export class Drawer extends GridLayout {
     }
 
     async animateToPosition(side: Side | VerticalSide, position, duration = OPEN_DURATION) {
-        console.log('animateToPosition', side, position, duration, this.showingSide);
         if (this.showingSide && side !== this.showingSide) {
             this.animateToPosition(this.showingSide, 0, duration);
         }
@@ -787,7 +784,6 @@ export class Drawer extends GridLayout {
             this.showingSide = side;
             const drawer = this[side + 'Drawer'] as View;
             if (drawer) {
-                console.log('showing drawer');
                 drawer.visibility = 'visible';
             }
             if (this.backDrop && trData.backDrop && trData.backDrop.opacity > 0 && this.backDrop.visibility !== 'visible') {
