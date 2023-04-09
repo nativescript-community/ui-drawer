@@ -1,4 +1,12 @@
-<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️--><!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->This monorepo contains multiple packages:<br><br><details>
+<summary><b>demo-snippets</b></summary>
+{{ load:packages/demo-snippets/README.md }}
+</details><details>
+<summary><b>src</b></summary>
+{{ load:packages/src/README.md }}
+</details><details>
+<summary><b>ui-drawer</b></summary>
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
 <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -351,6 +359,7 @@ One easy solution is t modify `~/.gitconfig` and add
 ## Questions
 
 If you have any questions/issues/comments please feel free to create an issue or start a conversation in the [NativeScript Community Discord](https://nativescript.org/discord).
+</details>
 
 [](#demos-and-development)
 
