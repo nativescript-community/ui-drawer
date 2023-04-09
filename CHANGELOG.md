@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.11](https://github.com/nativescript-community/ui-drawer/compare/v0.1.10...v0.1.11) (2023-04-09)
+
+
+### Bug Fixes
+
+* fix issues while rotation the device ([2b892bc](https://github.com/nativescript-community/ui-drawer/commit/2b892bc1dbe09016363598bfbbd6a3e06e829e0c))
+
+
+
+
+
 ## [0.1.10](https://github.com/nativescript-community/ui-drawer/compare/v0.1.9...v0.1.10) (2023-04-06)
 
 
