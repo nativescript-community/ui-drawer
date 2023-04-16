@@ -3411,16 +3411,25 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/template-snippet@workspace:demo-snippets"
   dependencies:
+    "@nativescript-community/ui-collectionview": "*"
     "@nativescript-community/ui-drawer": "*"
   languageName: unknown
   linkType: soft
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=74f6a4&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=8f5405&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
+    "@nativescript-community/ui-collectionview": "*"
     "@nativescript-community/ui-drawer": "*"
-  checksum: 68f0dbfdb1ede5d41025cc7504ac7b19db04302a6e6af3aa482ef3976a1ae0ec1f6604de043d45cc5e0dcf46f2d8ce23636adcaf5d811c0761cf8d81ac61ccab
+  checksum: beeb691660940c31d2ee34e53f517a9cc7a2253168b014c4aa6927df2c407ba1e71c967012c5c77fd251b2858e25b66ae044f592a4cd7cbb458056098433f8c2
+  languageName: node
+  linkType: hard
+
+"@nativescript-community/ui-collectionview@npm:*":
+  version: 5.0.3
+  resolution: "@nativescript-community/ui-collectionview@npm:5.0.3"
+  checksum: 57677e4154b1abd4d385ec5921a382a25dfb62ad36c508fc68311f8e9a906531bfcab96a2ab256e7663ecd3b9f61d2af5875e3fc012ac51c1b713fd141a13310
   languageName: node
   linkType: hard
 

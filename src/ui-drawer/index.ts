@@ -93,9 +93,13 @@ export const backDropEnabledProperty = new Property<Drawer, boolean>({
     name: 'backDropEnabled'
 });
 
-export const startingSideProperty = new Property<Drawer, Side | VerticalSide>({
-    name: 'startingSide'
+export const resetSymbol = Symbol('startingSidePropertyDefault');
+export const startingSideProperty = new Property<Drawer, Side | VerticalSide | symbol>({
+    name: 'startingSide',
+    defaultValue: resetSymbol
 });
+
+const SIDES = ['left', 'right', 'top', 'bottom'];
 
 @CSSType('Drawer')
 export class Drawer extends GridLayout {
@@ -178,8 +182,25 @@ export class Drawer extends GridLayout {
     [backDropEnabledProperty.setNative](value) {
         this._onBackDropEnabledValueChanged();
     }
+
+    getActualSide(side: Side | VerticalSide) {
+        return SIDES.indexOf(side) >= 0 ? side : null;
+    }
+
+    [startingSideProperty.getDefault]() {
+        return resetSymbol;
+    }
+
+    updateStartingSide(side) {
+        startingSideProperty.nativeValueChange(this, side);
+    }
     [startingSideProperty.setNative](value: Side | VerticalSide) {
-        if (!this.mViewWidth[value] && !this.mViewHeight[value]) {
+        value = this.getActualSide(value);
+        console.log('startingSideProperty', this, value, this.mShowingSide, this.startingSide);
+        if (value === this.mShowingSide) {
+            return;
+        }
+        if (value && !this.mViewWidth[value] && !this.mViewHeight[value]) {
             this.mShowingSide = value;
             const drawer = this[value + 'Drawer'];
             if (drawer) {
@@ -242,8 +263,9 @@ export class Drawer extends GridLayout {
     }
 
     shouldStartGesture(data) {
-        const width = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth()));
-        const height = Math.round(Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
+        const landscape = Application.orientation() === 'landscape';
+        const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
+        const height = Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight());
         const side = this.mShowingSide;
         if (side) {
             if (side === 'left' || side === 'right') {
@@ -280,6 +302,7 @@ export class Drawer extends GridLayout {
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
         if (state === GestureState.ACTIVE && !this.mShowingSide) {
+            this.notify({ eventName: 'start', side: this.mNeedToSetSide });
             if (this.mNeedToSetSide === 'left') {
                 this.leftDrawer.visibility = 'visible';
             } else if (this.mNeedToSetSide === 'right') {
@@ -657,11 +680,10 @@ export class Drawer extends GridLayout {
         let data;
         let safeAreaOffset = 0;
         let changed = false;
-        const landscape = Application.orientation() === 'landscape';
-        const viewWidth = Utils.layout.toDeviceIndependentPixels(landscape ? contentView.getMeasuredHeight() : contentView.getMeasuredWidth());
-        const viewHeight = Utils.layout.toDeviceIndependentPixels(landscape ? contentView.getMeasuredWidth() : contentView.getMeasuredHeight());
+        const viewWidth = Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth());
+        const viewHeight = Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight());
         if (side === 'left' || side === 'right') {
-            if (__IOS__) {
+            if (__IOS__ && !this.iosIgnoreSafeArea) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
                 if (deviceOrientation === UIDeviceOrientation.LandscapeLeft) {
                     safeAreaOffset = Application.ios.window.safeAreaInsets.left;
@@ -682,7 +704,7 @@ export class Drawer extends GridLayout {
                 this.mTranslationX[side] = this.mTranslationX[side] === 0 ? 0 : width;
             }
         } else {
-            safeAreaOffset = __IOS__ && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            safeAreaOffset = __IOS__ && !this.iosIgnoreSafeArea && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
             const height = Math.ceil(viewHeight + safeAreaOffset);
             const firstSet = this.mViewHeight[side] === undefined;
             changed = height !== this.mViewHeight[side];
@@ -711,7 +733,7 @@ export class Drawer extends GridLayout {
         let data;
         let safeAreaOffset = 0;
         if (side === 'left' || side === 'right') {
-            if (__IOS__) {
+            if (__IOS__ && !this.iosIgnoreSafeArea) {
                 const deviceOrientation = UIDevice.currentDevice.orientation;
                 if (deviceOrientation === 3) {
                     safeAreaOffset = Application.ios.window.safeAreaInsets.left;
@@ -722,7 +744,7 @@ export class Drawer extends GridLayout {
             const width = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredWidth()) + safeAreaOffset);
             this.mViewWidth[side] = width;
         } else {
-            safeAreaOffset = __IOS__ && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
+            safeAreaOffset = __IOS__ && !this.iosIgnoreSafeArea && Application.ios.window.safeAreaInsets ? Application.ios.window.safeAreaInsets.bottom : 0;
             const height = Math.ceil(Utils.layout.toDeviceIndependentPixels(contentView.getMeasuredHeight()) + safeAreaOffset);
             this.mViewHeight[side] = height;
         }
@@ -789,15 +811,10 @@ export class Drawer extends GridLayout {
                 this.backDrop.opacity = 0;
                 this.backDrop.visibility = 'visible';
             }
-            if (shouldSendEvent) {
-                this.notify({ eventName: 'open', side, duration } as DrawerEventData);
-            }
         } else {
             this.mShowingSide = null;
-            if (shouldSendEvent) {
-                this.notify({ eventName: 'close', side, duration } as DrawerEventData);
-            }
         }
+        // console.log('animateToPosition', this, side, position, duration, this.mShowingSide, trData);
 
         // TODO: custom animation curve + apply curve on gesture
         const params = Object.keys(trData)
@@ -819,10 +836,12 @@ export class Drawer extends GridLayout {
                 await new Animation(params).play();
             }
         } catch (err) {
-            console.error('animateToPosition', err);
+            console.error('animateToPosition', this, err, err.stack);
+            throw err;
         } finally {
             // apply tr data to prevent hickups on iOS
             // and handle animation cancelled errors
+            // console.log('animateToPosition done', this, side, position, duration, this.mShowingSide, trData);
             if ((position !== 0 && this.mShowingSide === side) || (position === 0 && !this.mShowingSide)) {
                 this.applyTrData(trData, side);
                 if (position !== 0) {
@@ -837,6 +856,13 @@ export class Drawer extends GridLayout {
                     if (this.backDrop && trData.backDrop) {
                         this.backDrop.visibility = 'hidden';
                     }
+                }
+            }
+            if (shouldSendEvent) {
+                if (position === 0) {
+                    this.notify({ eventName: 'close', side, duration } as DrawerEventData);
+                } else {
+                    this.notify({ eventName: 'open', side, duration } as DrawerEventData);
                 }
             }
         }
@@ -873,6 +899,8 @@ export class Drawer extends GridLayout {
         }
     }
     async open(side?: Side | VerticalSide, duration = OPEN_DURATION) {
+        // console.log('open', this, side, duration, this.mShowingSide);
+        side = this.getActualSide(side);
         if (!side) {
             if (this.leftDrawer) {
                 side = 'left';
@@ -900,6 +928,8 @@ export class Drawer extends GridLayout {
         }
     }
     async close(side?: Side | VerticalSide, duration = CLOSE_DURATION) {
+        side = this.getActualSide(side);
+        // console.log('close', this, side, duration, this.mShowingSide);
         if (!side) {
             if (this.mShowingSide) {
                 side = this.mShowingSide;
@@ -907,7 +937,7 @@ export class Drawer extends GridLayout {
                 return;
             }
         }
-        this.mShowingSide = null;
+        // this.mShowingSide = null;
         return this.animateToPosition(side, 0, duration);
     }
     // get mainViewTranslationX() {

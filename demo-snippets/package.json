@@ -3,6 +3,7 @@
     "private": true,
     "version": "0.0.1",
     "dependencies": {
+        "@nativescript-community/ui-collectionview": "*",
         "@nativescript-community/ui-drawer": "*"
     }
 }
