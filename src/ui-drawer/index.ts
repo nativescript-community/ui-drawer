@@ -109,6 +109,10 @@ export class Drawer extends GridLayout {
     public mainContent: View;
     public backDrop: View;
 
+    public leftDrawerMode;
+    public rightDrawerMode;
+    public bottomDrawerMode;
+    public topDrawerMode;
     public gestureMinDist = 10;
     public gestureHandlerOptions;
     public waitFor = [];
