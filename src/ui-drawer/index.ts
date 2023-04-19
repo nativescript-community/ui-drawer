@@ -93,10 +93,9 @@ export const backDropEnabledProperty = new Property<Drawer, boolean>({
     name: 'backDropEnabled'
 });
 
-export const resetSymbol = Symbol('startingSidePropertyDefault');
-export const startingSideProperty = new Property<Drawer, Side | VerticalSide | symbol>({
+export const startingSideProperty = new Property<Drawer, Side | VerticalSide | 'none'>({
     name: 'startingSide',
-    defaultValue: resetSymbol
+    defaultValue: null
 });
 
 const SIDES = ['left', 'right', 'top', 'bottom'];
@@ -187,16 +186,11 @@ export class Drawer extends GridLayout {
         return SIDES.indexOf(side) >= 0 ? side : null;
     }
 
-    [startingSideProperty.getDefault]() {
-        return resetSymbol;
-    }
-
     updateStartingSide(side) {
         startingSideProperty.nativeValueChange(this, side);
     }
     [startingSideProperty.setNative](value: Side | VerticalSide) {
         value = this.getActualSide(value);
-        console.log('startingSideProperty', this, value, this.mShowingSide, this.startingSide);
         if (value === this.mShowingSide) {
             return;
         }
@@ -814,7 +808,6 @@ export class Drawer extends GridLayout {
         } else {
             this.mShowingSide = null;
         }
-        // console.log('animateToPosition', this, side, position, duration, this.mShowingSide, trData);
 
         // TODO: custom animation curve + apply curve on gesture
         const params = Object.keys(trData)
@@ -841,7 +834,6 @@ export class Drawer extends GridLayout {
         } finally {
             // apply tr data to prevent hickups on iOS
             // and handle animation cancelled errors
-            // console.log('animateToPosition done', this, side, position, duration, this.mShowingSide, trData);
             if ((position !== 0 && this.mShowingSide === side) || (position === 0 && !this.mShowingSide)) {
                 this.applyTrData(trData, side);
                 if (position !== 0) {
@@ -899,7 +891,6 @@ export class Drawer extends GridLayout {
         }
     }
     async open(side?: Side | VerticalSide, duration = OPEN_DURATION) {
-        // console.log('open', this, side, duration, this.mShowingSide);
         side = this.getActualSide(side);
         if (!side) {
             if (this.leftDrawer) {
@@ -929,7 +920,6 @@ export class Drawer extends GridLayout {
     }
     async close(side?: Side | VerticalSide, duration = CLOSE_DURATION) {
         side = this.getActualSide(side);
-        // console.log('close', this, side, duration, this.mShowingSide);
         if (!side) {
             if (this.mShowingSide) {
                 side = this.mShowingSide;

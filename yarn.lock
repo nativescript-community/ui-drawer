@@ -2483,6 +2483,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/sourcemap-codec@npm:^1.4.14":
+  version: 1.4.15
+  resolution: "@jridgewell/sourcemap-codec@npm:1.4.15"
+  checksum: b881c7e503db3fc7f3c1f35a1dd2655a188cc51a3612d76efc8a6eb74728bef5606e6758ee77423e564092b4a518aba569bbb21c9bac5ab7a35b0c6ae7e344c8
+  languageName: node
+  linkType: hard
+
 "@jridgewell/trace-mapping@npm:0.3.9":
   version: 0.3.9
   resolution: "@jridgewell/trace-mapping@npm:0.3.9"
@@ -3342,7 +3349,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=987621&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=b162d4&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": ~14.2.12
     "@angular/common": ~14.2.12
@@ -3403,7 +3410,7 @@ __metadata:
     vue: ~2.6.14
     yargs: ^17.6.2
     zone.js: ~0.12.0
-  checksum: 87d4d0000919c4d3998926e44fccf24660c63e810850d2b7090bbff11cacaea042a634b07333e77338979e01ea3af05c728c32ad70820200f4e5934d001f9c41
+  checksum: 1d3d39290d3610d133d1055af84c2706417ee86e76f8a6e675ea12ea1e271a1c42e6993f36ec2fe4599125ece1e5b0bce33033b56f566ccc9e263dc6adb32bda
   languageName: node
   linkType: hard
 
@@ -3418,11 +3425,11 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=8f5405&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=685e09&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "*"
     "@nativescript-community/ui-drawer": "*"
-  checksum: beeb691660940c31d2ee34e53f517a9cc7a2253168b014c4aa6927df2c407ba1e71c967012c5c77fd251b2858e25b66ae044f592a4cd7cbb458056098433f8c2
+  checksum: f009a470041fe998a49ec72d7ffa680459379907f690c4885204c9a54f6ff8309d377aae2cfd11a5cfe5c5ea5fc4cbbecaf84387e06c6a6910b5b2c6e6b73828
   languageName: node
   linkType: hard
 
@@ -3596,12 +3603,12 @@ __metadata:
     "@nativescript/ios": 8.4.0
     "@nativescript/theme": ~3.0.2
     "@nativescript/types": ~8.4.0
-    "@nativescript/webpack": ~5.0.12
-    svelte: ~3.55.0
-    svelte-loader: ~3.1.4
+    "@nativescript/webpack": ~5.0.14
+    svelte: ~3.58.0
+    svelte-loader: ~3.1.7
     svelte-native: ~1.0.5
     svelte-native-preprocessor: ^1.0.0
-    svelte-preprocess: ^5.0.0
+    svelte-preprocess: ^5.0.3
     typescript: ~4.8.4
   languageName: unknown
   linkType: soft
@@ -3732,6 +3739,56 @@ __metadata:
   bin:
     nativescript-webpack: dist/bin/index.js
   checksum: 9371292a5e068aec24f61bdd7ef433460e63946cf41818fe720d325db99f36385b81804a05be62799a6fd2817ed69019c88cb72147d0e3b65509dfa1307ad1b5
+  languageName: node
+  linkType: hard
+
+"@nativescript/webpack@npm:~5.0.14":
+  version: 5.0.14
+  resolution: "@nativescript/webpack@npm:5.0.14"
+  dependencies:
+    "@babel/core": ^7.0.0
+    "@pmmmwh/react-refresh-webpack-plugin": ~0.5.7
+    acorn: ^8.0.0
+    acorn-stage3: ^4.0.0
+    ansi-colors: ^4.1.3
+    babel-loader: ^8.0.0
+    cli-highlight: ^2.0.0
+    commander: ^8.0.0
+    copy-webpack-plugin: ^9.0.0
+    css: ^3.0.0
+    css-loader: ^6.0.0
+    dotenv-webpack: ^7.0.0
+    fork-ts-checker-webpack-plugin: ^7.0.0
+    loader-utils: ^2.0.0 || ^3.0.0
+    lodash.get: ^4.0.0
+    micromatch: ^4.0.0
+    postcss: ^8.0.0
+    postcss-import: ^14.0.0
+    postcss-loader: ^7.0.0
+    raw-loader: ^4.0.0
+    react-refresh: ~0.14.0
+    sass: ^1.0.0
+    sass-loader: ^13.0.0
+    sax: ^1.0.0
+    source-map: ^0.7.0
+    terser-webpack-plugin: ^5.0.0
+    ts-dedent: ^2.0.0
+    ts-loader: ^9.0.0
+    vue-loader: ^15.0.0 <= 15.9.8
+    webpack: ^5.30.0 <= 5.50.0 || ^5.51.2
+    webpack-bundle-analyzer: ^4.0.0
+    webpack-chain: ^6.0.0
+    webpack-cli: ^4.0.0
+    webpack-merge: ^5.0.0
+    webpack-virtual-modules: ^0.4.0
+  peerDependencies:
+    nativescript-vue-template-compiler: ^2.8.1
+  peerDependenciesMeta:
+    nativescript-vue-template-compiler:
+      optional: true
+  bin:
+    nativescript-webpack: dist/bin/index.js
+  checksum: 38d9299686966dbf95cf7bb825daf47a97535de8a114bfb67623d95a96113c4bbff1b9db861d6e709705ece1ae979557db8234fba67a55bc4b5f042c9c28c2fd
   languageName: node
   linkType: hard
 
@@ -9833,7 +9890,7 @@ __metadata:
 
 "fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -12518,7 +12575,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.3, loader-utils@npm:^2.0.4":
+"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.4":
   version: 2.0.4
   resolution: "loader-utils@npm:2.0.4"
   dependencies:
@@ -16218,7 +16275,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.7#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -16231,7 +16288,7 @@ __metadata:
 
 "resolve@patch:resolve@^2.0.0-next.3#~builtin<compat/resolve>":
   version: 2.0.0-next.4
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -17043,6 +17100,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sorcery@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "sorcery@npm:0.11.0"
+  dependencies:
+    "@jridgewell/sourcemap-codec": ^1.4.14
+    buffer-crc32: ^0.2.5
+    minimist: ^1.2.0
+    sander: ^0.5.0
+  bin:
+    sorcery: bin/sorcery
+  checksum: b79a4194f5ab7ee1d19d5cd2a683bd605762d5cbeeb238f46a71af357a179a6193d64a92ef2af1e05e4261cb3797be8694ad9b7ecfea9ca0d8f14d98f449dff5
+  languageName: node
+  linkType: hard
+
 "sort-keys@npm:^2.0.0":
   version: 2.0.0
   resolution: "sort-keys@npm:2.0.0"
@@ -17562,16 +17633,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-loader@npm:~3.1.4":
-  version: 3.1.4
-  resolution: "svelte-loader@npm:3.1.4"
+"svelte-loader@npm:~3.1.7":
+  version: 3.1.7
+  resolution: "svelte-loader@npm:3.1.7"
   dependencies:
-    loader-utils: ^2.0.3
+    loader-utils: ^2.0.4
     svelte-dev-helper: ^1.1.9
     svelte-hmr: ^0.14.2
   peerDependencies:
     svelte: ">3.0.0"
-  checksum: 34fe4862f8c076a015b9f59195f3f39504fbdb17b9cc9c5a3366ec6fa51aa0b0621881339e5aedfdc1c89df77b90eb76f7cc08087d4bc30f805267d6a8c266eb
+  checksum: 4fb6f336960015c58d51fff0e859518805c08bc6dc68cd36b61ae6594464a9d2e50e1cc4bc903392b19bdd044712dd6ac13e5fa6d107391af20cf79331bad42a
   languageName: node
   linkType: hard
 
@@ -17594,7 +17665,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-preprocess@npm:^5.0.0, svelte-preprocess@npm:~5.0.0":
+"svelte-preprocess@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "svelte-preprocess@npm:5.0.3"
+  dependencies:
+    "@types/pug": ^2.0.6
+    detect-indent: ^6.1.0
+    magic-string: ^0.27.0
+    sorcery: ^0.11.0
+    strip-indent: ^3.0.0
+  peerDependencies:
+    "@babel/core": ^7.10.2
+    coffeescript: ^2.5.1
+    less: ^3.11.3 || ^4.0.0
+    postcss: ^7 || ^8
+    postcss-load-config: ^2.1.0 || ^3.0.0 || ^4.0.0
+    pug: ^3.0.0
+    sass: ^1.26.8
+    stylus: ^0.55.0
+    sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
+    svelte: ^3.23.0
+    typescript: ">=3.9.5 || ^4.0.0 || ^5.0.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    coffeescript:
+      optional: true
+    less:
+      optional: true
+    postcss:
+      optional: true
+    postcss-load-config:
+      optional: true
+    pug:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    typescript:
+      optional: true
+  checksum: fedec5f8ce90ed11c3408d739e1403b0df1d32206702e3607043a6d06e6007d2f3d9efc6c261b2c2cb4f6e48311e2bad12d42f1de05acc4f908100735e29fac9
+  languageName: node
+  linkType: hard
+
+"svelte-preprocess@npm:~5.0.0":
   version: 5.0.0
   resolution: "svelte-preprocess@npm:5.0.0"
   dependencies:
@@ -17641,10 +17758,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:3.55.0, svelte@npm:~3.55.0":
+"svelte@npm:3.55.0":
   version: 3.55.0
   resolution: "svelte@npm:3.55.0"
   checksum: 0b182973a4152fec8baa59cc168ca4528d63faba130bc83063a7d55d1732a81303b48745f4bffe53436b875b9c98960b0265d45473e5b3d25c77b116fdc274f0
+  languageName: node
+  linkType: hard
+
+"svelte@npm:~3.58.0":
+  version: 3.58.0
+  resolution: "svelte@npm:3.58.0"
+  checksum: c05625705961adc971e2bed6b86957c065f34e9d358390ad8dc953f8b4c956bb5ed297e3466f18c8080339cd26b973294489ee4094800fd75a8650fa1f6a9b52
   languageName: node
   linkType: hard
 
@@ -18282,17 +18406,17 @@ __metadata:
 
 "typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=a1c5e5"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 1caaea6cb7f813e64345190fddc4e6c924d0b698ab81189b503763c4a18f7f5501c69362979d36e19c042d89d936443e768a78b0675690b35eb663d19e0eae71
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^3.5.3#~builtin<compat/typescript>":
   version: 3.9.10
-  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=a1c5e5"
+  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=3bd3d3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -18302,7 +18426,7 @@ __metadata:
 
 "typescript@patch:typescript@~4.2.3#~builtin<compat/typescript>":
   version: 4.2.4
-  resolution: "typescript@patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=a1c5e5"
+  resolution: "typescript@patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=334f98"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -18312,11 +18436,11 @@ __metadata:
 
 "typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
   version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=a1c5e5"
+  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=0102e9"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 563a0ef47abae6df27a9a3ab38f75fc681f633ccf1a3502b1108e252e187787893de689220f4544aaf95a371a4eb3141e4a337deb9895de5ac3c1ca76430e5f0
+  checksum: 301459fc3eb3b1a38fe91bf96d98eb55da88a9cb17b4ef80b4d105d620f4d547ba776cc27b44cc2ef58b66eda23fe0a74142feb5e79a6fb99f54fc018a696afa
   languageName: node
   linkType: hard
 

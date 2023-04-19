@@ -1,6 +1,11 @@
 import DrawerElement from '@nativescript-community/ui-drawer/svelte';
 import CollectionViewElement from '@nativescript-community/ui-collectionview/svelte';
 import { install } from '@nativescript-community/ui-drawer';
+import { Trace } from '@nativescript/core';
+import { DomTraceCategory } from 'svelte-native';
+
+Trace.enable()
+Trace.addCategories(DomTraceCategory)
 
 import BasicDrawer from './BasicDrawer.svelte';
 import AllSides from './AllSides.svelte';
