@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.13](https://github.com/nativescript-community/ui-drawer/compare/v0.1.12...v0.1.13) (2023-04-25)
+
+
+### Features
+
+* new properties `openAnimationDuration` and `closeAnimationDuration` ([7c5f2f9](https://github.com/nativescript-community/ui-drawer/commit/7c5f2f9be3e22d9c75518f79563df53bd92bd94a))
+
+
+
+
+
 ## [0.1.12](https://github.com/nativescript-community/ui-drawer/compare/v0.1.11...v0.1.12) (2023-04-19)
 
 **Note:** Version bump only for package nativescript-drawer
