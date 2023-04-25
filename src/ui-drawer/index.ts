@@ -136,6 +136,8 @@ export class Drawer extends GridLayout {
     public gestureEnabled = true;
     public backdropTapGestureEnabled = true;
     public startingSide: Side | VerticalSide;
+    public openAnimationDuration = OPEN_DURATION;
+    public closeAnimationDuration = CLOSE_DURATION;
 
     private mIsPanning = false;
     private mIsAnimating = false;
@@ -784,7 +786,7 @@ export class Drawer extends GridLayout {
         return y;
     }
 
-    async animateToPosition(side: Side | VerticalSide, position, duration = OPEN_DURATION) {
+    async animateToPosition(side: Side | VerticalSide, position, duration = this.openAnimationDuration) {
         if (this.mShowingSide && side !== this.mShowingSide) {
             this.animateToPosition(this.mShowingSide, 0, duration);
         }
@@ -894,7 +896,7 @@ export class Drawer extends GridLayout {
             this.open(side);
         }
     }
-    async open(side?: Side | VerticalSide, duration = OPEN_DURATION) {
+    async open(side?: Side | VerticalSide, duration = this.openAnimationDuration) {
         side = this.getActualSide(side);
         if (!side) {
             if (this.leftDrawer) {
@@ -922,7 +924,7 @@ export class Drawer extends GridLayout {
             this.animateToPosition(side, this.mViewHeight[side], duration);
         }
     }
-    async close(side?: Side | VerticalSide, duration = CLOSE_DURATION) {
+    async close(side?: Side | VerticalSide, duration = this.closeAnimationDuration) {
         side = this.getActualSide(side);
         if (!side) {
             if (this.mShowingSide) {
