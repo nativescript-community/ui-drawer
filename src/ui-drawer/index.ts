@@ -97,6 +97,9 @@ export const startingSideProperty = new Property<Drawer, Side | VerticalSide | '
     name: 'startingSide',
     defaultValue: null
 });
+export const gestureHandlerOptionsProperty = new Property({
+    name: 'gestureHandlerOptions'
+});
 
 const SIDES = ['left', 'right', 'top', 'bottom'];
 
@@ -482,6 +485,9 @@ export class Drawer extends GridLayout {
         const oldValue = this.mModes['bottom'];
         this.mModes['bottom'] = value;
         this.onSideModeChanged('bottom', value, oldValue);
+    }
+    [gestureHandlerOptionsProperty.setNative](value) {
+        Object.assign(this.panGestureHandler, value || {});
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
         this._onBackDropEnabledValueChanged();
@@ -966,6 +972,7 @@ topDrawerModeProperty.register(Drawer);
 translationFunctionProperty.register(Drawer);
 backDropEnabledProperty.register(Drawer);
 startingSideProperty.register(Drawer);
+gestureHandlerOptionsProperty.register(Drawer);
 
 export function install() {
     installGestures();
