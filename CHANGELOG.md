@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.16](https://github.com/nativescript-community/ui-drawer/compare/v0.1.15...v0.1.16) (2023-04-29)
+
+
+### Bug Fixes
+
+* start event not always fired ([6cf0a11](https://github.com/nativescript-community/ui-drawer/commit/6cf0a114204827818284100d0318711dd96ec26b))
+
+
+
+
+
 ## [0.1.15](https://github.com/nativescript-community/ui-drawer/compare/v0.1.14...v0.1.15) (2023-04-29)
 
 
