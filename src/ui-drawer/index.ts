@@ -84,8 +84,11 @@ export const topDrawerModeProperty = new Property<Drawer, Mode>({
 export const bottomDrawerModeProperty = new Property<Drawer, Mode>({
     name: 'bottomDrawerMode'
 });
-export const translationFunctionProperty = new Property<Drawer, Function>({
+export const translationFunctionProperty = new Property<Drawer, TranslationFunctionType>({
     name: 'translationFunction'
+});
+export const animationFunctionProperty = new Property<Drawer, AnimationFunctionType>({
+    name: 'animationFunction'
 });
 export const backDropEnabledProperty = new Property<Drawer, boolean>({
     defaultValue: true,
@@ -102,6 +105,18 @@ export const gestureHandlerOptionsProperty = new Property({
 });
 
 const SIDES = ['left', 'right', 'top', 'bottom'];
+
+export interface TrData {
+    [k: string]: AnimationDefinition;
+    leftDrawer?: AnimationDefinition;
+    rightDrawer?: AnimationDefinition;
+    bottomDrawer?: AnimationDefinition;
+    topDrawer?: AnimationDefinition;
+    backDrop?: AnimationDefinition;
+    mainContent?: AnimationDefinition;
+}
+export type TranslationFunctionType = (side: Side | VerticalSide, width: number, value: number, delta: number, progress: number, drawer: Drawer) => TrData;
+export type AnimationFunctionType = (side: Side | VerticalSide, duration: number, trData: TrData, animationParams: AnimationDefinition[], drawer: Drawer) => Promise<void>;
 
 @CSSType('Drawer')
 export class Drawer extends GridLayout {
@@ -154,20 +169,9 @@ export class Drawer extends GridLayout {
     private mNeedToSetSide: Side | VerticalSide;
     private mModes: Partial<{ [k in Side | VerticalSide]: Mode }> = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
 
-    translationFunction?: (
-        side: Side | VerticalSide,
-        width: number,
-        value: number,
-        delta: number,
-        progress: number
-    ) => {
-        leftDrawer?: AnimationDefinition;
-        rightDrawer?: AnimationDefinition;
-        bottomDrawer?: AnimationDefinition;
-        topDrawer?: AnimationDefinition;
-        backDrop?: AnimationDefinition;
-        mainContent?: AnimationDefinition;
-    };
+    translationFunction?: TranslationFunctionType;
+
+    animationFunction?: AnimationFunctionType;
     backDropEnabled: boolean = true;
 
     constructor() {
@@ -616,7 +620,7 @@ export class Drawer extends GridLayout {
             const delta = Math.max(width - value, 0);
             const progress = delta / width;
             if (this.translationFunction) {
-                return this.translationFunction(side, width, value, delta, progress);
+                return this.translationFunction(side, width, value, delta, progress, this);
             }
             if (this.mModes[side] === 'under') {
                 return {
@@ -650,7 +654,7 @@ export class Drawer extends GridLayout {
             const delta = Math.max(height - value, 0);
             const progress = delta / height;
             if (this.translationFunction) {
-                return this.translationFunction(side, height, value, delta, progress);
+                return this.translationFunction(side, height, value, delta, progress, this);
             }
             if (this.mModes[side] === 'under') {
                 return {
@@ -765,10 +769,19 @@ export class Drawer extends GridLayout {
         this.mIsPanning = state === GestureState.ACTIVE || state === GestureState.BEGAN;
     }
 
+    mViewByIdCache = {};
     applyTrData(trData: { [k: string]: any }, side: Side | VerticalSide) {
+        const cache = this.mViewByIdCache;
         Object.keys(trData).forEach((k) => {
-            if (this[k]) {
-                Object.assign(this[k], trData[k]);
+            let target = this[k] || cache[k];
+            if (!target) {
+                target = this.getViewById(k);
+                if (target) {
+                    cache[k] = target;
+                }
+            }
+            if (target) {
+                Object.assign(target, trData[k]);
             }
         });
     }
@@ -838,6 +851,9 @@ export class Drawer extends GridLayout {
             .filter((a) => !!a);
         try {
             if (duration) {
+                if (this.animationFunction) {
+                    await this.animationFunction(side, duration, trData, params, this);
+                }
                 await new Animation(params).play();
             }
         } catch (err) {
@@ -970,6 +986,7 @@ rightDrawerModeProperty.register(Drawer);
 bottomDrawerModeProperty.register(Drawer);
 topDrawerModeProperty.register(Drawer);
 translationFunctionProperty.register(Drawer);
+animationFunctionProperty.register(Drawer);
 backDropEnabledProperty.register(Drawer);
 startingSideProperty.register(Drawer);
 gestureHandlerOptionsProperty.register(Drawer);
