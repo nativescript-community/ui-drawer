@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.15](https://github.com/nativescript-community/ui-drawer/compare/v0.1.14...v0.1.15) (2023-04-29)
+
+
+### Features
+
+* new `animationFunction` allowing full custom animation behavior (spring...) ([b26a310](https://github.com/nativescript-community/ui-drawer/commit/b26a310f51cf9af1726d4444f6c7413f5b63d500))
+
+
+
+
+
 ## [0.1.14](https://github.com/nativescript-community/ui-drawer/compare/v0.1.13...v0.1.14) (2023-04-28)
 
 **Note:** Version bump only for package ui-drawer
