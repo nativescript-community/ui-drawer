@@ -308,16 +308,18 @@ export class Drawer extends GridLayout {
     }
     onGestureState(args: GestureStateEventData) {
         const { state, prevState, extraData, view } = args.data;
-        if (state === GestureState.ACTIVE && !this.mShowingSide) {
+        if (state === GestureState.ACTIVE) {
             this.notify({ eventName: 'start', side: this.mNeedToSetSide });
-            if (this.mNeedToSetSide === 'left') {
-                this.leftDrawer.visibility = 'visible';
-            } else if (this.mNeedToSetSide === 'right') {
-                this.rightDrawer.visibility = 'visible';
-            } else if (this.mNeedToSetSide === 'bottom') {
-                this.bottomDrawer.visibility = 'visible';
-            } else if (this.mNeedToSetSide === 'top') {
-                this.topDrawer.visibility = 'visible';
+            if (!this.mShowingSide) {
+                if (this.mNeedToSetSide === 'left') {
+                    this.leftDrawer.visibility = 'visible';
+                } else if (this.mNeedToSetSide === 'right') {
+                    this.rightDrawer.visibility = 'visible';
+                } else if (this.mNeedToSetSide === 'bottom') {
+                    this.bottomDrawer.visibility = 'visible';
+                } else if (this.mNeedToSetSide === 'top') {
+                    this.topDrawer.visibility = 'visible';
+                }
             }
         }
         this.updateIsPanning(state);
