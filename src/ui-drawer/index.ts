@@ -291,13 +291,13 @@ export class Drawer extends GridLayout {
             return !this.backDrop || this.backDrop.opacity !== 0;
         } else {
             let needToSetSide;
-            if (this.leftDrawer && data.x <= this.leftSwipeDistance) {
+            if (this.leftDrawer && (!this.leftSwipeDistance || data.x <= this.leftSwipeDistance)) {
                 needToSetSide = 'left';
-            } else if (this.rightDrawer && data.x >= width - this.rightSwipeDistance) {
+            } else if (this.rightDrawer && (!this.rightSwipeDistance || data.x >= width - this.rightSwipeDistance)) {
                 needToSetSide = 'right';
-            } else if (this.bottomDrawer && data.y >= height - this.bottomSwipeDistance) {
+            } else if (this.bottomDrawer && (!this.bottomSwipeDistance || data.y >= height - this.bottomSwipeDistance)) {
                 needToSetSide = 'bottom';
-            } else if (this.topDrawer && data.y <= this.topSwipeDistance) {
+            } else if (this.topDrawer && (!this.topSwipeDistance || data.y <= this.topSwipeDistance)) {
                 needToSetSide = 'top';
             }
             if (needToSetSide && this[needToSetSide + 'ClosedDrawerAllowDraging']) {
