@@ -131,6 +131,7 @@ export class Drawer extends GridLayout {
     public rightDrawerMode;
     public bottomDrawerMode;
     public topDrawerMode;
+    public gestureTag = PAN_GESTURE_TAG;
     public gestureMinDist = 10;
     public gestureHandlerOptions;
     public waitFor = [];
@@ -224,7 +225,7 @@ export class Drawer extends GridLayout {
     }
     initGestures() {
         const manager = Manager.getInstance();
-        const gestureHandler = manager.createGestureHandler(HandlerType.PAN, PAN_GESTURE_TAG, {
+        const gestureHandler = manager.createGestureHandler(HandlerType.PAN, this.gestureTag, {
             shouldStartGesture: this.shouldStartGesture.bind(this),
             simultaneousHandlers: this.simultaneousHandlers,
             waitFor: this.waitFor,
