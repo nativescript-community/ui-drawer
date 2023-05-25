@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.17](https://github.com/nativescript-community/ui-drawer/compare/v0.1.16...v0.1.17) (2023-05-25)
+
+
+### Bug Fixes
+
+* allow to specify gesture tag ([da330db](https://github.com/nativescript-community/ui-drawer/commit/da330dbc44e65e237981af3b0b15ab8ce4efdbee))
+* if swipeDistance === 0 => whole screen ([9bd15a7](https://github.com/nativescript-community/ui-drawer/commit/9bd15a7cf59e1a46c9aff191a34cedc0f20ee800))
+* prevent error with gestureHandlerOptions and disable gestures ([ed00719](https://github.com/nativescript-community/ui-drawer/commit/ed007199ea3621385b0877951635ab102a6f76de))
+
+
+
+
+
 ## [0.1.16](https://github.com/nativescript-community/ui-drawer/compare/v0.1.15...v0.1.16) (2023-04-29)
 
 
