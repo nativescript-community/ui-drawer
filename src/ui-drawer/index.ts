@@ -494,7 +494,9 @@ export class Drawer extends GridLayout {
         this.onSideModeChanged('bottom', value, oldValue);
     }
     [gestureHandlerOptionsProperty.setNative](value) {
-        Object.assign(this.panGestureHandler, value || {});
+        if (this.panGestureHandler) {
+            Object.assign(this.panGestureHandler, value || {});
+        }
     }
     public _onMainContentChanged(oldValue: View, newValue: View) {
         this._onBackDropEnabledValueChanged();
