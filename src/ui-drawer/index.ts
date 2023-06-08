@@ -271,7 +271,7 @@ export class Drawer extends GridLayout {
     }
 
     shouldStartGesture(data) {
-        const landscape = Application.orientation() === 'landscape';
+        // const landscape = Application.orientation() === 'landscape';
         const width = Utils.layout.toDeviceIndependentPixels(this.getMeasuredWidth());
         const height = Utils.layout.toDeviceIndependentPixels(this.getMeasuredHeight());
         const side = this.mShowingSide;
