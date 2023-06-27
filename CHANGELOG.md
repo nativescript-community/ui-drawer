@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.18](https://github.com/nativescript-community/ui-drawer/compare/v0.1.17...v0.1.18) (2023-06-27)
+
+
+### Bug Fixes
+
+* cleanup preventing crash with N main branch ([3473d03](https://github.com/nativescript-community/ui-drawer/commit/3473d03283f97e06feeace0ef2d7104282d43c2c))
+
+
+### Features
+
+* allow to open multiple drawers while panning (like going from left to right) as it is done in discord app ([c8a32e5](https://github.com/nativescript-community/ui-drawer/commit/c8a32e54705dea77ca1e08b1f6c07c9e203f9360))
+
+
+
+
+
 ## [0.1.17](https://github.com/nativescript-community/ui-drawer/compare/v0.1.16...v0.1.17) (2023-05-25)
 
 
