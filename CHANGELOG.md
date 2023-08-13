@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.20](https://github.com/nativescript-community/ui-drawer/compare/v0.1.19...v0.1.20) (2023-08-13)
+
+### Bug Fixes
+
+* regression fix from latest release ([dc07d02](https://github.com/nativescript-community/ui-drawer/commit/dc07d02dfd2d63d470aa37768ca6718af3fa0d84))
+
 ## [0.1.19](https://github.com/nativescript-community/ui-drawer/compare/v0.1.18...v0.1.19) (2023-08-13)
 
 ### Bug Fixes
