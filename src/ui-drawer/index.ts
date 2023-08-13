@@ -38,30 +38,22 @@ export interface DrawerEventData extends EventData {
 export const leftDrawerContentProperty = new Property<Drawer, View>({
     name: 'leftDrawer',
     defaultValue: undefined,
-    valueChanged: (target, oldValue, newValue) => {
-        target._onDrawerContentChanged('left', oldValue, newValue);
-    }
+    valueChanged: (target, oldValue, newValue) => target._onDrawerContentChanged('left', oldValue, newValue)
 });
 export const rightDrawerContentProperty = new Property<Drawer, View>({
     name: 'rightDrawer',
     defaultValue: undefined,
-    valueChanged: (target, oldValue, newValue) => {
-        target._onDrawerContentChanged('right', oldValue, newValue);
-    }
+    valueChanged: (target, oldValue, newValue) => target._onDrawerContentChanged('right', oldValue, newValue)
 });
 export const topDrawerContentProperty = new Property<Drawer, View>({
     name: 'topDrawer',
     defaultValue: undefined,
-    valueChanged: (target, oldValue, newValue) => {
-        target._onDrawerContentChanged('top', oldValue, newValue);
-    }
+    valueChanged: (target, oldValue, newValue) => target._onDrawerContentChanged('top', oldValue, newValue)
 });
 export const bottomDrawerContentProperty = new Property<Drawer, View>({
     name: 'bottomDrawer',
     defaultValue: undefined,
-    valueChanged: (target, oldValue, newValue) => {
-        target._onDrawerContentChanged('bottom', oldValue, newValue);
-    }
+    valueChanged: (target, oldValue, newValue) => target._onDrawerContentChanged('bottom', oldValue, newValue)
 });
 export const gestureEnabledProperty = new Property<Drawer, boolean>({
     name: 'gestureEnabled',
@@ -514,24 +506,16 @@ export class Drawer extends GridLayout {
         }
     }
     [leftDrawerModeProperty.setNative](value: Mode) {
-        const oldValue = this.mModes['left'];
-        this.mModes['left'] = value;
-        this.onSideModeChanged('left', value, oldValue);
+        this.onSideModeChanged('left', value);
     }
     [rightDrawerModeProperty.setNative](value: Mode) {
-        const oldValue = this.mModes['right'];
-        this.mModes['right'] = value;
-        this.onSideModeChanged('right', value, oldValue);
+        this.onSideModeChanged('right', value);
     }
     [topDrawerModeProperty.setNative](value: Mode) {
-        const oldValue = this.mModes['top'];
-        this.mModes['top'] = value;
-        this.onSideModeChanged('top', value, oldValue);
+        this.onSideModeChanged('top', value);
     }
     [bottomDrawerModeProperty.setNative](value: Mode) {
-        const oldValue = this.mModes['bottom'];
-        this.mModes['bottom'] = value;
-        this.onSideModeChanged('bottom', value, oldValue);
+        this.onSideModeChanged('bottom', value);
     }
     [gestureHandlerOptionsProperty.setNative](value) {
         if (this.panGestureHandler) {
@@ -556,18 +540,18 @@ export class Drawer extends GridLayout {
         }
     }
 
-    onLeftLayoutChanged(event: EventData) {
+    leftLayoutChanged(event: EventData) {
         return this.onLayoutChange('left', event);
     }
 
-    onRightLayoutChanged(event: EventData) {
+    rightLayoutChanged(event: EventData) {
         return this.onLayoutChange('right', event);
     }
-    onTopLayoutChanged(event: EventData) {
+    topLayoutChanged(event: EventData) {
         return this.onLayoutChange('top', event);
     }
 
-    onBottomLayoutChanged(event: EventData) {
+    bottomLayoutChanged(event: EventData) {
         return this.onLayoutChange('bottom', event);
     }
     addChild(child) {
@@ -578,26 +562,12 @@ export class Drawer extends GridLayout {
         // super.addChild(child);
     }
     public _onDrawerContentChanged(side: Side | VerticalSide, oldValue: View, newValue: View) {
+        if (oldValue === newValue) {
+            return;
+        }
         this._onBackDropEnabledValueChanged();
         if (oldValue) {
-            switch (side) {
-                case 'right':
-                    oldValue.off('layoutChanged', this.onRightLayoutChanged, this);
-                    break;
-
-                case 'left':
-                    oldValue.off('layoutChanged', this.onLeftLayoutChanged, this);
-                    break;
-
-                case 'top':
-                    oldValue.off('layoutChanged', this.onTopLayoutChanged, this);
-                    break;
-
-                case 'bottom':
-                    oldValue.off('layoutChanged', this.onBottomLayoutChanged, this);
-                    break;
-            }
-
+            oldValue.off('layoutChanged', this[side + 'LayoutChanged'], this);
             this.removeChild(oldValue);
         }
 
@@ -608,27 +578,11 @@ export class Drawer extends GridLayout {
             } else {
                 newValue.verticalAlignment = side;
             }
-            switch (side) {
-                case 'right':
-                    newValue.on('layoutChanged', this.onRightLayoutChanged, this);
-                    break;
-
-                case 'left':
-                    newValue.on('layoutChanged', this.onLeftLayoutChanged, this);
-                    break;
-
-                case 'top':
-                    newValue.on('layoutChanged', this.onTopLayoutChanged, this);
-                    break;
-
-                case 'bottom':
-                    newValue.on('layoutChanged', this.onBottomLayoutChanged, this);
-                    break;
-            }
-            this.onSideModeChanged(side, this.mModes[side], undefined);
+            newValue.on('layoutChanged', this[side + 'LayoutChanged'], this);
+            this.onSideModeChanged(side, this.mModes[side]);
         }
     }
-    onSideModeChanged(side: Side | VerticalSide, mode: Mode, oldMode: Mode) {
+    onSideModeChanged(side: Side | VerticalSide, mode: Mode, oldMode: Mode = this.mModes[side]) {
         if ((oldMode && oldMode === mode) || (oldMode && oldMode !== 'under' && mode !== 'under')) {
             return;
         }
@@ -642,8 +596,10 @@ export class Drawer extends GridLayout {
 
         if (mode === 'under') {
             if (index > indexBack - 1 && drawer.parent === this) {
+                drawer.reusable = true;
                 this.removeChild(drawer);
                 this.insertChild(drawer, Math.max(indexBack - 1, 0));
+                drawer.reusable = false;
             } else {
                 // initial addition
                 // this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
@@ -651,8 +607,10 @@ export class Drawer extends GridLayout {
             }
         } else {
             if (index <= indexBack && drawer.parent === this) {
+                drawer.reusable = true;
                 this.removeChild(drawer);
                 this.insertChild(drawer, indexBack + 1);
+                drawer.reusable = false;
             } else {
                 // initial addition
                 this.insertChild(drawer, indexBack + 1);
@@ -942,19 +900,22 @@ export class Drawer extends GridLayout {
         }
         return !!this.mShowingSide;
     }
+    getDefaultSide() {
+        if (this.leftDrawer) {
+            return 'left';
+        } else if (this.rightDrawer) {
+            return 'right';
+        } else if (this.bottomDrawer) {
+            return 'bottom';
+        } else if (this.topDrawer) {
+            return 'top';
+        }
+        return null;
+    }
     async toggle(side?: Side | VerticalSide) {
+        side = this.getActualSide(side) || this.getDefaultSide();
         if (!side) {
-            if (this.leftDrawer) {
-                side = 'left';
-            } else if (this.rightDrawer) {
-                side = 'right';
-            } else if (this.bottomDrawer) {
-                side = 'bottom';
-            } else if (this.topDrawer) {
-                side = 'top';
-            } else {
-                return;
-            }
+            return;
         }
 
         if (this.isOpened(side)) {
@@ -964,19 +925,9 @@ export class Drawer extends GridLayout {
         }
     }
     async open(side?: Side | VerticalSide, duration = this.openAnimationDuration) {
-        side = this.getActualSide(side);
+        side = this.getActualSide(side) || this.getDefaultSide();
         if (!side) {
-            if (this.leftDrawer) {
-                side = 'left';
-            } else if (this.rightDrawer) {
-                side = 'right';
-            } else if (this.bottomDrawer) {
-                side = 'bottom';
-            } else if (this.topDrawer) {
-                side = 'top';
-            } else {
-                return;
-            }
+            return;
         }
         if (this.mShowingSide && this.mShowingSide !== side) {
             this.close();
@@ -992,13 +943,9 @@ export class Drawer extends GridLayout {
         }
     }
     async close(side?: Side | VerticalSide, duration = this.closeAnimationDuration) {
-        side = this.getActualSide(side);
+        side = this.getActualSide(side) || this.mShowingSide;
         if (!side) {
-            if (this.mShowingSide) {
-                side = this.mShowingSide;
-            } else {
-                return;
-            }
+            return;
         }
         // this.mShowingSide = null;
         return this.animateToPosition(side, 0, duration);
