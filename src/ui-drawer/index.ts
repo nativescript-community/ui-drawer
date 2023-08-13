@@ -160,7 +160,7 @@ export class Drawer extends GridLayout {
     private mTranslationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
     private mShowingSide: Side | VerticalSide = null;
     // private mNeedToSetSide: Side | VerticalSide;
-    private mModes: Partial<{ [k in Side | VerticalSide]: Mode }> = { left: 'slide', right: 'slide', bottom: 'slide', top: 'slide' };
+    private mModes: Partial<{ [k in Side | VerticalSide]: Mode }> = {  };
 
     translationFunction?: TranslationFunctionType;
 
