@@ -54,7 +54,7 @@ export default {
         }
     },
     methods: {
-        // note: for some reason these methodd don't work if called from a function registered in setup() or <script setup>
+        // note: for some reason these methods don't work if called from a function registered in setup() or <script setup>
         onOpenDrawer(side: string) {
             this.$refs['drawer'].nativeView.open(side);
         },
