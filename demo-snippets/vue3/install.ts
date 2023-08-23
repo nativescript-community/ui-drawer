@@ -5,7 +5,6 @@ import BasicDrawer from './BasicDrawer.vue';
 import AllSides from './AllSides.vue';
 
 export function installPlugin(app: any) {
-    console.log('installPlugin');
     app.use(DrawerPlugin);
 }
 

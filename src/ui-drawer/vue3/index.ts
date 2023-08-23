@@ -1,5 +1,3 @@
-import { GridLayout } from '@nativescript/core';
-import { DrawerComp } from './component';
 import { Drawer as NativeDrawer } from '..';
 import { install } from '../index';
 
@@ -8,12 +6,10 @@ const DrawerPlugin = {
         console.log('DrawerPlugin install');
         console.log('DrawerPlugin registerElement', NativeDrawer);
         install();
-        app.registerElement('NativeDrawer', () => NativeDrawer, {
-            viewFlags: 8,
+        app.registerElement('Drawer', () => NativeDrawer, {
             overwriteExisting: true,
             nodeOps: {
                 insert(child, parent) {
-                    console.log('DrawerPlugin insert');
                     if (child.nativeView['~mainContent'] === '') {
                         parent.nativeView.mainContent = child.nativeView;
                     } else if (child.nativeView['~leftDrawer'] === '') {
@@ -25,11 +21,14 @@ const DrawerPlugin = {
                     } else if (child.nativeView['~bottomDrawer'] === '') {
                         parent.nativeView.bottomDrawer = child.nativeView;
                     }
+                },
+                delete(child, parent) {
+                    parent.deleteChild(child);
                 }
             }
         });
         console.log('DrawerPlugin registerElement done');
-        app.component('Drawer', DrawerComp);
+        // app.component('Drawer', DrawerComp); // note: this is actually not used...
     }
 };
 

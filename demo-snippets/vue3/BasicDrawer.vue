@@ -10,7 +10,7 @@
             failOffsetYEnd: 10
         }">
 
-            <!-- <GridLayout ~leftDrawer class="drawer" width="80%" backgroundColor="white" rows="auto, *">
+            <GridLayout ~leftDrawer class="drawer" width="80%" backgroundColor="white" rows="auto, *">
                 <StackLayout backgroundColor="#eeeeee" padding="25">
                     <GridLayout columns="80, *" height="100">
                         <StackLayout col="0" class="avatar">
@@ -22,35 +22,47 @@
                         <Label text="john.smith@example.com" />
                     </StackLayout>
                 </StackLayout>
-                <ListView row="1" :items="items">
-                    <template>
-                        <Label :text="item.title" @tap="onCloseDrawer" />
-                    </template>
-                </ListView>
-            </GridLayout> -->
+                <ScrollView row="1">
+                    <StackLayout>
+                        <Label v-for="(item, index) in items" :key="index" :text="item.title" @tap="onCloseDrawer" />
+                    </StackLayout>
+                </ScrollView>
+            </GridLayout>
 
             <StackLayout ~mainContent backgroundColor="white">
-                <Button @tap="onOpenDrawer" text="Open Drawer" width="250" marginTop="25" />
+                <Button @tap="onOpenDrawer('left')" text="Open Drawer" width="250" marginTop="25" />
             </StackLayout>
         </Drawer>
     </Page>
 </template>
 
-<script setup lang="ts">
-import { ref, $navigateBack, computed } from "nativescript-vue"
+<script lang="ts">
+import { ref, $navigateBack } from "nativescript-vue"
 
-const drawer = ref(null);
+export default {
+    setup() {
+        const drawer = ref(null);
 
-const items = computed(() => {
-    return new Array(100).fill({ title: 'My profile' });
-});
+        return {
+            $navigateBack,
+            drawer
+        }
+    },
+    data() {
+        return {
+            items: new Array(100).fill({ title: 'My profile' })
+        }
+    },
+    methods: {
+        // note: for some reason these methodd don't work if called from a function registered in setup() or <script setup>
+        onOpenDrawer(side: string) {
+            this.$refs['drawer'].nativeView.open(side);
+        },
+        onCloseDrawer() {
+            this.$refs['drawer'].nativeView.close();
+        }
+    }
 
-function onOpenDrawer(side: string) {
-    drawer.open(side);
-}
-
-function onCloseDrawer() {
-    drawer.close('left');
 }
 
 </script>

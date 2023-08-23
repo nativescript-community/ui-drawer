@@ -32,13 +32,21 @@
     </Page>
 </template>
 
-<script setup lang="ts">
-import { ref, $navigateBack } from "nativescript-vue"
+<script lang="ts">
+import { $navigateBack } from "nativescript-vue"
 
-const drawer = ref(null);
-
-function onOpenDrawer(side: string) {
-    drawer.open(side);
+export default {
+    setup() {
+        return {
+            $navigateBack
+        }
+    },
+    methods: {
+        // note: for some reason these methodd don't work if called from a function registered in setup() or <script setup>
+        onOpenDrawer(side: string) {
+            this.$refs['drawer'].nativeView.open(side);
+        }
+    }
 }
 
 </script>
