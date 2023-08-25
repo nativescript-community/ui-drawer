@@ -141,7 +141,7 @@ Vue.use(DrawerPlugin);
 - [All Sides](demo-snippets/vue/AllSides.vue)
   - An example of drawers on all sides: left, right, top, bottom.
 
-## Usage in Vue
+## Usage in Vue3
 
 Register the plugin in your `app.js`.
 
