@@ -66,6 +66,8 @@
 	* [Examples:](#examples-2)
 * [Usage in Vue](#usage-in-vue)
 	* [Examples:](#examples-3)
+* [Usage in Vue3](#usage-in-vue3)
+	* [Examples:](#examples-4)
 * [Demos and Development](#demos-and-development)
 	* [Repo Setup](#repo-setup)
 	* [Build](#build)
@@ -253,6 +255,29 @@ Vue.use(DrawerPlugin);
   - An example of drawers on all sides: left, right, top, bottom.
 
 
+[](#usage-in-vue3)
+
+
+[](#usage-in-vue3)
+
+## Usage in Vue3
+
+Register the plugin in your `app.js`.
+
+```typescript
+import DrawerPlugin from '@nativescript-community/ui-drawer/vue3'
+
+app.use(DrawerPlugin);
+```
+
+### Examples:
+
+- [Basic Drawer](demo-snippets/vue3/BasicDrawer.vue)
+  - A basic sliding drawer.
+- [All Sides](demo-snippets/vue3/AllSides.vue)
+  - An example of drawers on all sides: left, right, top, bottom.
+
+
 [](#demos-and-development)
 
 
@@ -359,7 +384,7 @@ One easy solution is t modify `~/.gitconfig` and add
 ## Questions
 
 If you have any questions/issues/comments please feel free to create an issue or start a conversation in the [NativeScript Community Discord](https://nativescript.org/discord).
-</details>
+
 
 [](#demos-and-development)
 
