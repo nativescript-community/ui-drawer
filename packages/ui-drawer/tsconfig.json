@@ -2,12 +2,14 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "../../src/ui-drawer",
-        "outDir": "./",
-        "paths": {
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"]
-        }
+        "outDir": "./"
     },
     "include": ["../../src/ui-drawer/**/*", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
-    "exclude": ["../../src/ui-drawer/angular/**"]
+    "exclude": ["../../src/ui-drawer/angular/**"],
+    "references": [
+        {
+            //Need for tsc
+            "path": "../../tsconfig.vue3.json"
+        }
+    ]
 }
