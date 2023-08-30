@@ -5,5 +5,11 @@
             "@nativescript-community/ui-drawer": ["src/ui-drawer"],
             "@nativescript-community/ui-drawer/*": ["src/ui-drawer/*"]
         }
-    }
+    },
+    "references": [
+        {
+            //Need for IDE
+            "path": "./tsconfig.vue3.json"
+        }
+    ]
 }
