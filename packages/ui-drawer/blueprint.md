@@ -141,5 +141,22 @@ Vue.use(DrawerPlugin);
 - [All Sides](demo-snippets/vue/AllSides.vue)
   - An example of drawers on all sides: left, right, top, bottom.
 
+## Usage in Vue3
+
+Register the plugin in your `app.js`.
+
+```typescript
+import DrawerPlugin from '@nativescript-community/ui-drawer/vue3'
+
+app.use(DrawerPlugin);
+```
+
+### Examples:
+
+- [Basic Drawer](demo-snippets/vue3/BasicDrawer.vue)
+  - A basic sliding drawer.
+- [All Sides](demo-snippets/vue3/AllSides.vue)
+  - An example of drawers on all sides: left, right, top, bottom.
+
 {{ load:../../tools/readme/demos-and-development.md }}
 {{ load:../../tools/readme/questions.md }}

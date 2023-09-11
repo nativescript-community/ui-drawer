@@ -968,5 +968,6 @@ backDropEnabledProperty.register(Drawer);
 startingSideProperty.register(Drawer);
 
 export function install() {
+    console.log('installing drawer gestures');
     installGestures();
 }
