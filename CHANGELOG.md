@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.23](https://github.com/nativescript-community/ui-drawer/compare/v0.1.22...v0.1.23) (2023-09-11)
+
+### Bug Fixes
+
+* correctly insert view at the righ index ([e7e262b](https://github.com/nativescript-community/ui-drawer/commit/e7e262b59cf62a51dd4094db9a2111e3e1154be4))
+
 ## [0.1.22](https://github.com/nativescript-community/ui-drawer/compare/v0.1.21...v0.1.22) (2023-08-31)
 
 **Note:** Version bump only for package ui-drawer
