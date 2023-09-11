@@ -589,7 +589,7 @@ export class Drawer extends GridLayout {
             if (index > indexBack - 1 && drawer.parent === this) {
                 this.removeChild(drawer);
                 this.insertChild(drawer, Math.max(indexBack - 1, 0));
-            } else {
+            } else if (drawer.parent !== this) {
                 // initial addition
                 // this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
                 this.insertChild(drawer, 0);
@@ -598,7 +598,7 @@ export class Drawer extends GridLayout {
             if (index <= indexBack && drawer.parent === this) {
                 this.removeChild(drawer);
                 this.insertChild(drawer, indexBack + 1);
-            } else {
+            } else if (drawer.parent !== this) {
                 // initial addition
                 this.insertChild(drawer, indexBack + 1);
             }
