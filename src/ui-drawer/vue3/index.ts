@@ -3,8 +3,6 @@ import { install } from '../index';
 
 const DrawerPlugin = {
     install(app: any) {
-        console.log('DrawerPlugin install');
-        console.log('DrawerPlugin registerElement', NativeDrawer);
         install();
         app.registerElement('Drawer', () => NativeDrawer, {
             overwriteExisting: true,
@@ -27,7 +25,6 @@ const DrawerPlugin = {
                 }
             }
         });
-        console.log('DrawerPlugin registerElement done');
         // app.component('Drawer', DrawerComp); // note: this is actually not used...
     }
 };
