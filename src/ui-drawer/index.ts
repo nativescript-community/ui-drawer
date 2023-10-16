@@ -599,8 +599,7 @@ export class Drawer extends GridLayout {
                 drawer.reusable = true;
                 this.removeChild(drawer);
                 this.insertChild(drawer, Math.max(indexBack - 1, 0));
-                drawer.reusable = false;
-            } else {
+            } else if (drawer.parent !== this) {
                 // initial addition
                 // this.backDrop.visibility = trData.backDrop && trData.backDrop.opacity > 0 ? 'visible' : 'hidden';
                 this.insertChild(drawer, 0);
@@ -610,8 +609,7 @@ export class Drawer extends GridLayout {
                 drawer.reusable = true;
                 this.removeChild(drawer);
                 this.insertChild(drawer, indexBack + 1);
-                drawer.reusable = false;
-            } else {
+            } else if (drawer.parent !== this) {
                 // initial addition
                 this.insertChild(drawer, indexBack + 1);
             }
