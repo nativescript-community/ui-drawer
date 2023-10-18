@@ -982,6 +982,5 @@ startingSideProperty.register(Drawer);
 gestureHandlerOptionsProperty.register(Drawer);
 
 export function install() {
-    console.log('installing drawer gestures');
     installGestures();
 }
