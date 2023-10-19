@@ -513,7 +513,7 @@ export class Drawer extends GridLayout {
     }
     [backdropPropertiesProperty.setNative](value) {
         if (this.backDrop) {
-            Object.assign(this.backDrop, this.backdropProperties);
+            Object.assign(this.backDrop, this.backdropProperties || {});
         }
     }
     [leftDrawerModeProperty.setNative](value: Mode) {
