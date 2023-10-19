@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.25](https://github.com/nativescript-community/ui-drawer/compare/v0.1.24...v0.1.25) (2023-10-19)
+
+### Bug Fixes
+
+* backdrop ignoreTouchAnimation ([80dc0ad](https://github.com/nativescript-community/ui-drawer/commit/80dc0ad789f1ec9cfd9d483a7a03af9352ed7c0f))
+
 ## [0.1.24](https://github.com/nativescript-community/ui-drawer/compare/v0.1.23...v0.1.24) (2023-10-18)
 
 ### Bug Fixes
