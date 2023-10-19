@@ -64,6 +64,9 @@ export const backdropColorProperty = new Property<Drawer, Color>({
     name: 'backdropColor',
     valueConverter: (c) => (c ? new Color(c) : null)
 });
+export const backdropPropertiesProperty = new Property<Drawer, Object>({
+    name: 'backdropProperties'
+});
 export const leftDrawerModeProperty = new Property<Drawer, Mode>({
     name: 'leftDrawerMode'
 });
@@ -135,6 +138,7 @@ export class Drawer extends GridLayout {
     public bottomSwipeDistance = 40;
     public topSwipeDistance = 40;
     public backdropColor = new Color('rgba(0, 0, 0, 0.7)');
+    public backdropProperties = {};
     public leftOpenedDrawerAllowDraging = true;
     public rightOpenedDrawerAllowDraging = true;
     public bottomOpenedDrawerAllowDraging = true;
@@ -160,7 +164,7 @@ export class Drawer extends GridLayout {
     private mTranslationY: { [k in VerticalSide]: number } = { bottom: 0, top: 0 };
     private mShowingSide: Side | VerticalSide = null;
     // private mNeedToSetSide: Side | VerticalSide;
-    private mModes: Partial<{ [k in Side | VerticalSide]: Mode }> = {  };
+    private mModes: Partial<{ [k in Side | VerticalSide]: Mode }> = {};
 
     translationFunction?: TranslationFunctionType;
 
@@ -174,7 +178,9 @@ export class Drawer extends GridLayout {
     _onBackDropEnabledValueChanged() {
         if (this.backDropEnabled && !this.backDrop) {
             this.backDrop = new GridLayout();
+            this.backDrop.ignoreTouchAnimation = true;
             this.backDrop.backgroundColor = this.backdropColor;
+            Object.assign(this.backDrop, this.backdropProperties);
             this.backDrop.opacity = 0;
             this.backDrop.visibility = 'hidden';
 
@@ -503,6 +509,11 @@ export class Drawer extends GridLayout {
     [backdropColorProperty.setNative](value: Color) {
         if (this.backDrop) {
             this.backDrop.backgroundColor = value;
+        }
+    }
+    [backdropPropertiesProperty.setNative](value) {
+        if (this.backDrop) {
+            Object.assign(this.backDrop, this.backdropProperties);
         }
     }
     [leftDrawerModeProperty.setNative](value: Mode) {
