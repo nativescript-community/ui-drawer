@@ -821,7 +821,9 @@ export class Drawer extends GridLayout {
         if (this.mShowingSide && side !== this.mShowingSide) {
             this.animateToPosition(this.mShowingSide, 0, duration);
         }
-        const shouldSendEvent = side !== this.mShowingSide || (this.mShowingSide === side && position === 0);
+        // const shouldSendEvent = side !== this.mShowingSide || (this.mShowingSide === side && position === 0);
+        // TODO: why did we not send event every time?
+        const shouldSendEvent = true;
         let trData;
         if (side === 'left' || side === 'right') {
             const width = this.mViewWidth[side];
