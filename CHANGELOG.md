@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.26](https://github.com/nativescript-community/ui-drawer/compare/v0.1.25...v0.1.26) (2024-01-05)
+
+### Bug Fixes
+
+* open/close event not always being sent ([6e24989](https://github.com/nativescript-community/ui-drawer/commit/6e249894066f296ca6c85030a8177da54d38c321))
+
 ## [0.1.25](https://github.com/nativescript-community/ui-drawer/compare/v0.1.24...v0.1.25) (2023-10-19)
 
 ### Bug Fixes
