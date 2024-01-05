@@ -3570,7 +3570,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=c81897&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=66c4f3&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": "npm:~16.2.8"
     "@angular/common": "npm:~16.2.8"
@@ -3634,17 +3634,17 @@ __metadata:
     vue: "npm:~2.6.14"
     yargs: "npm:^17.7.2"
     zone.js: "npm:~0.14.0"
-  checksum: 19cc26fe0d0b84bb4c614216a4894ad9db25249698a7cb4cfd9c1961262386421bfd364614cf3c34a7e7fe3713aac2e32cd2428cb3a7671aeb8864c75bbaa899
+  checksum: aadd50c2e85a0b375e7211e98b28e40ae93e3d6f811abd786edc7024e7e998747808aef1760900e08e6b44cd460ead2b1741c7d106836858db286ca0d08d8b83
   languageName: node
   linkType: hard
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=f3b242&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=6f97b7&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-drawer": "npm:*"
-  checksum: dd211396a8ac20561f16cb85e5fa853a59547ccc424cf7aa5e8a99e34f9b51c21a005c261776376bc3bcf1b2cc9bbbb33555c8bc6fa0562720ef67c831829d37
+  checksum: 290eef1338dd8bbe390c214137a166f21bd3364e7d01ddf2d9fa30068d6b763fbc36e0041171c070e8e07d0e0e0d07bb5e562b80e077cac7daa2f6106c5adeae
   languageName: node
   linkType: hard
 
@@ -19503,11 +19503,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.1-rc#optional!builtin<compat/typescript>":
   version: 5.3.1-rc
-  resolution: "typescript@patch:typescript@npm%3A5.3.1-rc#optional!builtin<compat/typescript>::version=5.3.1-rc&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.1-rc#optional!builtin<compat/typescript>::version=5.3.1-rc&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 19a9788c785f7dcd2cb1872af5ee28d26212e2c8b1dc46e8051eb671a3ba5a1e733831ccde13ba3ecdad8c3cf1c2dab0722643846e029a0dc7a482df87ac93c5
+  checksum: 7f15bd5095e38645991fc6ec6d34fa8c13c1ab245653e8cb0a9f8139a70d758c1a086d00538a2f4ec127834dd838428816e1ab954dccf6c62c884bd69a638e92
   languageName: node
   linkType: hard
 
