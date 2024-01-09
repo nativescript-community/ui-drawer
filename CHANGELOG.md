@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.27](https://github.com/nativescript-community/ui-drawer/compare/v0.1.26...v0.1.27) (2024-01-09)
+
+### Bug Fixes
+
+* dont trigger unecessary animations ([b47c0f1](https://github.com/nativescript-community/ui-drawer/commit/b47c0f1d32aa6ea93ebdc5e482ddba8f844279bb))
+
 ## [0.1.26](https://github.com/nativescript-community/ui-drawer/compare/v0.1.25...v0.1.26) (2024-01-05)
 
 ### Bug Fixes
