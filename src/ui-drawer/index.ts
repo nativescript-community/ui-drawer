@@ -849,20 +849,23 @@ export class Drawer extends GridLayout {
         }
 
         // TODO: custom animation curve + apply curve on gesture
-        const params = Object.keys(trData)
-            .map(
-                (k) =>
-                    this[k] &&
-                    Object.assign(
+        const params = [];
+        Object.keys(trData).forEach((k) => {
+            if (this[k]) {
+                const animatedParams = duration ? transformAnimationValues(trData[k]) : trData[k];
+                if (Object.keys(animatedParams).length) {
+                    const animParam = Object.assign(
                         {
                             target: this[k],
                             curve: CoreTypes.AnimationCurve.easeInOut,
                             duration
                         },
-                        duration ? transformAnimationValues(trData[k]) : trData[k]
-                    )
-            )
-            .filter((a) => !!a);
+                        animatedParams
+                    );
+                    params.push(animParam);
+                }
+            }
+        });
         try {
             if (duration) {
                 if (this.animationFunction) {
