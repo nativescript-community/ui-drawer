@@ -1,0 +1,55 @@
+<template>
+    <Page>
+        <ActionBar>
+            <NavigationButton text="Back" @tap="$navigateBack" />
+            <Label text="All Sides" />
+        </ActionBar>
+
+        <Drawer ref="drawer">
+            <GridLayout ~leftDrawer class="drawer" width="65%" height="100%" backgroundColor="white" padding="25">
+                <Label text="Left Drawer" verticalAlignment="top" />
+            </GridLayout>
+
+            <GridLayout ~rightDrawer class="drawer" width="65%" height="100%" backgroundColor="white" padding="25">
+                <Label text="Right Drawer" verticalAlignment="top" />
+            </GridLayout>
+
+            <GridLayout ~topDrawer class="drawer" height="65%" width="100%" backgroundColor="white" padding="25">
+                <Label text="Top Drawer" verticalAlignment="top" />
+            </GridLayout>
+
+            <GridLayout ~bottomDrawer class="drawer" height="65%" width="100%" backgroundColor="white" padding="25">
+                <Label text="Bottom Drawer" verticalAlignment="top" />
+            </GridLayout>
+
+            <StackLayout ~mainContent backgroundColor="white">
+                <Button @tap="onOpenDrawer('left')" text="Open Left Drawer" width="250" marginTop="25" />
+                <Button @tap="onOpenDrawer('right')" text="Open Right Drawer" width="250" marginTop="25" />
+                <Button @tap="onOpenDrawer('top')" text="Open Top Drawer" width="250" marginTop="25" />
+                <Button @tap="onOpenDrawer('bottom')" text="Open Bottom Drawer" width="250" marginTop="25" />
+            </StackLayout>
+        </Drawer>
+    </Page>
+</template>
+
+<script lang="ts">
+import { $navigateBack } from "nativescript-vue"
+
+export default {
+    setup() {
+        return {
+            $navigateBack
+        }
+    },
+    methods: {
+        // note: for some reason these methods don't work if called from a function registered in setup() or <script setup>
+        onOpenDrawer(side: string) {
+            this.$refs['drawer'].nativeView.open(side);
+        }
+    }
+}
+
+</script>
+
+<style lang="scss" scoped>
+</style>
