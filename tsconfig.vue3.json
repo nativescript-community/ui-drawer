@@ -7,6 +7,8 @@
        }
     },
     "include": [
+        "./src/ui-drawer", 
+        "./src/ui-drawer/vue3", 
         "./demo-snippets/vue3"
     ]
 }
