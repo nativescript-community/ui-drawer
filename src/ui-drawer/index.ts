@@ -880,7 +880,7 @@ export class Drawer extends GridLayout {
             // apply tr data to prevent hickups on iOS
             // and handle animation cancelled errors
             if ((position !== 0 && this.mShowingSide === side) || (position === 0 && !this.mShowingSide)) {
-                this.applyTrData(trData, side);
+                this.applyTrData(trData, this.mShowingSide);
                 if (position !== 0) {
                     // if (trData.backDrop) {
                     //     this.backDrop.opacity = 1;
@@ -890,7 +890,7 @@ export class Drawer extends GridLayout {
                     if (drawer) {
                         drawer.visibility = 'hidden';
                     }
-                    if (this.backDrop && trData.backDrop) {
+                    if (this.backDrop) {
                         this.backDrop.visibility = 'hidden';
                     }
                 }
