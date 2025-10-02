@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.31](https://github.com/nativescript-community/ui-drawer/compare/v0.1.29...v0.1.31) (2025-10-02)
+
+### Bug Fixes
+
+* crash if open/close is called before first layout ([ae75bd9](https://github.com/nativescript-community/ui-drawer/commit/ae75bd9c9f3915131ea27afd836b56e0874fc172))
+
 ## [0.1.29](https://github.com/nativescript-community/ui-drawer/compare/v0.1.28...v0.1.29) (2024-12-18)
 
 ### Bug Fixes
