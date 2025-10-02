@@ -420,6 +420,13 @@ export class Drawer extends GridLayout {
             return this.mViewHeight[side] - this.mTranslationY[side];
         }
     }
+    isSideReady(side: Side | VerticalSide) {
+        if (side === 'left' || side === 'right') {
+            return this.mViewWidth[side] !== undefined;
+        } else {
+            return this.mViewHeight[side] !== undefined;
+        }
+    }
     onGestureTouch(args: GestureTouchEventData) {
         const data = args.data;
         const { state, extraData, view } = args.data;
@@ -940,7 +947,7 @@ export class Drawer extends GridLayout {
     }
     async open(side?: Side | VerticalSide, duration = this.openAnimationDuration) {
         side = this.getActualSide(side) || this.getDefaultSide();
-        if (!side) {
+        if (!side || !this.isSideReady(side)) {
             return;
         }
         if (this.mShowingSide && this.mShowingSide !== side) {
@@ -958,7 +965,7 @@ export class Drawer extends GridLayout {
     }
     async close(side?: Side | VerticalSide, duration = this.closeAnimationDuration) {
         side = this.getActualSide(side) || this.mShowingSide;
-        if (!side) {
+        if (!side || !this.isSideReady(side)) {
             return;
         }
         // this.mShowingSide = null;
