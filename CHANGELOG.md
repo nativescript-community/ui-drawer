@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.32](https://github.com/nativescript-community/ui-drawer/compare/v0.1.31...v0.1.32) (2026-08-17)
+
+### Bug Fixes
+
+* svelte-native from nativescript-community ([112f7e4](https://github.com/nativescript-community/ui-drawer/commit/112f7e4bd6e66fddc9cd9372b1869e7011b2ed3d))
+
 ## [0.1.31](https://github.com/nativescript-community/ui-drawer/compare/v0.1.29...v0.1.31) (2025-10-02)
 
 ### Bug Fixes
