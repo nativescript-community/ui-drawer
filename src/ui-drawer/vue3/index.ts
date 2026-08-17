@@ -1,5 +1,5 @@
-import { Drawer as NativeDrawer } from '@nativescript-community/ui-drawer';
-import { install } from '@nativescript-community/ui-drawer';
+import { Drawer as NativeDrawer } from '..';
+import { install } from '../index';
 
 const DrawerPlugin = {
     install(app: any) {

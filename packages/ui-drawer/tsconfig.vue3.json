@@ -8,5 +8,5 @@
             "nativescript-vue": ["./node_modules/nativescript-vue3"]
         }
     },
-    "include": ["../../src/ui-drawer/vue3/**/*", "../../src/ui-drawer/references.d.ts"]
+    "include": ["../../src/ui-drawer/vue3/**/*", "../../src/ui-drawer/**/*.ts", "../../src/ui-drawer/references.d.ts"]
 }

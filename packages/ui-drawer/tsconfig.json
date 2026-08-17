@@ -5,7 +5,7 @@
         "rootDir": "../../src/ui-drawer",
         "outDir": "./"
     },
-    "include": ["../../src/ui-drawer/**/*", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
+    "include": ["../../src/ui-drawer/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
     "exclude": ["../../src/ui-drawer/vue3/**/*", "../../src/ui-drawer/angular/**"],
     "references": [{ "path": "./tsconfig.vue3.json" }]
 
