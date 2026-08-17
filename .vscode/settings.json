@@ -1,5 +1,7 @@
 {
+    "typescript.tsdk": "node_modules/typescript/lib",
     "svelte.plugin.svelte.compilerWarnings": {
+        "missing-declaration": "ignore",
         "a11y-aria-attributes": "ignore",
         "a11y-incorrect-aria-attribute-type": "ignore",
         "a11y-unknown-aria-attribute": "ignore",
@@ -23,5 +25,27 @@
         "a11y-mouse-events-have-key-events": "ignore",
         "a11y-missing-content": "ignore",
         "illegal-attribute-character": "ignore"
-    }
+    },
+    "scss.lint.validProperties": [
+        "max-font-size",
+        "min-font-size",
+        "ios-a11y-adjusts-font-size",
+        "status-bar-style",
+        "navigation-bar-color",
+        "status-bar-color",
+        "ripple-color",
+        "stroke-color",
+        "fill-color",
+        "on-check-color",
+        "on-tint-color",
+        "shape",
+        "elevation",
+        "horizontal-align",
+        "horizontal-alignment",
+        "vertical-text-alignment",
+        "floating",
+        "vertical-alignment",
+        "placeholder-color",
+        "variant"
+    ]
 }
