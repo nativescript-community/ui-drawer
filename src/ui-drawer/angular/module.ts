@@ -1,4 +1,4 @@
-import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Input, NgModule, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Input, NgModule, NO_ERRORS_SCHEMA, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
 import { Drawer } from '@nativescript-community/ui-drawer';
 
@@ -21,7 +21,8 @@ export interface ItemEventArgs {
  */
 @Component({
     selector: 'Drawer',
-    template: '<ng-content></ng-content>'
+    template: '<ng-content></ng-content>',
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class DrawerComponent {
     public drawer: Drawer;
@@ -158,12 +159,3 @@ const sideDrawerMeta: ViewClassMeta = {
 export const SIDEDRAWER_DIRECTIVES = [LeftDrawerDirective, RightDrawerDirective, TopDrawerDirective, BottomDrawerDirective, MainContentDirective];
 
 registerElement('Drawer', () => Drawer, sideDrawerMeta);
-
-/**
- * NgModule containing all of the RadSideDrawer directives.
- */
-@NgModule({
-    declarations: [DrawerComponent, SIDEDRAWER_DIRECTIVES],
-    exports: [DrawerComponent, SIDEDRAWER_DIRECTIVES]
-})
-export class DrawerModule {}
