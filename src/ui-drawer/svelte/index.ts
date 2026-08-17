@@ -1,4 +1,4 @@
-import { NativeViewElementNode, registerElement } from 'svelte-native/dom';
+import { NativeViewElementNode, registerElement } from '@nativescript-community/svelte-native/dom';
 import { Drawer, Side } from '../';
 
 export default class DrawerElement extends NativeViewElementNode<Drawer> {

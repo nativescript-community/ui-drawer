@@ -1,5 +1,5 @@
 const sveltePreprocess = require('svelte-preprocess');
-// const svelteNativePreprocessor = require('svelte-native-preprocessor');
+// const svelteNativePreprocessor = require('@nativescript-community/svelte-native-preprocessor');
 
 module.exports = {
     compilerOptions: {

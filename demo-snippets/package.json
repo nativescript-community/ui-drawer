@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.1",
     "dependencies": {
-        "@nativescript-community/ui-collectionview": "*",
-        "@nativescript-community/ui-drawer": "*"
+        "@nativescript-community/ui-collectionview": "^6.0.25",
+        "@nativescript-community/ui-drawer": "^0.1.31"
     }
 }

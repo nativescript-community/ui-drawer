@@ -7,9 +7,8 @@
         }
     },
     "references": [
-        {
-            //Need for IDE
-            "path": "./tsconfig.vue3.json"
-        }
+        { "path": "./packages/ui-drawer/tsconfig.vue3.json" },
+        { "path": "./packages/ui-drawer" },
+        { "path": "./tools/tsconfig.vue3.json" }
     ]
 }

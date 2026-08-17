@@ -2,7 +2,7 @@ import DrawerElement from '@nativescript-community/ui-drawer/svelte';
 import CollectionViewElement from '@nativescript-community/ui-collectionview/svelte';
 import { install } from '@nativescript-community/ui-drawer';
 import { Trace } from '@nativescript/core';
-import { DomTraceCategory } from 'svelte-native';
+import { DomTraceCategory } from '@nativescript-community/svelte-native';
 
 Trace.enable()
 Trace.addCategories(DomTraceCategory)

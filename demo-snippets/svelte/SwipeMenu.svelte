@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { Template } from 'svelte-native/components';
+    import { Template } from '@nativescript-community/svelte-native/components';
     import { ContentView, ObservableArray } from '@nativescript/core';
     import { GC } from '@nativescript/core/utils';
     import { Drawer } from '@nativescript-community/ui-drawer';
-    import { NativeViewElementNode } from 'svelte-native/dom';
+    import { NativeViewElementNode } from '@nativescript-community/svelte-native/dom';
     import { CollectionView } from '@nativescript-community/ui-collectionview';
 
     let collectionView: NativeViewElementNode<CollectionView>;

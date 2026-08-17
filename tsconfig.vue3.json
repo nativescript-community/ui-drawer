@@ -1,5 +1,5 @@
 {    
-    "extends": "./tsconfig.json",
+    "extends": "./tools/tsconfig.json",
     "compilerOptions": {
        "composite": true,
        "paths": {
@@ -7,7 +7,6 @@
        }
     },
     "include": [
-        "./src/ui-drawer", 
         "./src/ui-drawer/vue3", 
         "./demo-snippets/vue3"
     ]
