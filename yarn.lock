@@ -4103,11 +4103,11 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=98bd25&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=bd1ee9&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:^6.0.25"
     "@nativescript-community/ui-drawer": "npm:^0.1.31"
-  checksum: 10/4e79a1ba5c0ebb2a860b7dd096e8064821dda1510f25a0828b7777352037113589c797f19d760792c6951b4956dbc40afe518ab60cd0dff6f8bf155211979b41
+  checksum: 10/028f22c4169e071b75ea86dce483ac4971609f8df0d8e16d7b69cbea4a305d9027fe2f8550dbeeb689383855cb788233b62c5a3d3132ec443799592978b3a791
   languageName: node
   linkType: hard
 

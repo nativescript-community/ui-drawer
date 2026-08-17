@@ -1,6 +1,6 @@
-import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Input, NgModule, NO_ERRORS_SCHEMA, Output, TemplateRef, ViewContainerRef } from '@angular/core';
-import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
+import { Component, Directive, ElementRef, EmbeddedViewRef, Inject, NO_ERRORS_SCHEMA, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Drawer } from '@nativescript-community/ui-drawer';
+import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
 
 const LEFTDRAWER: string = 'LeftDrawer';
 const RIGHTDRAWER: string = 'RightDrawer';
@@ -31,7 +31,10 @@ export class DrawerComponent {
 
     private _gestureEnabled: boolean;
 
-    constructor(@Inject(ElementRef) public elementRef: ElementRef, @Inject(ViewContainerRef) private viewContainer: ViewContainerRef) {
+    constructor(
+        @Inject(ElementRef) public elementRef: ElementRef,
+        @Inject(ViewContainerRef) private viewContainer: ViewContainerRef
+    ) {
         this.drawer = this.elementRef.nativeElement;
     }
 
